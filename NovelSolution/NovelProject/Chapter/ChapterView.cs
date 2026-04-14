@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace NovelProject.Chapter
 {
-    public partial class ChapterView : Form
+    public partial class ChapterView : UserControl
     {
         public ChapterView()
         {

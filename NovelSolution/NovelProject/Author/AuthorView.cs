@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace NovelProject.Author
 {
-    public partial class AuthorView : Form
+    public partial class AuthorView : UserControl
     {
         public AuthorView()
         {

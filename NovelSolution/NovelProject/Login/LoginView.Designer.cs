@@ -28,51 +28,51 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new System.Windows.Forms.TextBox();
-            textBox2 = new System.Windows.Forms.TextBox();
-            button1 = new System.Windows.Forms.Button();
-            button2 = new System.Windows.Forms.Button();
+            usernameBox = new System.Windows.Forms.TextBox();
+            passwordBox = new System.Windows.Forms.TextBox();
+            accountLoginButton = new System.Windows.Forms.Button();
+            guestLoginButton = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
-            button3 = new System.Windows.Forms.Button();
+            createAccountButton = new System.Windows.Forms.Button();
             label5 = new System.Windows.Forms.Label();
             SuspendLayout();
             // 
-            // textBox1
+            // usernameBox
             // 
-            textBox1.Location = new System.Drawing.Point(219, 194);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new System.Drawing.Size(212, 27);
-            textBox1.TabIndex = 0;
+            usernameBox.Location = new System.Drawing.Point(219, 194);
+            usernameBox.Name = "usernameBox";
+            usernameBox.Size = new System.Drawing.Size(212, 27);
+            usernameBox.TabIndex = 0;
             // 
-            // textBox2
+            // passwordBox
             // 
-            textBox2.Location = new System.Drawing.Point(219, 263);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new System.Drawing.Size(212, 27);
-            textBox2.TabIndex = 1;
+            passwordBox.Location = new System.Drawing.Point(219, 263);
+            passwordBox.Name = "passwordBox";
+            passwordBox.Size = new System.Drawing.Size(212, 27);
+            passwordBox.TabIndex = 1;
             // 
-            // button1
+            // accountLoginButton
             // 
-            button1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            button1.Location = new System.Drawing.Point(35, 321);
-            button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(396, 41);
-            button1.TabIndex = 2;
-            button1.Text = "Log in with an account";
-            button1.UseVisualStyleBackColor = true;
+            accountLoginButton.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            accountLoginButton.Location = new System.Drawing.Point(35, 321);
+            accountLoginButton.Name = "accountLoginButton";
+            accountLoginButton.Size = new System.Drawing.Size(396, 41);
+            accountLoginButton.TabIndex = 2;
+            accountLoginButton.Text = "Log in with an account";
+            accountLoginButton.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // guestLoginButton
             // 
-            button2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            button2.Location = new System.Drawing.Point(35, 510);
-            button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(396, 39);
-            button2.TabIndex = 3;
-            button2.Text = "Log in as a Guest";
-            button2.UseVisualStyleBackColor = true;
+            guestLoginButton.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            guestLoginButton.Location = new System.Drawing.Point(35, 510);
+            guestLoginButton.Name = "guestLoginButton";
+            guestLoginButton.Size = new System.Drawing.Size(396, 39);
+            guestLoginButton.TabIndex = 3;
+            guestLoginButton.Text = "Log in as a Guest";
+            guestLoginButton.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -114,15 +114,15 @@
             label4.TabIndex = 7;
             label4.Text = "Or:";
             // 
-            // button3
+            // createAccountButton
             // 
-            button3.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            button3.Location = new System.Drawing.Point(35, 368);
-            button3.Name = "button3";
-            button3.Size = new System.Drawing.Size(396, 41);
-            button3.TabIndex = 8;
-            button3.Text = "Create account with these credentials";
-            button3.UseVisualStyleBackColor = true;
+            createAccountButton.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            createAccountButton.Location = new System.Drawing.Point(35, 368);
+            createAccountButton.Name = "createAccountButton";
+            createAccountButton.Size = new System.Drawing.Size(396, 41);
+            createAccountButton.TabIndex = 8;
+            createAccountButton.Text = "Create account with these credentials";
+            createAccountButton.UseVisualStyleBackColor = true;
             // 
             // label5
             // 
@@ -142,15 +142,15 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(472, 568);
             Controls.Add(label5);
-            Controls.Add(button3);
+            Controls.Add(createAccountButton);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(button2);
-            Controls.Add(button1);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(guestLoginButton);
+            Controls.Add(accountLoginButton);
+            Controls.Add(passwordBox);
+            Controls.Add(usernameBox);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             Name = "LoginView";
             Text = "LoginView";
@@ -160,15 +160,15 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox usernameBox;
+        private System.Windows.Forms.TextBox passwordBox;
+        private System.Windows.Forms.Button accountLoginButton;
+        private System.Windows.Forms.Button guestLoginButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button createAccountButton;
         private System.Windows.Forms.Label label5;
     }
 }

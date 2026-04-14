@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace NovelProject.Browser
 {
-    public partial class BrowserView : Form
+    public partial class BrowserView : UserControl
     {
         public BrowserView()
         {

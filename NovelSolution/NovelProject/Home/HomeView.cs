@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace NovelProject.Home
 {
-    public partial class HomeView : Form
+    public partial class HomeView : UserControl
     {
         public HomeView()
         {

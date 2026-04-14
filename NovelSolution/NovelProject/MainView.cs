@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NovelProject.Novel
+namespace NovelProject
 {
-    public partial class NovelView : UserControl
+    public partial class MainView : Form
     {
-        public NovelView()
+        public MainView()
         {
             InitializeComponent();
         }
