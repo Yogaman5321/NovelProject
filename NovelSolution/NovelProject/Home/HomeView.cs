@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NovelProject
+namespace NovelProject.Home
 {
-    public partial class Form1 : Form
+    public partial class HomeView : Form
     {
-        public Form1()
+        public HomeView()
         {
             InitializeComponent();
         }
