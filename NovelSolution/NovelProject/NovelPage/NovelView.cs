@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NovelProject.Novel
+namespace NovelProject.NovelPage
 {
     public partial class NovelView : UserControl
     {

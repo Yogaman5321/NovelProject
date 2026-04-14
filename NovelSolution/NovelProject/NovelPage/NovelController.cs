@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NovelProject.Novel
+namespace NovelProject.NovelPage
 {
     public class NovelController
     {

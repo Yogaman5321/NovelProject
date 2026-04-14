@@ -14,12 +14,6 @@ namespace NovelProject.Models
 
         public string TagDescription { get; set; }
 
-        public Tag(int tagId, string tagName, string tagDescription)
-        {
-            TagId = tagId;
-            TagName = tagName;
-            TagDescription = tagDescription;
-        }
 
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NovelProject.Login
+namespace NovelProject.LoginPage
 {
     public class LoginController
     {

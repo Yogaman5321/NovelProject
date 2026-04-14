@@ -21,15 +21,5 @@ namespace NovelProject.Models
         public decimal Rating { get; set; }
 
         public DateTime ReviewPostedDate { get; set; }
-
-        public Review(int reviewId, int userId, int novelId, string reviewContent, decimal rating)
-        {
-            ReviewId = reviewId;
-            UserId = userId;
-            NovelId = novelId;
-            ReviewContent = reviewContent;
-            Rating = rating;
-            ReviewPostedDate = DateTime.Now;
-        }
     }
 }

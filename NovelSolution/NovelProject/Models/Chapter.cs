@@ -14,14 +14,5 @@ namespace NovelProject.Models
         public string ChapterFilePath { get; set; }
         public DateTime DateAdded { get; set; }
 
-        public Chapter(int chapterId, int novelId, int chapterNumber, string chapterFilePath)
-        {
-            ChapterId = chapterId;
-            NovelId = novelId;
-            ChapterNumber = chapterNumber;
-            ChapterFilePath = chapterFilePath;
-            DateAdded = DateTime.Now;
-        }
-
     }
 }

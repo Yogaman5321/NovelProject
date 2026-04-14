@@ -1,4 +1,4 @@
-﻿namespace NovelProject.Home
+﻿namespace NovelProject.HomePage
 {
     partial class HomeView
     {

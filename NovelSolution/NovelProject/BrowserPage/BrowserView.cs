@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NovelProject.Browser
+namespace NovelProject.BrowserPage
 {
     public partial class BrowserView : UserControl
     {

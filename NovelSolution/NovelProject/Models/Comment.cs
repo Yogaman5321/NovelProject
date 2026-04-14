@@ -13,14 +13,5 @@ namespace NovelProject.Models
         public int ChapterId { get; set; }
         public string CommentString { get; set; }
         public DateTime DatePosted { get; set; }
-
-        public Comment(int commentId, int userId, int chapterId, string commentString)
-        {
-            CommentId = commentId;
-            UserId = userId;
-            ChapterId = chapterId;
-            CommentString = commentString;
-            DatePosted = DateTime.Now;
-        }
     }
 }

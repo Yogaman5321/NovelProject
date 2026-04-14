@@ -1,4 +1,4 @@
-﻿namespace NovelProject.Novel
+﻿namespace NovelProject.NovelPage
 {
     partial class NovelView
     {

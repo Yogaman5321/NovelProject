@@ -1,4 +1,4 @@
-﻿namespace NovelProject.Browser
+﻿namespace NovelProject.BrowserPage
 {
     partial class BrowserView
     {

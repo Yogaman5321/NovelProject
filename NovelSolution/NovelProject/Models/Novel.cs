@@ -18,17 +18,5 @@ namespace NovelProject.Models
         public DateTime DatePosted { get; set; }
 
         // Maybe add a DateEdited property? 
-
-        public Novel(int novelId, int uploadedByUserId, string authorName, string novelName, string author, string description)
-        {
-            NovelId = novelId;
-            UploadedByUserId = uploadedByUserId;
-            Description = description;
-            AuthorName = authorName;
-            NovelName = novelName;
-            DatePosted = DateTime.Now;
-
-
-        }
     }
 }

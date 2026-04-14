@@ -1,4 +1,4 @@
-﻿namespace NovelProject.Author
+﻿namespace NovelProject.AuthorPage
 {
     partial class AuthorView
     {

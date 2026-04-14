@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NovelProject.Home
+namespace NovelProject.HomePage
 {
     public partial class HomeView : UserControl
     {

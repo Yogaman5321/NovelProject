@@ -1,4 +1,4 @@
-﻿namespace NovelProject.User
+﻿namespace NovelProject.UserPage
 {
     partial class UserView
     {

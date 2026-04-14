@@ -16,12 +16,5 @@ namespace NovelProject.Models
 
         public DateTime AccountCreatedDate { get; set; }
 
-        public User(int userId, string username, string encryptedPassword)
-        {
-            UserId = userId;
-            Username = username;
-            EncryptedPassword = encryptedPassword;
-            AccountCreatedDate = DateTime.Now;
-        }
     }
 }

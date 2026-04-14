@@ -13,12 +13,5 @@ namespace NovelProject.Models
         public int ChapterId { get; set; }
 
         public DateTime LastReadDate { get; set; }
-
-        public ReadHistory(int userId, int chapterId)
-        {
-            UserId = userId;
-            ChapterId = chapterId;
-            LastReadDate = DateTime.Now;
-        }
     }
 }
