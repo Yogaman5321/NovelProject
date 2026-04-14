@@ -6,8 +6,12 @@ using System.Windows.Forms;
 
 namespace NovelProject
 {
+    public delegate void LoginHandler(State s, string username);
+    public delegate void LoginObserver(State s);
+
     internal static class Program
     {
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

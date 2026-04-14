@@ -12,9 +12,13 @@ namespace NovelProject
 {
     public partial class MainView : Form
     {
-        public MainView()
+        private string _username;
+
+        public MainView(string username)
         {
             InitializeComponent();
+            _username = username;
+            usernameLabel.Text = _username;
         }
     }
 }

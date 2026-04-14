@@ -8,5 +8,7 @@ namespace NovelProject.Login
 {
     public class LoginController
     {
+        public LoginObserver observer;
+
     }
 }
