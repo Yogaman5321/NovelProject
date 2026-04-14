@@ -6,7 +6,22 @@ using System.Threading.Tasks;
 
 namespace NovelProject.Models
 {
-    internal class User
+    public class User
     {
+        public int UserId { get; set; }
+
+        public string Username { get; set; }
+
+        public string EncryptedPassword { get; set; }
+
+        public DateTime AccountCreatedDate { get; set; }
+
+        public User(int userId, string username, string encryptedPassword)
+        {
+            UserId = userId;
+            Username = username;
+            EncryptedPassword = encryptedPassword;
+            AccountCreatedDate = DateTime.Now;
+        }
     }
 }

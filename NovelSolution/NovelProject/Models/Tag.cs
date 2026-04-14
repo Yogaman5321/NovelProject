@@ -6,7 +6,20 @@ using System.Threading.Tasks;
 
 namespace NovelProject.Models
 {
-    internal class Tag
+    public class Tag
     {
+        public int TagId { get; set; }
+
+        public string TagName { get; set; }
+
+        public string TagDescription { get; set; }
+
+        public Tag(int tagId, string tagName, string tagDescription)
+        {
+            TagId = tagId;
+            TagName = tagName;
+            TagDescription = tagDescription;
+        }
+
     }
 }

@@ -6,7 +6,22 @@ using System.Threading.Tasks;
 
 namespace NovelProject.Models
 {
-    internal class Chapter
+    public class Chapter
     {
+        public int ChapterId { get; set; }
+        public int NovelId { get; set; }
+        public int ChapterNumber { get; set; }
+        public string ChapterFilePath { get; set; }
+        public DateTime DateAdded { get; set; }
+
+        public Chapter(int chapterId, int novelId, int chapterNumber, string chapterFilePath)
+        {
+            ChapterId = chapterId;
+            NovelId = novelId;
+            ChapterNumber = chapterNumber;
+            ChapterFilePath = chapterFilePath;
+            DateAdded = DateTime.Now;
+        }
+
     }
 }
