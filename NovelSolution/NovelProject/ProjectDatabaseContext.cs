@@ -21,7 +21,11 @@ namespace NovelProject
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Configure the database connection string here            
+            if (!optionsBuilder.IsConfigured)
+            {
+                // Configure the database connection string here
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=NovelProjectDB;Trusted_Connection=True;");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
