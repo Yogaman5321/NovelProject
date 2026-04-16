@@ -16,5 +16,8 @@ namespace NovelProject.ChapterPage
         {
             InitializeComponent();
         }
+
+        
+
     }
 }

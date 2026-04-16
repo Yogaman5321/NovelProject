@@ -12,9 +12,14 @@ namespace NovelProject.HomePage
 {
     public partial class HomeView : UserControl
     {
-        public HomeView()
+        private HomePageStateHandler handler;
+        public HomeView(HomePageStateHandler handler)
         {
             InitializeComponent();
+            this.handler = handler;
         }
+
+
+        
     }
 }

@@ -8,9 +8,15 @@ using System.Windows.Forms;
 
 namespace NovelProject
 {
+<<<<<<< BrowserUI
+ 
+    public delegate void BrowserStateHandler(BrowserState state);
+    public delegate void HomePageStateHandler(HomePageState state);
+=======
     public delegate void LoginHandler(LoginState s, string username, string password);
     public delegate void LoginObserver(LoginState s);
 
+>>>>>>> main
     internal static class Program
     {
 
