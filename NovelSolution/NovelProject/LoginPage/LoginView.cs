@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NovelProject.LoginPage;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BCrypt.Net;
 
 
 namespace NovelProject
@@ -14,32 +16,75 @@ namespace NovelProject
     public partial class LoginView : Form
     {
         public LoginHandler handler;
+        public event Action<string, bool> LoginSucceeded;
 
         public LoginView()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        public void DisplayState(LoginState s)
         {
-            // For testing purposes, we will directly open the main view without actual authentication.
-            // This method and the associated button will be removed in the future.
-            this.Invoke(new Action(() =>
+            errorLabel.Visible = false;
+            errorLabel.Text = "";
+            switch (s)
             {
-                MainView mv = new MainView("test user");
-                mv.Show();
-                this.Hide();
-            }));
+                case LoginState.LoginAsGuest:
+                    this.Invoke(new Action (() =>
+                    {
+                        LoginSucceeded?.Invoke("Guest", false);
+                    }));
+                    break;
+                case LoginState.SucceedLogin:
+                    this.Invoke(new Action(() =>
+                        {
+                            LoginSucceeded?.Invoke(usernameBox.Text, true);
+                        }));
+                    break;
+                case LoginState.SucceedCreate:
+                    this.Invoke(new Action(() =>
+                        {
+                            LoginSucceeded?.Invoke(usernameBox.Text, true);
+                        }));
+                    break;
+                case LoginState.FailLogin:
+                    usernameBox.Text = "";
+                    passwordBox.Text = "";
+                    errorLabel.Text = "Login failed. Please check your username and password.";
+                    errorLabel.Visible = true;
+                    break;
+                case LoginState.FailCreate:
+                    usernameBox.Text = "";
+                    passwordBox.Text = "";
+                    errorLabel.Text = "Account creation failed. Please choose a different username.";
+                    errorLabel.Visible = true;
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void accountLoginButton_Click(object sender, EventArgs e)
         {
+            handler(LoginState.TryLoginAccount, usernameBox.Text, passwordBox.Text);
+        }
 
+        private void createAccountButton_Click(object sender, EventArgs e)
+        {
+            handler(LoginState.TryCreateAccount, usernameBox.Text, passwordBox.Text);
         }
 
         private void guestLoginButton_Click(object sender, EventArgs e)
         {
+            handler(LoginState.LoginAsGuest, "", "");
+        }   
+       
 
+        public void SetLoginHandler(LoginHandler handler)
+        {
+            this.handler = handler;
         }
+
+        
     }
 }

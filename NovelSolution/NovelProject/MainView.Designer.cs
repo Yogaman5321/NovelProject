@@ -32,17 +32,20 @@
             toolStrip1 = new System.Windows.Forms.ToolStrip();
             homePageButton = new System.Windows.Forms.ToolStripButton();
             browseNovelsButton = new System.Windows.Forms.ToolStripButton();
+            authorDashboardButton = new System.Windows.Forms.ToolStripButton();
             userProfileButton = new System.Windows.Forms.ToolStripButton();
             usernameLabel = new System.Windows.Forms.ToolStripLabel();
             logOutButton = new System.Windows.Forms.ToolStripButton();
             logInButton = new System.Windows.Forms.ToolStripButton();
+            contentPanel = new System.Windows.Forms.Panel();
             toolStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // toolStrip1
             // 
+            toolStrip1.BackColor = System.Drawing.SystemColors.ActiveBorder;
             toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { homePageButton, browseNovelsButton, userProfileButton, usernameLabel, logOutButton, logInButton });
+            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { homePageButton, browseNovelsButton, authorDashboardButton, userProfileButton, usernameLabel, logOutButton, logInButton });
             toolStrip1.Location = new System.Drawing.Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new System.Drawing.Size(1036, 30);
@@ -68,6 +71,16 @@
             browseNovelsButton.Name = "browseNovelsButton";
             browseNovelsButton.Size = new System.Drawing.Size(126, 27);
             browseNovelsButton.Text = "Browse Novels";
+            // 
+            // authorDashboardButton
+            // 
+            authorDashboardButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            authorDashboardButton.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            authorDashboardButton.Image = (System.Drawing.Image)resources.GetObject("authorDashboardButton.Image");
+            authorDashboardButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            authorDashboardButton.Name = "authorDashboardButton";
+            authorDashboardButton.Size = new System.Drawing.Size(155, 27);
+            authorDashboardButton.Text = "Author Dashboard";
             // 
             // userProfileButton
             // 
@@ -109,11 +122,19 @@
             logInButton.Size = new System.Drawing.Size(62, 27);
             logInButton.Text = "Log In";
             // 
+            // contentPanel
+            // 
+            contentPanel.Location = new System.Drawing.Point(0, 33);
+            contentPanel.Name = "contentPanel";
+            contentPanel.Size = new System.Drawing.Size(1036, 567);
+            contentPanel.TabIndex = 1;
+            // 
             // MainView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1036, 600);
+            Controls.Add(contentPanel);
             Controls.Add(toolStrip1);
             Name = "MainView";
             Text = "MainView";
@@ -132,5 +153,7 @@
         private System.Windows.Forms.ToolStripLabel usernameLabel;
         private System.Windows.Forms.ToolStripButton logInButton;
         private System.Windows.Forms.ToolStripButton logOutButton;
+        private System.Windows.Forms.ToolStripButton authorDashboardButton;
+        private System.Windows.Forms.Panel contentPanel;
     }
 }

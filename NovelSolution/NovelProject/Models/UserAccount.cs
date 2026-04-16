@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NovelProject.Models
 {
-    public class User
+    public class UserAccount
     {
         public int UserId { get; set; }
 
