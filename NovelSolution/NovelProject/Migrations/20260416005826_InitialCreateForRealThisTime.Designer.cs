@@ -12,8 +12,8 @@ using NovelProject;
 namespace NovelProject.Migrations
 {
     [DbContext(typeof(ProjectDatabaseContext))]
-    [Migration("20260416004502_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260416005826_InitialCreateForRealThisTime")]
+    partial class InitialCreateForRealThisTime
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -201,7 +201,7 @@ namespace NovelProject.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("NovelProject.Models.User", b =>
+            modelBuilder.Entity("NovelProject.Models.UserAccount", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -258,7 +258,7 @@ namespace NovelProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NovelProject.Models.User", null)
+                    b.HasOne("NovelProject.Models.UserAccount", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.ClientCascade)
@@ -267,7 +267,7 @@ namespace NovelProject.Migrations
 
             modelBuilder.Entity("NovelProject.Models.Novel", b =>
                 {
-                    b.HasOne("NovelProject.Models.User", null)
+                    b.HasOne("NovelProject.Models.UserAccount", null)
                         .WithMany()
                         .HasForeignKey("UploadedByUserId")
                         .OnDelete(DeleteBehavior.ClientCascade)
@@ -282,7 +282,7 @@ namespace NovelProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NovelProject.Models.User", null)
+                    b.HasOne("NovelProject.Models.UserAccount", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.ClientCascade)
@@ -297,7 +297,7 @@ namespace NovelProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NovelProject.Models.User", null)
+                    b.HasOne("NovelProject.Models.UserAccount", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.ClientCascade)

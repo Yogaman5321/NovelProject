@@ -11,7 +11,7 @@ namespace NovelProject
     public class ProjectDatabaseContext : DbContext
     {
         // DbSet properties - these represent the tables in the database
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserAccount> Users { get; set; }
         public DbSet<Novel> Novels { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Tag> Tags { get; set; }
@@ -32,7 +32,7 @@ namespace NovelProject
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<UserAccount>(entity =>
             {
                 entity.HasKey(u => u.UserId);
                 entity.Property(u => u.Username).IsRequired().HasMaxLength(20);
@@ -49,7 +49,7 @@ namespace NovelProject
                 entity.Property(n => n.Description).IsRequired().HasMaxLength(1000);
                 entity.Property(n => n.DatePosted).IsRequired();
 
-                entity.HasOne<User>()
+                entity.HasOne<UserAccount>()
                       .WithMany()
                       .HasForeignKey(n => n.UploadedByUserId)
                       .OnDelete(DeleteBehavior.ClientCascade);
@@ -81,7 +81,7 @@ namespace NovelProject
                 entity.Property(r => r.Rating).HasPrecision(3,2).IsRequired();
                 entity.Property(r => r.ReviewPostedDate).IsRequired();
 
-                entity.HasOne<User>()
+                entity.HasOne<UserAccount>()
                       .WithMany()
                       .HasForeignKey(r => r.UserId)
                       .OnDelete(DeleteBehavior.ClientCascade);
@@ -100,7 +100,7 @@ namespace NovelProject
                 entity.Property(c => c.CommentString).IsRequired().HasMaxLength(500);
                 entity.Property(c => c.DatePosted).IsRequired();
 
-                entity.HasOne<User>()
+                entity.HasOne<UserAccount>()
                       .WithMany()
                       .HasForeignKey(c => c.UserId)
                       .OnDelete(DeleteBehavior.ClientCascade);
@@ -125,7 +125,7 @@ namespace NovelProject
                 entity.HasKey(rh => new { rh.UserId, rh.ChapterId });
                 entity.Property(rh => rh.LastReadDate).IsRequired();
 
-                entity.HasOne<User>()
+                entity.HasOne<UserAccount>()
                       .WithMany()
                       .HasForeignKey(rh => rh.UserId)
                       .OnDelete(DeleteBehavior.ClientCascade);

@@ -37,8 +37,7 @@
             label3 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
             createAccountButton = new System.Windows.Forms.Button();
-            label5 = new System.Windows.Forms.Label();
-            button1 = new System.Windows.Forms.Button();
+            errorLabel = new System.Windows.Forms.Label();
             SuspendLayout();
             // 
             // usernameBox
@@ -126,36 +125,26 @@
             createAccountButton.TabIndex = 8;
             createAccountButton.Text = "Create account with these credentials";
             createAccountButton.UseVisualStyleBackColor = true;
+            createAccountButton.Click += createAccountButton_Click;
             // 
-            // label5
+            // errorLabel
             // 
-            label5.AutoSize = true;
-            label5.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            label5.ForeColor = System.Drawing.Color.Red;
-            label5.Location = new System.Drawing.Point(100, 146);
-            label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(269, 20);
-            label5.TabIndex = 9;
-            label5.Text = "Error Label, change as needed in code";
-            label5.Visible = false;
-            // 
-            // button1
-            // 
-            button1.Location = new System.Drawing.Point(51, 474);
-            button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(364, 29);
-            button1.TabIndex = 10;
-            button1.Text = "Temporary Debug Login";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            errorLabel.AutoSize = true;
+            errorLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            errorLabel.ForeColor = System.Drawing.Color.Red;
+            errorLabel.Location = new System.Drawing.Point(100, 146);
+            errorLabel.Name = "errorLabel";
+            errorLabel.Size = new System.Drawing.Size(269, 20);
+            errorLabel.TabIndex = 9;
+            errorLabel.Text = "Error Label, change as needed in code";
+            errorLabel.Visible = false;
             // 
             // LoginView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(472, 568);
-            Controls.Add(button1);
-            Controls.Add(label5);
+            Controls.Add(errorLabel);
             Controls.Add(createAccountButton);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -183,8 +172,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button createAccountButton;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label errorLabel;
     }
 }
 

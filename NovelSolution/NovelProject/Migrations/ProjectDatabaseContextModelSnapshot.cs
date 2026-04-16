@@ -198,7 +198,7 @@ namespace NovelProject.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("NovelProject.Models.User", b =>
+            modelBuilder.Entity("NovelProject.Models.UserAccount", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -255,7 +255,7 @@ namespace NovelProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NovelProject.Models.User", null)
+                    b.HasOne("NovelProject.Models.UserAccount", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.ClientCascade)
@@ -264,7 +264,7 @@ namespace NovelProject.Migrations
 
             modelBuilder.Entity("NovelProject.Models.Novel", b =>
                 {
-                    b.HasOne("NovelProject.Models.User", null)
+                    b.HasOne("NovelProject.Models.UserAccount", null)
                         .WithMany()
                         .HasForeignKey("UploadedByUserId")
                         .OnDelete(DeleteBehavior.ClientCascade)
@@ -279,7 +279,7 @@ namespace NovelProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NovelProject.Models.User", null)
+                    b.HasOne("NovelProject.Models.UserAccount", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.ClientCascade)
@@ -294,7 +294,7 @@ namespace NovelProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NovelProject.Models.User", null)
+                    b.HasOne("NovelProject.Models.UserAccount", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.ClientCascade)
