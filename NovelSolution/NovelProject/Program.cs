@@ -8,7 +8,8 @@ namespace NovelProject
 {
     public delegate void LoginHandler(State s, string username);
     public delegate void LoginObserver(State s);
-
+    public delegate void BrowserStateHandler(BrowserState state);
+    public delegate void HomePageStateHandler(HomePageState state);
     internal static class Program
     {
 
