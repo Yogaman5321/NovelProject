@@ -16,6 +16,7 @@ namespace NovelProject
     public partial class LoginView : Form
     {
         public LoginHandler handler;
+        public event Action<string, bool> LoginSucceeded;
 
         public LoginView()
         {
@@ -31,25 +32,19 @@ namespace NovelProject
                 case LoginState.LoginAsGuest:
                     this.Invoke(new Action (() =>
                     {
-                        MainView mainForm = new MainView("Guest", false); // To be changed later
-                        mainForm.Show();
-                        this.Hide();
+                        LoginSucceeded?.Invoke("Guest", false);
                     }));
                     break;
                 case LoginState.SucceedLogin:
                     this.Invoke(new Action(() =>
                         {
-                            MainView mainForm = new MainView(usernameBox.Text, true);
-                            mainForm.Show();
-                            this.Hide();
+                            LoginSucceeded?.Invoke(usernameBox.Text, true);
                         }));
                     break;
                 case LoginState.SucceedCreate:
                     this.Invoke(new Action(() =>
                         {
-                            MainView mainForm = new MainView(usernameBox.Text, true);
-                            mainForm.Show();
-                            this.Hide();
+                            LoginSucceeded?.Invoke(usernameBox.Text, true);
                         }));
                     break;
                 case LoginState.FailLogin:
@@ -82,7 +77,8 @@ namespace NovelProject
         private void guestLoginButton_Click(object sender, EventArgs e)
         {
             handler(LoginState.LoginAsGuest, "", "");
-        }        
+        }   
+       
 
         public void SetLoginHandler(LoginHandler handler)
         {

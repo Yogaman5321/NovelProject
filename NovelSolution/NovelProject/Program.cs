@@ -34,13 +34,8 @@ namespace NovelProject
 
 
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            LoginView loginView = new LoginView();
-            LoginController loginController = new LoginController(loginView.DisplayState);
-            loginView.SetLoginHandler(loginController.HandleEvents);
-            
-            Application.Run(loginView);
+            Application.SetCompatibleTextRenderingDefault(false);            
+            Application.Run(new MainAppContext());
         }
 
         private static void InitializeDatabase()
