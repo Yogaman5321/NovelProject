@@ -1,6 +1,7 @@
 ﻿using NovelProject.LoginPage;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,25 +20,57 @@ namespace NovelProject
         [STAThread]
         static void Main()
         {
-            // Ensure database is created and optionally seed it
-            using (var context = new ProjectDatabaseContext())
+            
+            try
             {
-                // Create database if it doesn't exist
-                context.Database.EnsureCreated();
-
-                // Seed database with test data
-                DatabaseTestingSeeder.SeedDatabase(context);
+                InitializeDatabase();
+                DatabaseTestingSeeder.SeedDatabase();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to initialize/seed database: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             LoginView loginView = new LoginView();
             LoginController loginController = new LoginController(loginView.DisplayState);
             loginView.SetLoginHandler(loginController.HandleEvents);
-
-
             
             Application.Run(loginView);
+        }
+
+        private static void InitializeDatabase()
+        {
+            string sqlFile;
+
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            DirectoryInfo directory = new DirectoryInfo(baseDirectory);
+
+            while (directory != null && !File.Exists(Path.Combine(directory.FullName, "NovelProject.csproj")))
+            {
+                directory = directory.Parent;
+            }
+
+            if (directory != null)
+            {
+                sqlFile = Path.Combine(directory.FullName, "CreateDatabase.sql");
+            }
+            else
+            {
+                sqlFile = Path.Combine(baseDirectory, "CreateDatabase.sql");
+            }
+
+            if (!File.Exists(sqlFile))
+            {
+                throw new FileNotFoundException("SQL file not found: " + sqlFile);
+            }
+
+            string sqlScript = File.ReadAllText(sqlFile);
+            DatabaseHelper.ExecuteSqlScript(sqlScript);
         }
     }
 }

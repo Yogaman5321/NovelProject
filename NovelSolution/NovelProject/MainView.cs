@@ -34,5 +34,10 @@ namespace NovelProject
             logOutButton.Visible = _accountMode;
             logOutButton.Enabled = _accountMode;
         }
+
+        public void LoadUserControl(UserControl userControl)
+        {
+
+        }
     }
 }
