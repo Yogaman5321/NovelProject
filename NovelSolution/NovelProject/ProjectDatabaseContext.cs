@@ -52,7 +52,7 @@ namespace NovelProject
                 entity.HasOne<User>()
                       .WithMany()
                       .HasForeignKey(n => n.UploadedByUserId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                      .OnDelete(DeleteBehavior.ClientCascade);
 
                 entity.HasMany<Tag>()
                       .WithMany()
@@ -84,7 +84,7 @@ namespace NovelProject
                 entity.HasOne<User>()
                       .WithMany()
                       .HasForeignKey(r => r.UserId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                      .OnDelete(DeleteBehavior.ClientCascade);
 
                 entity.HasOne<Novel>()
                       .WithMany()
@@ -103,7 +103,7 @@ namespace NovelProject
                 entity.HasOne<User>()
                       .WithMany()
                       .HasForeignKey(c => c.UserId)
-                      .OnDelete(DeleteBehavior.Restrict);
+                      .OnDelete(DeleteBehavior.ClientCascade);
 
                 entity.HasOne<Chapter>()
                       .WithMany()
@@ -128,7 +128,7 @@ namespace NovelProject
                 entity.HasOne<User>()
                       .WithMany()
                       .HasForeignKey(rh => rh.UserId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                      .OnDelete(DeleteBehavior.ClientCascade);
 
                 entity.HasOne<Chapter>()
                       .WithMany()
