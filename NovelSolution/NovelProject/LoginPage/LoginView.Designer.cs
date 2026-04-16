@@ -51,6 +51,7 @@
             // 
             passwordBox.Location = new System.Drawing.Point(219, 263);
             passwordBox.Name = "passwordBox";
+            passwordBox.PasswordChar = '*';
             passwordBox.Size = new System.Drawing.Size(212, 27);
             passwordBox.TabIndex = 1;
             // 
