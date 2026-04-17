@@ -3,20 +3,24 @@ using NovelProject.LoginPage;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace NovelProject
 {
+<<<<<<< BrowserUI
+ 
+    public delegate void BrowserStateHandler(BrowserState state);
+    public delegate void HomePageStateHandler(HomePageState state);
+=======
+    public delegate void ChapterDisplayHandler(string text);
+
     public delegate void LoginHandler(LoginState s, string username, string password);
     public delegate void LoginObserver(LoginState s);
 
-    public delegate void ChapterDisplayHandler(string text);
-
-    public delegate void NovelInfoHandler(string title, string author, string description);
-    public delegate void NovelChapterHandler(ArrayList chapters);
-
+>>>>>>> main
     internal static class Program
     {
 
@@ -26,26 +30,52 @@ namespace NovelProject
         [STAThread]
         static void Main()
         {
-            // Ensure database is created and optionally seed it
-            using (var context = new ProjectDatabaseContext())
-            {
-                // Create database if it doesn't exist
-                context.Database.EnsureCreated();
-
-                // Seed database with test data
-                DatabaseTestingSeeder.SeedDatabase(context);
-            }
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            LoginView loginView = new LoginView();
-            LoginController loginController = new LoginController(loginView.DisplayState);
-            loginView.SetLoginHandler(loginController.HandleEvents);
-
-
             
-            Application.Run(loginView);
+            try
+            {
+                InitializeDatabase();
+                DatabaseTestingSeeder.SeedDatabase();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to initialize/seed database: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
 
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);            
+            Application.Run(new MainAppContext());
+        }
+
+        private static void InitializeDatabase()
+        {
+            string sqlFile;
+
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            DirectoryInfo directory = new DirectoryInfo(baseDirectory);
+
+            while (directory != null && !File.Exists(Path.Combine(directory.FullName, "NovelProject.csproj")))
+            {
+                directory = directory.Parent;
+            }
+
+            if (directory != null)
+            {
+                sqlFile = Path.Combine(directory.FullName, "CreateDatabase.sql");
+            }
+            else
+            {
+                sqlFile = Path.Combine(baseDirectory, "CreateDatabase.sql");
+            }
+
+            if (!File.Exists(sqlFile))
+            {
+                throw new FileNotFoundException("SQL file not found: " + sqlFile);
+            }
+
+            string sqlScript = File.ReadAllText(sqlFile);
+            DatabaseHelper.ExecuteSqlScript(sqlScript);
         }
     }
 }

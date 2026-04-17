@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using NovelProject.Models;
 
 namespace NovelProject.LoginPage
@@ -52,35 +53,50 @@ namespace NovelProject.LoginPage
 
         public bool TryLoginAccount(string username, string password)
         {
-            using (var context = new ProjectDatabaseContext())
+            string query = "SELECT EncryptedPassword FROM Users WHERE Username = @Username";
+            var parameters = new SqlParameter[]
             {
-                var user = context.Users.FirstOrDefault(u => u.Username == username);
-                if (user != null && BCrypt.Net.BCrypt.Verify(password, user.EncryptedPassword))
+                new SqlParameter("@Username", username)
+            };
+
+            using (var reader = DatabaseHelper.ExecuteReader(query, parameters))
+            {
+                if (reader.Read())
                 {
-                    return true;
+                    string storedEncryptedPassword = reader.GetString(0);
+                    return BCrypt.Net.BCrypt.Verify(password, storedEncryptedPassword);
+                }
+                else
+                {
+                    return false; // Username not found
                 }
             }
-            return false;
         }
 
         public bool TryCreateAccount(string username, string password)
         {
-            using (var context = new ProjectDatabaseContext())
+            string checkQuery = "SELECT COUNT(*) FROM Users WHERE Username = @Username";
+            var checkParams = new SqlParameter[]
             {
-                if (context.Users.Any(u => u.Username == username))
-                {
-                    return false; // Username already exists
-                }
-                var newUser = new UserAccount
-                {
-                    Username = username,
-                    EncryptedPassword = password,
-                    AccountCreatedDate = DateTime.Now
-                };
-                context.Users.Add(newUser);
-                context.SaveChanges();
-                return true; // Account created successfully
+                new SqlParameter("@Username", username)
+            };
+
+            int userCount = DatabaseHelper.ExecuteScalar<int>(checkQuery, checkParams);
+            if (userCount > 0)
+            {
+                return false; // Username already exists
             }
+
+            string insertQuery = "INSERT INTO Users (Username, EncryptedPassword) VALUES (@Username, @EncryptedPassword)";
+
+
+            var insertParams = new SqlParameter[]
+            {
+                new SqlParameter("@Username", username),
+                new SqlParameter("@EncryptedPassword", BCrypt.Net.BCrypt.HashPassword(password)),
+            };
+            int rowsAffected = DatabaseHelper.ExecuteNonQuery(insertQuery, insertParams);
+            return rowsAffected > 0; // Return true if the account was created successfully
 
         }
     }

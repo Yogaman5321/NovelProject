@@ -87,6 +87,24 @@
             uxRadio3.Text = "Tag";
             uxRadio3.UseVisualStyleBackColor = true;
             // 
+            // FilterComboBox
+            // 
+            FilterComboBox.FormattingEnabled = true;
+            FilterComboBox.Items.AddRange(new object[] { "Most Read ", "Newest Releases", "Random Display ", "Highest Rating", "Recommended For You" });
+            FilterComboBox.Location = new System.Drawing.Point(22, 173);
+            FilterComboBox.Name = "FilterComboBox";
+            FilterComboBox.Size = new System.Drawing.Size(151, 28);
+            FilterComboBox.TabIndex = 4;
+            // 
+            // UXFilterLabel
+            // 
+            UXFilterLabel.AutoSize = true;
+            UXFilterLabel.Location = new System.Drawing.Point(46, 146);
+            UXFilterLabel.Name = "UXFilterLabel";
+            UXFilterLabel.Size = new System.Drawing.Size(98, 20);
+            UXFilterLabel.TabIndex = 5;
+            UXFilterLabel.Text = "Filter Options";
+            // 
             // uxListView
             // 
             uxListView.Location = new System.Drawing.Point(17, 72);

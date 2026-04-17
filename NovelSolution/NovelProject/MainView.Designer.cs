@@ -43,6 +43,7 @@
             // 
             // toolStrip1
             // 
+            toolStrip1.BackColor = System.Drawing.SystemColors.ActiveBorder;
             toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { homePageButton, browseNovelsButton, authorDashboardButton, userProfileButton, usernameLabel, logOutButton, logInButton });
             toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -125,7 +126,7 @@
             logInButton.Size = new System.Drawing.Size(52, 23);
             logInButton.Text = "Log In";
             // 
-            // uxMainPanel
+            // authorDashboardButton
             // 
             uxMainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             uxMainPanel.Location = new System.Drawing.Point(0, 26);
@@ -137,7 +138,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(906, 450);
+            ClientSize = new System.Drawing.Size(1036, 600);
             Controls.Add(uxMainPanel);
             Controls.Add(toolStrip1);
             Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);

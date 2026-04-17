@@ -9,7 +9,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Microsoft.Data.SqlClient;
+public enum BrowserState
+{
+    Default,
+    Popular,
+    New, 
+    Random,
+    HigestRating,
+    TagChanged, 
+    Recommended
+    
+}
 namespace NovelProject.BrowserPage
 {
     public partial class BrowserView : UserControl, INavigatable
@@ -18,6 +29,7 @@ namespace NovelProject.BrowserPage
 
         public BrowserView()
         {
+            handler = stateHandler;
             InitializeComponent();
             _controller = new BrowserController();
             SetupListView();
@@ -62,6 +74,28 @@ namespace NovelProject.BrowserPage
 
             List<Novel> results = _controller.Search(search, type);
             DisplayResults(results);
+        }
+
+        private void FilterComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (FilterComboBox.SelectedItem.ToString())
+            {
+                case "Most Read":
+                    handler(BrowserState.Popular);
+                    break;
+                case "Newest Releases":
+                    handler(BrowserState.New);
+                    break;
+                case "Random Display":
+                    handler(BrowserState.Random);
+                    break;
+                case "Highest Rating":
+                    handler(BrowserState.HigestRating);
+                    break;
+                case "Recommended For You":
+                    handler(BrowserState.Recommended);
+                    break;
+            }
         }
 
         private void ListViewDoubleClick(object sender, EventArgs e)

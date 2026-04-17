@@ -1,10 +1,4 @@
-﻿using NovelProject.AuthorPage;
-using NovelProject.BrowserPage;
-using NovelProject.ChapterPage;
-using NovelProject.HomePage;
-using NovelProject.Navigation;
-using NovelProject.UserPage;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,6 +14,7 @@ namespace NovelProject
     {
         private string _username;
         private bool _accountMode; // true for account, false for guest
+        public bool ReopenLogin = false;
 
         public Action<UserControl> Navigate;
         private ChapterController _chapterController;
@@ -56,6 +51,20 @@ namespace NovelProject
             {
                 navigatableView.SetNavigator(LoadView);
             }
+
+            logOutButton.Click += logInOutButton_Click;
+            logInButton.Click += logInOutButton_Click;
+        }
+
+        private void logInOutButton_Click(object sender, EventArgs e)
+        {
+            ReopenLogin = true;
+            this.Close();
+        }
+
+        public void LoadUserControl(UserControl userControl)
+        {
+
         }
 
         private void homePageButton_Click(object sender, EventArgs e)
