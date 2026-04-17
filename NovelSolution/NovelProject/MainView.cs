@@ -1,4 +1,9 @@
-﻿using System;
+﻿using NovelProject.AuthorPage;
+using NovelProject.BrowserPage;
+using NovelProject.HomePage;
+using NovelProject.Navigation;
+using NovelProject.UserPage;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,7 +22,6 @@ namespace NovelProject
         public bool ReopenLogin = false;
 
         public Action<UserControl> Navigate;
-        private ChapterController _chapterController;
 
         public MainView(string username, bool accountMode)
         {
@@ -38,7 +42,7 @@ namespace NovelProject
             logOutButton.Visible = _accountMode;
             logOutButton.Enabled = _accountMode;
 
-            LoadView(new HomeView());
+            LoadView(new HomeView(default));
         }
 
         private void LoadView(UserControl view)
@@ -69,7 +73,7 @@ namespace NovelProject
 
         private void homePageButton_Click(object sender, EventArgs e)
         {
-            LoadView(new HomeView());
+            LoadView(new HomeView(default));
         }
 
         private void browseNovelsButton_Click(object sender, EventArgs e)
