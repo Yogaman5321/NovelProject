@@ -10,102 +10,123 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
-public enum BrowserState
-{
-    Default,
-    Popular,
-    New, 
-    Random,
-    HigestRating,
-    TagChanged, 
-    Recommended
-    
-}
+using Microsoft.IdentityModel.Tokens;
+
 namespace NovelProject.BrowserPage
 {
     public partial class BrowserView : UserControl, INavigatable
     {
-        private BrowserController _controller;
+        public BrowserHandler handler;
 
         public BrowserView()
         {
             InitializeComponent();
-            _controller = new BrowserController();
             SetupListView();
+            uxRadio1.Checked = true;
 
-            uxListView.DoubleClick += ListViewDoubleClick;
+            browserListView.DoubleClick += ListViewDoubleClick;            
+            uxSearchButton.Click += SearchButtonClick;
+
+            GetTagBox();
+            GetOtherFiltersBox();
+            this.Load += GetAllNovels;
+
         }
+
+        public void DisplayState(BrowserState s, List<Novel> novels)
+        {
+            switch (s)
+            {
+                case BrowserState.GotNovels:
+                    DisplayResults(novels);
+                    break;
+                case BrowserState.GotError:
+                    break;
+                default:
+                    break;
+            }
+        }       
+
+
+
         private void SetupListView()
         {
-            uxListView.View = View.Details;
-            uxListView.FullRowSelect = true;
+            browserListView.View = View.Details;
+            browserListView.FullRowSelect = true;
 
-            uxListView.Columns.Add("Title", 150);
-            uxListView.Columns.Add("Author", 100);
-        }
-
-        private string GetSelectedSearchType()
-        {
-            if (uxRadio1.Checked) return "Title";
-            if (uxRadio2.Checked) return "Author";
-            if (uxRadio3.Checked) return "Tag";
-
-            return "Title"; // default
+            browserListView.Columns.Add("Title", 150);
+            browserListView.Columns.Add("Author", 100);
         }
 
         private void DisplayResults(List<Novel> novels)
         {
-            uxListView.Items.Clear();
+            browserListView.Items.Clear();
 
             foreach (var novel in novels)
             {
                 var item = new ListViewItem(novel.NovelName);
                 item.SubItems.Add(novel.AuthorName);
 
-                uxListView.Items.Add(item);
+                browserListView.Items.Add(item);
             }
         }
 
         private void SearchButtonClick(object sender, EventArgs e)
         {
-            string search = uxSerachBar.Text;
-            string type = GetSelectedSearchType();
+            string search = BuildSearchQuery();
 
-            List<Novel> results = _controller.Search(search, type);
-            DisplayResults(results);
+            handler(BrowserState.GetFilteredNovels, search);
         }
 
-        //private void FilterComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    switch (FilterComboBox.SelectedItem.ToString())
-        //    {
-        //        case "Most Read":
-        //            handler(BrowserState.Popular);
-        //            break;
-        //        case "Newest Releases":
-        //            handler(BrowserState.New);
-        //            break;
-        //        case "Random Display":
-        //            handler(BrowserState.Random);
-        //            break;
-        //        case "Highest Rating":
-        //            handler(BrowserState.HigestRating);
-        //            break;
-        //        case "Recommended For You":
-        //            handler(BrowserState.Recommended);
-        //            break;
-        //    }
-        //}
+
+        
+        private string BuildSearchQuery()
+        {
+            // Will get back to this later, it's probably going to be complicated.
+            return "";
+        }
+
+        private void GetAllNovels(object sender, EventArgs e)
+        {
+            string query = "SELECT * FROM Novels";
+            handler(BrowserState.GetAllNovels, query);
+        }
+
+        private void GetTagBox()
+        {
+            tagBox.Items.Clear();
+            tagBox.Items.Add("No Filter");
+            tagBox.SelectedIndex = 0;
+            using(var reader = DatabaseHelper.ExecuteReader("SELECT TagName FROM Tags"))
+            {
+                while (reader.Read())
+                {
+                    tagBox.Items.Add(reader.GetString(0));
+                }
+            }
+        }
+
+        private void GetOtherFiltersBox()
+        {
+            otherFilterBox.Items.Clear();
+            otherFilterBox.Items.Add("No Filter");
+            otherFilterBox.Items.Add("Best Rated");
+            otherFilterBox.Items.Add("Popular");
+            otherFilterBox.Items.Add("Newest");
+            otherFilterBox.Items.Add("Recommended");
+            otherFilterBox.Items.Add("Random");
+            otherFilterBox.SelectedIndex = 0;
+        }
 
         private void ListViewDoubleClick(object sender, EventArgs e)
         {
-            if (uxListView.SelectedItems.Count == 0)
+            if (browserListView.SelectedItems.Count == 0)
             {
                 return;
             }
 
-            string title = uxListView.SelectedItems[0].Text;
-            string author = uxListView.SelectedItems[0].SubItems[1].Text;
+            string title = browserListView.SelectedItems[0].Text;
+            string author = browserListView.SelectedItems[0].SubItems[1].Text;
 
             _navigate?.Invoke(new NovelPage.NovelView(title));
         }
@@ -114,6 +135,12 @@ namespace NovelProject.BrowserPage
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;
+        }
+
+
+        public void SetHandler(BrowserHandler handler)
+        {
+            this.handler = handler;
         }
     }
 }

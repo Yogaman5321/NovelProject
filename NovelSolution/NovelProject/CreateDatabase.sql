@@ -87,7 +87,8 @@ IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Tags')
 BEGIN
     CREATE TABLE Tags (
         TagId INT PRIMARY KEY IDENTITY(1,1),
-        TagName NVARCHAR(50) NOT NULL UNIQUE
+        TagName NVARCHAR(50) NOT NULL UNIQUE,
+        TagDescription NVARCHAR(200) NOT NULL
     );
 END
 GO

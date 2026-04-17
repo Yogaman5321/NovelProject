@@ -32,34 +32,40 @@
             uxSerachBar = new System.Windows.Forms.TextBox();
             uxRadio1 = new System.Windows.Forms.RadioButton();
             uxRadio2 = new System.Windows.Forms.RadioButton();
-            uxRadio3 = new System.Windows.Forms.RadioButton();
-            uxListView = new System.Windows.Forms.ListView();
+            browserListView = new System.Windows.Forms.ListView();
             uxSearchButton = new System.Windows.Forms.Button();
+            otherFilterBox = new System.Windows.Forms.ComboBox();
+            label1 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            tagBox = new System.Windows.Forms.ComboBox();
+            label3 = new System.Windows.Forms.Label();
             SuspendLayout();
             // 
             // uxSearchLabel
             // 
             uxSearchLabel.AutoSize = true;
             uxSearchLabel.Font = new System.Drawing.Font("Segoe UI", 12F);
-            uxSearchLabel.Location = new System.Drawing.Point(17, 19);
+            uxSearchLabel.Location = new System.Drawing.Point(19, 25);
             uxSearchLabel.Name = "uxSearchLabel";
-            uxSearchLabel.Size = new System.Drawing.Size(57, 21);
+            uxSearchLabel.Size = new System.Drawing.Size(100, 28);
             uxSearchLabel.TabIndex = 0;
-            uxSearchLabel.Text = "Search";
+            uxSearchLabel.Text = "Search By:";
             // 
             // uxSerachBar
             // 
-            uxSerachBar.Location = new System.Drawing.Point(17, 43);
+            uxSerachBar.Location = new System.Drawing.Point(19, 57);
+            uxSerachBar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             uxSerachBar.Name = "uxSerachBar";
-            uxSerachBar.Size = new System.Drawing.Size(484, 23);
+            uxSerachBar.Size = new System.Drawing.Size(507, 27);
             uxSerachBar.TabIndex = 1;
             // 
             // uxRadio1
             // 
             uxRadio1.AutoSize = true;
-            uxRadio1.Location = new System.Drawing.Point(507, 44);
+            uxRadio1.Location = new System.Drawing.Point(720, 64);
+            uxRadio1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             uxRadio1.Name = "uxRadio1";
-            uxRadio1.Size = new System.Drawing.Size(48, 19);
+            uxRadio1.Size = new System.Drawing.Size(59, 24);
             uxRadio1.TabIndex = 2;
             uxRadio1.TabStop = true;
             uxRadio1.Text = "Title";
@@ -68,56 +74,100 @@
             // uxRadio2
             // 
             uxRadio2.AutoSize = true;
-            uxRadio2.Location = new System.Drawing.Point(561, 44);
+            uxRadio2.Location = new System.Drawing.Point(785, 64);
+            uxRadio2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             uxRadio2.Name = "uxRadio2";
-            uxRadio2.Size = new System.Drawing.Size(62, 19);
+            uxRadio2.Size = new System.Drawing.Size(75, 24);
             uxRadio2.TabIndex = 3;
             uxRadio2.TabStop = true;
             uxRadio2.Text = "Author";
             uxRadio2.UseVisualStyleBackColor = true;
             // 
-            // uxRadio3
+            // browserListView
             // 
-            uxRadio3.AutoSize = true;
-            uxRadio3.Location = new System.Drawing.Point(629, 44);
-            uxRadio3.Name = "uxRadio3";
-            uxRadio3.Size = new System.Drawing.Size(44, 19);
-            uxRadio3.TabIndex = 4;
-            uxRadio3.TabStop = true;
-            uxRadio3.Text = "Tag";
-            uxRadio3.UseVisualStyleBackColor = true;
-            // 
-            // uxListView
-            // 
-            uxListView.Location = new System.Drawing.Point(17, 72);
-            uxListView.Name = "uxListView";
-            uxListView.Size = new System.Drawing.Size(754, 320);
-            uxListView.TabIndex = 5;
-            uxListView.UseCompatibleStateImageBehavior = false;
+            browserListView.Font = new System.Drawing.Font("Segoe UI Semibold", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            browserListView.Location = new System.Drawing.Point(19, 96);
+            browserListView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            browserListView.Name = "browserListView";
+            browserListView.Size = new System.Drawing.Size(630, 425);
+            browserListView.TabIndex = 5;
+            browserListView.UseCompatibleStateImageBehavior = false;
             // 
             // uxSearchButton
             // 
-            uxSearchButton.Location = new System.Drawing.Point(679, 42);
+            uxSearchButton.Location = new System.Drawing.Point(544, 57);
+            uxSearchButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             uxSearchButton.Name = "uxSearchButton";
-            uxSearchButton.Size = new System.Drawing.Size(92, 23);
+            uxSearchButton.Size = new System.Drawing.Size(105, 31);
             uxSearchButton.TabIndex = 6;
             uxSearchButton.Text = "Search";
             uxSearchButton.UseVisualStyleBackColor = true;
             uxSearchButton.Click += SearchButtonClick;
             // 
+            // otherFilterBox
+            // 
+            otherFilterBox.FormattingEnabled = true;
+            otherFilterBox.Location = new System.Drawing.Point(731, 345);
+            otherFilterBox.Name = "otherFilterBox";
+            otherFilterBox.Size = new System.Drawing.Size(151, 28);
+            otherFilterBox.TabIndex = 7;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new System.Drawing.Font("Segoe UI", 12F);
+            label1.Location = new System.Drawing.Point(655, 345);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(66, 28);
+            label1.TabIndex = 8;
+            label1.Text = "Other:";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new System.Drawing.Font("Segoe UI", 12F);
+            label2.Location = new System.Drawing.Point(655, 138);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(68, 28);
+            label2.TabIndex = 10;
+            label2.Text = "Genre:";
+            // 
+            // tagBox
+            // 
+            tagBox.FormattingEnabled = true;
+            tagBox.Location = new System.Drawing.Point(731, 138);
+            tagBox.Name = "tagBox";
+            tagBox.Size = new System.Drawing.Size(151, 28);
+            tagBox.TabIndex = 9;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new System.Drawing.Font("Segoe UI", 12F);
+            label3.Location = new System.Drawing.Point(713, 25);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(66, 28);
+            label3.TabIndex = 11;
+            label3.Text = "Using:";
+            // 
             // BrowserView
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(tagBox);
+            Controls.Add(label1);
+            Controls.Add(otherFilterBox);
             Controls.Add(uxSearchButton);
-            Controls.Add(uxListView);
-            Controls.Add(uxRadio3);
+            Controls.Add(browserListView);
             Controls.Add(uxRadio2);
             Controls.Add(uxRadio1);
             Controls.Add(uxSerachBar);
             Controls.Add(uxSearchLabel);
+            Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             Name = "BrowserView";
-            Size = new System.Drawing.Size(800, 450);
+            Size = new System.Drawing.Size(914, 600);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -128,8 +178,12 @@
         private System.Windows.Forms.TextBox uxSerachBar;
         private System.Windows.Forms.RadioButton uxRadio1;
         private System.Windows.Forms.RadioButton uxRadio2;
-        private System.Windows.Forms.RadioButton uxRadio3;
-        private System.Windows.Forms.ListView uxListView;
+        private System.Windows.Forms.ListView browserListView;
         private System.Windows.Forms.Button uxSearchButton;
+        private System.Windows.Forms.ComboBox otherFilterBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox tagBox;
+        private System.Windows.Forms.Label label3;
     }
 }

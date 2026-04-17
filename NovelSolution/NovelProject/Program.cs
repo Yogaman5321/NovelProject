@@ -1,5 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using NovelProject.LoginPage;
+using NovelProject.BrowserPage;
+using NovelProject.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,17 +10,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace NovelProject
 {
 
  
-    public delegate void BrowserStateHandler(BrowserState state);
+    
     public delegate void HomePageStateHandler(HomePageState state);
 
     public delegate void ChapterDisplayHandler(string text);
 
     public delegate void LoginHandler(LoginState s, string username, string password);
     public delegate void LoginObserver(LoginState s);
+
+    public delegate void BrowserHandler(BrowserState s, string query);
+    public delegate void BrowserObserver(BrowserState s, List<Novel> novels);
 
 
     internal static class Program

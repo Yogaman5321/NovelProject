@@ -66,30 +66,37 @@ namespace NovelProject
             this.Close();
         }
 
-        public void LoadUserControl(UserControl userControl)
-        {
-
-        }
-
         private void homePageButton_Click(object sender, EventArgs e)
         {
+            //var view = new HomeView();
+            //var controller = new HomeController(view.DisplayState);
+            //view.SetHandler(controller.HandleEvents);
             LoadView(new HomeView(default));
         }
 
         private void browseNovelsButton_Click(object sender, EventArgs e)
         {
             var view = new BrowserView();
+            var controller = new BrowserController(view.DisplayState);
+            view.SetHandler(controller.HandleEvents);
 
             LoadView(view);
         }
 
         private void authorDashboardButton_Click(object sender, EventArgs e)
         {
+            //var view = new AuthorView();
+            //var controller = new AuthorController(view.DisplayState);
+            //view.SetHandler(controller.HandleEvents);
+
             LoadView(new AuthorView(""));
         }
 
         private void userProfileButton_Click(object sender, EventArgs e)
         {
+            //var view = new UserView();
+            //var controller = new UserController(view.DisplayState);
+            //view.SetHandler(controller.HandleEvents);
             LoadView(new UserView());
         }
 
