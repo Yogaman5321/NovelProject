@@ -29,7 +29,7 @@ namespace NovelProject.BrowserPage
 
             GetTagBox();
             GetOtherFiltersBox();
-            this.Load += GetAllNovels;
+            this.Load += GetInitialNovels;
 
         }
 
@@ -41,7 +41,8 @@ namespace NovelProject.BrowserPage
                     DisplayResults(novels);
                     break;
                 case BrowserState.GotError:
-                    break;
+                    // Replace this later
+                    throw new Exception("Could not get novels.");
                 default:
                     break;
             }
@@ -56,6 +57,8 @@ namespace NovelProject.BrowserPage
 
             browserListView.Columns.Add("Title", 150);
             browserListView.Columns.Add("Author", 100);
+            browserListView.Columns.Add("Rating", 50);
+            browserListView.Columns.Add("Date Added", 100);
         }
 
         private void DisplayResults(List<Novel> novels)
@@ -66,6 +69,11 @@ namespace NovelProject.BrowserPage
             {
                 var item = new ListViewItem(novel.NovelName);
                 item.SubItems.Add(novel.AuthorName);
+                // Get average rating
+                item.SubItems.Add(DatabaseHelper.ExecuteScalar<double>(
+                    "SELECT ISNULL(AVG(CAST(Rating AS FLOAT)), 0) FROM Reviews WHERE NovelId = @novelId", 
+                    new SqlParameter("@novelId", novel.NovelId)).ToString("0.0"));
+                item.SubItems.Add(novel.DatePosted.ToString("yyyy-MM-dd"));
 
                 browserListView.Items.Add(item);
             }
@@ -73,23 +81,88 @@ namespace NovelProject.BrowserPage
 
         private void SearchButtonClick(object sender, EventArgs e)
         {
-            string search = BuildSearchQuery();
+            string query = BuildSearchQuery(out var parameters);
 
-            handler(BrowserState.GetFilteredNovels, search);
+            handler(BrowserState.GetFilteredNovels, query, parameters);
         }
 
 
         
-        private string BuildSearchQuery()
+        private string BuildSearchQuery(out List<SqlParameter> parameters)
         {
-            // Will get back to this later, it's probably going to be complicated.
-            return "";
+            var sb = new StringBuilder();
+            parameters = new List<SqlParameter>();
+
+            bool filterByTag = tagBox.SelectedIndex > 0; // 0 is "No Filter"
+            if (filterByTag)
+            {
+                sb.Append("SELECT n.* FROM Novels n ");
+                sb.Append("INNER JOIN NovelTags nt ON n.NovelId = nt.NovelId ");
+                sb.Append("INNER JOIN Tags t ON nt.TagId = t.TagId ");
+            }
+            else
+            {
+                sb.Append("SELECT * FROM Novels n ");
+            }
+
+            // Build WHERE clauses
+            List<string> whereClauses = new();
+
+            string searchText = uxSearchBar.Text.Trim();
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                if (uxRadio1.Checked) // Title
+                {
+                    whereClauses.Add("n.NovelName LIKE @searchText + '%'");
+                }
+                else if (uxRadio2.Checked) // Author
+                {
+                    whereClauses.Add("n.AuthorName LIKE @searchText + '%'");
+                }
+                parameters.Add(new SqlParameter("@searchText", searchText));
+            }
+
+            if (filterByTag)
+            {
+                whereClauses.Add("t.TagName = @tagName");
+                parameters.Add(new SqlParameter("@tagName", tagBox.SelectedItem.ToString()));
+            }
+
+            if (whereClauses.Count > 0)
+            {
+                sb.Append("WHERE ");
+                sb.Append(string.Join(" AND ", whereClauses));
+            }
+
+            switch(otherFilterBox.SelectedItem.ToString())
+            {
+                case "Best Rated":
+                    sb.Append(" ORDER BY (SELECT AVG(CAST(Rating AS FLOAT)) FROM Reviews r WHERE r.NovelId = n.NovelId) DESC");
+                    break;
+                case "Popular":
+                    sb.Append(" ORDER BY (SELECT COUNT(*) FROM Reviews r WHERE r.NovelId = n.NovelId) DESC");
+                    break;
+                case "Newest":
+                    sb.Append(" ORDER BY n.DatePosted DESC");
+                    break;
+                case "Recommended":
+                    // I'll go back and implement this once we have the ReadingHistory implemented.
+                    throw new NotImplementedException("Recommended filter not implemented yet.");
+                case "Random":
+                    sb.Append(" ORDER BY NEWID()");
+                    break;
+                default:
+                    break;
+            }
+
+
+            return sb.ToString();
         }
 
-        private void GetAllNovels(object sender, EventArgs e)
+        private void GetInitialNovels(object sender, EventArgs e)
         {
             string query = "SELECT * FROM Novels";
-            handler(BrowserState.GetAllNovels, query);
+            handler(BrowserState.GetAllNovels, query, null);
         }
 
         private void GetTagBox()

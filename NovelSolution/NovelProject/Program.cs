@@ -23,7 +23,7 @@ namespace NovelProject
     public delegate void LoginHandler(LoginState s, string username, string password);
     public delegate void LoginObserver(LoginState s);
 
-    public delegate void BrowserHandler(BrowserState s, string query);
+    public delegate void BrowserHandler(BrowserState s, string query, List<SqlParameter> parameters);
     public delegate void BrowserObserver(BrowserState s, List<Novel> novels);
 
 

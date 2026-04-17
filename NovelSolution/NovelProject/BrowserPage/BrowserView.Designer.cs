@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             uxSearchLabel = new System.Windows.Forms.Label();
-            uxSerachBar = new System.Windows.Forms.TextBox();
+            uxSearchBar = new System.Windows.Forms.TextBox();
             uxRadio1 = new System.Windows.Forms.RadioButton();
             uxRadio2 = new System.Windows.Forms.RadioButton();
             browserListView = new System.Windows.Forms.ListView();
@@ -51,13 +51,13 @@
             uxSearchLabel.TabIndex = 0;
             uxSearchLabel.Text = "Search By:";
             // 
-            // uxSerachBar
+            // uxSearchBar
             // 
-            uxSerachBar.Location = new System.Drawing.Point(19, 57);
-            uxSerachBar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            uxSerachBar.Name = "uxSerachBar";
-            uxSerachBar.Size = new System.Drawing.Size(507, 27);
-            uxSerachBar.TabIndex = 1;
+            uxSearchBar.Location = new System.Drawing.Point(19, 57);
+            uxSearchBar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            uxSearchBar.Name = "uxSearchBar";
+            uxSearchBar.Size = new System.Drawing.Size(507, 27);
+            uxSearchBar.TabIndex = 1;
             // 
             // uxRadio1
             // 
@@ -163,7 +163,7 @@
             Controls.Add(browserListView);
             Controls.Add(uxRadio2);
             Controls.Add(uxRadio1);
-            Controls.Add(uxSerachBar);
+            Controls.Add(uxSearchBar);
             Controls.Add(uxSearchLabel);
             Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             Name = "BrowserView";
@@ -175,7 +175,7 @@
         #endregion
 
         private System.Windows.Forms.Label uxSearchLabel;
-        private System.Windows.Forms.TextBox uxSerachBar;
+        private System.Windows.Forms.TextBox uxSearchBar;
         private System.Windows.Forms.RadioButton uxRadio1;
         private System.Windows.Forms.RadioButton uxRadio2;
         private System.Windows.Forms.ListView browserListView;

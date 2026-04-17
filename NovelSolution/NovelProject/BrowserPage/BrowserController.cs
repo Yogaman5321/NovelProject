@@ -21,7 +21,7 @@ namespace NovelProject.BrowserPage
             this.observer = observer;
         }
 
-        public void HandleEvents(BrowserState state, string fullQuery)
+        public void HandleEvents(BrowserState state, string fullQuery, List<SqlParameter> parameters)
         {
             switch (state)
             {
@@ -37,6 +37,15 @@ namespace NovelProject.BrowserPage
                     }
                     break;
                 case BrowserState.GetFilteredNovels:
+                    var filteredNovels = GetFilteredNovels(fullQuery, parameters.ToArray());
+                    if (filteredNovels != null)
+                    {
+                        observer(BrowserState.GotNovels, filteredNovels);
+                    }
+                    else
+                    {
+                        observer(BrowserState.GotError, null);
+                    }
                     break;
                 default:
                     break;
@@ -50,6 +59,35 @@ namespace NovelProject.BrowserPage
             {
                 var novels = new List<Novel>();
                 using (var reader = DatabaseHelper.ExecuteReader(fullQuery))
+                {
+                    while (reader.Read())
+                    {
+                        var novel = new Novel
+                        {
+                            NovelId = reader.GetInt32(0),
+                            NovelName = reader.GetString(1),
+                            AuthorName = reader.GetString(2),
+                            Description = reader.GetString(3),
+                            DatePosted = reader.GetDateTime(4),
+                            UploadedByUserId = reader.GetInt32(5)
+                        };
+                        novels.Add(novel);
+                    }
+                }
+                return novels;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public List<Novel> GetFilteredNovels(string fullQuery, SqlParameter[] parameters)
+        {
+            try
+            {
+                var novels = new List<Novel>();
+                using (var reader = DatabaseHelper.ExecuteReader(fullQuery, parameters))
                 {
                     while (reader.Read())
                     {
