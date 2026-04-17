@@ -12,7 +12,7 @@ namespace NovelProject.AuthorPage
 {
     public partial class AuthorView : UserControl
     {
-        public AuthorView()
+        public AuthorView(string Author)
         {
             InitializeComponent();
         }

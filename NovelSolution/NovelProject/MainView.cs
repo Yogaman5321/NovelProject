@@ -1,4 +1,10 @@
-﻿using System;
+﻿using NovelProject.AuthorPage;
+using NovelProject.BrowserPage;
+using NovelProject.ChapterPage;
+using NovelProject.HomePage;
+using NovelProject.Navigation;
+using NovelProject.UserPage;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +20,9 @@ namespace NovelProject
     {
         private string _username;
         private bool _accountMode; // true for account, false for guest
+
+        public Action<UserControl> Navigate;
+        private ChapterController _chapterController;
 
         public MainView(string username, bool accountMode)
         {
@@ -33,6 +42,43 @@ namespace NovelProject
 
             logOutButton.Visible = _accountMode;
             logOutButton.Enabled = _accountMode;
+
+            LoadView(new HomeView());
         }
+
+        private void LoadView(UserControl view)
+        {
+            uxMainPanel.Controls.Clear();
+            view.Dock = DockStyle.Fill;
+            uxMainPanel.Controls.Add(view);
+
+            if (view is INavigatable navigatableView)
+            {
+                navigatableView.SetNavigator(LoadView);
+            }
+        }
+
+        private void homePageButton_Click(object sender, EventArgs e)
+        {
+            LoadView(new HomeView());
+        }
+
+        private void browseNovelsButton_Click(object sender, EventArgs e)
+        {
+            var view = new BrowserView();
+
+            LoadView(view);
+        }
+
+        private void authorDashboardButton_Click(object sender, EventArgs e)
+        {
+            LoadView(new AuthorView(""));
+        }
+
+        private void userProfileButton_Click(object sender, EventArgs e)
+        {
+            LoadView(new UserView());
+        }
+
     }
 }

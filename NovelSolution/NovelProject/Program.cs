@@ -1,5 +1,7 @@
-﻿using NovelProject.LoginPage;
+﻿using Microsoft.Data.SqlClient;
+using NovelProject.LoginPage;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +11,11 @@ namespace NovelProject
 {
     public delegate void LoginHandler(LoginState s, string username, string password);
     public delegate void LoginObserver(LoginState s);
+
+    public delegate void ChapterDisplayHandler(string text);
+
+    public delegate void NovelInfoHandler(string title, string author, string description);
+    public delegate void NovelChapterHandler(ArrayList chapters);
 
     internal static class Program
     {
@@ -38,6 +45,7 @@ namespace NovelProject
 
             
             Application.Run(loginView);
+
         }
     }
 }
