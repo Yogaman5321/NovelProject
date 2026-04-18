@@ -101,27 +101,7 @@ namespace NovelProject
 
         private static void SeedChapters()
         {
-            string checkQuery = "SELECT COUNT(*) FROM Chapters";
-            int chapterCount = DatabaseHelper.ExecuteScalar<int>(checkQuery);
-
-            if (chapterCount > 0)
-            {
-                Debug.WriteLine("Database already seeded with chpaters. Skipping seeding.");
-                return;
-            }
-
-            string query = """
-                INSERT INTO Chapters (NovelID, ChapterNumber, ChapterName)
-                VALUES (7, '1', 'Whispers in the Fog');
-
-                INSERT INTO Chapters (NovelID, ChapterNumber, ChapterName)
-                VALUES (7, '2', 'Broken Compass');
-
-                INSERT INTO Chapters (NovelID, ChapterNumber, ChapterName)
-                VALUES (7, '3', 'Ashes of Dawn');
-                """;
-
-            DatabaseHelper.ExecuteNonQuery(query);
+            return;
         }
 
         private static void SeedTags()

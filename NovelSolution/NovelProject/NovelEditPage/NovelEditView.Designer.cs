@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            uxChapterList = new System.Windows.Forms.ListBox();
             uxEditChapterButton = new System.Windows.Forms.Button();
             uxDescriptionBox = new System.Windows.Forms.RichTextBox();
             label1 = new System.Windows.Forms.Label();
@@ -39,19 +38,15 @@
             uxTagTexbox = new System.Windows.Forms.TextBox();
             uxTitleTextBox = new System.Windows.Forms.TextBox();
             uxSaveExitButton = new System.Windows.Forms.Button();
+            uxTitleLabel = new System.Windows.Forms.Label();
+            uxChapterList = new System.Windows.Forms.ListView();
+            uxUpButton = new System.Windows.Forms.Button();
+            uxDownButton = new System.Windows.Forms.Button();
             SuspendLayout();
-            // 
-            // uxChapterList
-            // 
-            uxChapterList.FormattingEnabled = true;
-            uxChapterList.Location = new System.Drawing.Point(22, 79);
-            uxChapterList.Name = "uxChapterList";
-            uxChapterList.Size = new System.Drawing.Size(456, 319);
-            uxChapterList.TabIndex = 10;
             // 
             // uxEditChapterButton
             // 
-            uxEditChapterButton.Location = new System.Drawing.Point(290, 404);
+            uxEditChapterButton.Location = new System.Drawing.Point(289, 445);
             uxEditChapterButton.Name = "uxEditChapterButton";
             uxEditChapterButton.Size = new System.Drawing.Size(91, 23);
             uxEditChapterButton.TabIndex = 15;
@@ -61,7 +56,7 @@
             // 
             // uxDescriptionBox
             // 
-            uxDescriptionBox.Location = new System.Drawing.Point(497, 59);
+            uxDescriptionBox.Location = new System.Drawing.Point(605, 74);
             uxDescriptionBox.Name = "uxDescriptionBox";
             uxDescriptionBox.Size = new System.Drawing.Size(282, 199);
             uxDescriptionBox.TabIndex = 14;
@@ -70,7 +65,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(497, 41);
+            label1.Location = new System.Drawing.Point(605, 56);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(67, 15);
             label1.TabIndex = 16;
@@ -78,7 +73,7 @@
             // 
             // uxAddChapterButton
             // 
-            uxAddChapterButton.Location = new System.Drawing.Point(387, 404);
+            uxAddChapterButton.Location = new System.Drawing.Point(386, 445);
             uxAddChapterButton.Name = "uxAddChapterButton";
             uxAddChapterButton.Size = new System.Drawing.Size(91, 23);
             uxAddChapterButton.TabIndex = 17;
@@ -89,14 +84,14 @@
             // uxTagsBox
             // 
             uxTagsBox.FormattingEnabled = true;
-            uxTagsBox.Location = new System.Drawing.Point(497, 259);
+            uxTagsBox.Location = new System.Drawing.Point(605, 289);
             uxTagsBox.Name = "uxTagsBox";
             uxTagsBox.Size = new System.Drawing.Size(175, 139);
             uxTagsBox.TabIndex = 18;
             // 
             // uxAddTagButton
             // 
-            uxAddTagButton.Location = new System.Drawing.Point(678, 324);
+            uxAddTagButton.Location = new System.Drawing.Point(786, 354);
             uxAddTagButton.Name = "uxAddTagButton";
             uxAddTagButton.Size = new System.Drawing.Size(100, 23);
             uxAddTagButton.TabIndex = 19;
@@ -106,7 +101,7 @@
             // 
             // uxDeleteButton
             // 
-            uxDeleteButton.Location = new System.Drawing.Point(678, 375);
+            uxDeleteButton.Location = new System.Drawing.Point(786, 405);
             uxDeleteButton.Name = "uxDeleteButton";
             uxDeleteButton.Size = new System.Drawing.Size(30, 23);
             uxDeleteButton.TabIndex = 20;
@@ -116,7 +111,7 @@
             // 
             // uxTagTexbox
             // 
-            uxTagTexbox.Location = new System.Drawing.Point(678, 295);
+            uxTagTexbox.Location = new System.Drawing.Point(786, 325);
             uxTagTexbox.Name = "uxTagTexbox";
             uxTagTexbox.Size = new System.Drawing.Size(100, 23);
             uxTagTexbox.TabIndex = 21;
@@ -124,14 +119,14 @@
             // uxTitleTextBox
             // 
             uxTitleTextBox.Font = new System.Drawing.Font("Segoe UI", 18F);
-            uxTitleTextBox.Location = new System.Drawing.Point(22, 33);
+            uxTitleTextBox.Location = new System.Drawing.Point(21, 74);
             uxTitleTextBox.Name = "uxTitleTextBox";
             uxTitleTextBox.Size = new System.Drawing.Size(456, 39);
             uxTitleTextBox.TabIndex = 22;
             // 
             // uxSaveExitButton
             // 
-            uxSaveExitButton.Location = new System.Drawing.Point(691, 14);
+            uxSaveExitButton.Location = new System.Drawing.Point(799, 29);
             uxSaveExitButton.Name = "uxSaveExitButton";
             uxSaveExitButton.Size = new System.Drawing.Size(88, 23);
             uxSaveExitButton.TabIndex = 23;
@@ -139,10 +134,54 @@
             uxSaveExitButton.UseVisualStyleBackColor = true;
             uxSaveExitButton.Click += SaveExitButtonClick;
             // 
+            // uxTitleLabel
+            // 
+            uxTitleLabel.AutoSize = true;
+            uxTitleLabel.Font = new System.Drawing.Font("Segoe UI", 18F);
+            uxTitleLabel.Location = new System.Drawing.Point(21, 39);
+            uxTitleLabel.Name = "uxTitleLabel";
+            uxTitleLabel.Size = new System.Drawing.Size(60, 32);
+            uxTitleLabel.TabIndex = 25;
+            uxTitleLabel.Text = "Title";
+            // 
+            // uxChapterList
+            // 
+            uxChapterList.Location = new System.Drawing.Point(21, 119);
+            uxChapterList.Name = "uxChapterList";
+            uxChapterList.Size = new System.Drawing.Size(456, 320);
+            uxChapterList.TabIndex = 26;
+            uxChapterList.UseCompatibleStateImageBehavior = false;
+            // 
+            // uxUpButton
+            // 
+            uxUpButton.Font = new System.Drawing.Font("Segoe UI", 14F);
+            uxUpButton.Location = new System.Drawing.Point(483, 193);
+            uxUpButton.Name = "uxUpButton";
+            uxUpButton.Size = new System.Drawing.Size(36, 33);
+            uxUpButton.TabIndex = 27;
+            uxUpButton.Text = "⬆";
+            uxUpButton.UseVisualStyleBackColor = true;
+            uxUpButton.Click += UpButtonClick;
+            // 
+            // uxDownButton
+            // 
+            uxDownButton.Font = new System.Drawing.Font("Segoe UI", 14F);
+            uxDownButton.Location = new System.Drawing.Point(483, 232);
+            uxDownButton.Name = "uxDownButton";
+            uxDownButton.Size = new System.Drawing.Size(36, 33);
+            uxDownButton.TabIndex = 28;
+            uxDownButton.Text = "⬇";
+            uxDownButton.UseVisualStyleBackColor = true;
+            uxDownButton.Click += DownButtonClick;
+            // 
             // NovelEditView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(uxDownButton);
+            Controls.Add(uxUpButton);
+            Controls.Add(uxChapterList);
+            Controls.Add(uxTitleLabel);
             Controls.Add(uxSaveExitButton);
             Controls.Add(uxTitleTextBox);
             Controls.Add(uxTagTexbox);
@@ -153,15 +192,13 @@
             Controls.Add(label1);
             Controls.Add(uxEditChapterButton);
             Controls.Add(uxDescriptionBox);
-            Controls.Add(uxChapterList);
             Name = "NovelEditView";
-            Size = new System.Drawing.Size(800, 445);
+            Size = new System.Drawing.Size(994, 564);
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private System.Windows.Forms.ListBox uxChapterList;
         private System.Windows.Forms.Button uxEditChapterButton;
         private System.Windows.Forms.RichTextBox uxDescriptionBox;
         private System.Windows.Forms.Label label1;
@@ -172,5 +209,9 @@
         private System.Windows.Forms.TextBox uxTagTexbox;
         private System.Windows.Forms.TextBox uxTitleTextBox;
         private System.Windows.Forms.Button uxSaveExitButton;
+        private System.Windows.Forms.Label uxTitleLabel;
+        private System.Windows.Forms.ListView uxChapterList;
+        private System.Windows.Forms.Button uxUpButton;
+        private System.Windows.Forms.Button uxDownButton;
     }
 }

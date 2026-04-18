@@ -16,9 +16,12 @@ namespace NovelProject.ChapterPage
 
         public event ChapterDisplayHandler OnDisplayChapter;
 
+        private int _maxChapters;
         public ChapterController(string id)
         {
             NovelId = id;
+            string query = $"SELECT COUNT(*) FROM Chapters WHERE NovelId = {NovelId}";
+            _maxChapters = DatabaseHelper.ExecuteScalar<int>(query);
         }
 
         public void SetChapter(int chapter)
@@ -29,7 +32,7 @@ namespace NovelProject.ChapterPage
 
         public void ChangeChapter(int chapterOffest)
         {
-            if (CurrentChapter + chapterOffest > 0)
+            if (CurrentChapter + chapterOffest > 0 &&  CurrentChapter + chapterOffest <= _maxChapters + 1)
             {
                 CurrentChapter += chapterOffest;
                 UpdateText();
@@ -43,14 +46,17 @@ namespace NovelProject.ChapterPage
             try
             {
                 string basePath = AppContext.BaseDirectory;
-                string path = Path.Combine(basePath, "Novels", $"{NovelId}_{CurrentChapter}.txt");
+
+                string query = $"SELECT ChapterId FROM Chapters WHERE NovelId = {NovelId} AND ChapterNumber = {CurrentChapter}";
+                int chapterId = DatabaseHelper.ExecuteScalar<int>(query);
+
+                string path = Path.Combine(basePath, "Novels", $"{chapterId}.txt");
 
                 text = File.ReadAllText(path);
             } 
             catch (Exception ex)
             {
                 text = "No more chapters.";
-                CurrentChapter = Math.Max(0, CurrentChapter - 1);
             }
 
             OnDisplayChapter?.Invoke(text);

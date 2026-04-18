@@ -31,6 +31,7 @@ namespace NovelProject.NovelPage
             SELECT NovelId, ChapterId, ChapterNumber, ChapterName, DateAdded
             FROM Chapters
             WHERE NovelId = @NovelId
+            ORDER BY ChapterNumber
             ";
 
             List<SqlParameter> parameters = new List<SqlParameter>();
