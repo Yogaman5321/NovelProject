@@ -75,7 +75,11 @@ namespace NovelProject.BrowserPage
                     new SqlParameter("@novelId", novel.NovelId)).ToString("0.0"));
                 item.SubItems.Add(novel.DatePosted.ToString("yyyy-MM-dd"));
 
+                item.Tag = novel;
+
                 browserListView.Items.Add(item);
+
+                
             }
         }
 
@@ -193,15 +197,12 @@ namespace NovelProject.BrowserPage
 
         private void ListViewDoubleClick(object sender, EventArgs e)
         {
-            if (browserListView.SelectedItems.Count == 0)
+            if (browserListView.SelectedItems.Count > 0)
             {
-                return;
+                Novel selectedNovel = (Novel) browserListView.SelectedItems[0].Tag;
+
+                _navigate?.Invoke(new NovelPage.NovelView(selectedNovel));
             }
-
-            string title = browserListView.SelectedItems[0].Text;
-            string author = browserListView.SelectedItems[0].SubItems[1].Text;
-
-            _navigate?.Invoke(new NovelPage.NovelView(title));
         }
 
         private Action<UserControl> _navigate;

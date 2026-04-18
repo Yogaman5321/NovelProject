@@ -42,7 +42,7 @@ BEGIN
         ChapterId INT PRIMARY KEY IDENTITY(1,1),
         NovelId INT NOT NULL,
         ChapterNumber INT NOT NULL,
-        ChapterFilePath NVARCHAR(200) NOT NULL,
+        ChapterName NVARCHAR(200) NOT NULL,
         DateAdded DATETIME NOT NULL DEFAULT(SYSDATETIMEOFFSET()),
         FOREIGN KEY (NovelId) REFERENCES Novels(NovelId) ON DELETE CASCADE,
         CONSTRAINT UQ_Novel_Chapter UNIQUE (NovelId, ChapterNumber)

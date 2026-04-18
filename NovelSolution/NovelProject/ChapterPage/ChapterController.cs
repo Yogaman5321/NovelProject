@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,14 +11,14 @@ namespace NovelProject.ChapterPage
     public class ChapterController
     {
 
-        public String NovelTitle { get; }
+        public String NovelId { get; }
         public int CurrentChapter { get; private set; }
 
         public event ChapterDisplayHandler OnDisplayChapter;
 
-        public ChapterController(string name)
+        public ChapterController(string id)
         {
-            NovelTitle = name;
+            NovelId = id;
         }
 
         public void SetChapter(int chapter)
@@ -28,8 +29,11 @@ namespace NovelProject.ChapterPage
 
         public void ChangeChapter(int chapterOffest)
         {
-            CurrentChapter += chapterOffest;
-            UpdateText();
+            if (CurrentChapter + chapterOffest > 0)
+            {
+                CurrentChapter += chapterOffest;
+                UpdateText();
+            }
         }
 
         public void UpdateText() 
@@ -38,7 +42,9 @@ namespace NovelProject.ChapterPage
             string text = "";
             try
             {
-                string path = $"Novels/{NovelTitle}_{CurrentChapter}.txt";
+                string basePath = AppContext.BaseDirectory;
+                string path = Path.Combine(basePath, "Novels", $"{NovelId}_{CurrentChapter}.txt");
+
                 text = File.ReadAllText(path);
             } 
             catch (Exception ex)

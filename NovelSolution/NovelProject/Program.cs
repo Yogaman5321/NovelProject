@@ -26,6 +26,8 @@ namespace NovelProject
     public delegate void BrowserHandler(BrowserState s, string query, List<SqlParameter> parameters);
     public delegate void BrowserObserver(BrowserState s, List<Novel> novels);
 
+    public delegate void NovelHandler();
+    public delegate void NovelObserver(List<Novel> novels);
 
     internal static class Program
     {

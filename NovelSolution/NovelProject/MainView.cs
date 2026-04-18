@@ -27,6 +27,7 @@ namespace NovelProject
         {
             InitializeComponent();
             _username = username;
+            EnvironmentVars.username = username;
             _accountMode = accountMode;
             usernameLabel.Text = _username;
 
@@ -89,7 +90,7 @@ namespace NovelProject
             //var controller = new AuthorController(view.DisplayState);
             //view.SetHandler(controller.HandleEvents);
 
-            LoadView(new AuthorView(""));
+            LoadView(new AuthorView());
         }
 
         private void userProfileButton_Click(object sender, EventArgs e)

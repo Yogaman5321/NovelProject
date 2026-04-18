@@ -74,6 +74,7 @@ namespace NovelProject
                 ("The Lost Kingdom", "Arthur King", "A quest to reclaim a forgotten throne.", 1),
                 ("Haunted Manor", "Sarah Night", "A chilling story of a haunted house.", 1),
                 ("Galactic Frontier", "Rick Star", "Exploring the unknown edges of the galaxy.", 1),
+                ("Author Test Novel", "hunter", "This is to test the author view functionality.", 1),
             };
 
             foreach (var novel in novels)
@@ -173,6 +174,7 @@ namespace NovelProject
                 (5, 4), // Haunted Manor - Mystery
                 (6, 2), // Galactic Frontier - Science Fiction
                 (6, 6), // Galactic Frontier - Adventure
+                (7, 6), // Author Test Novel - Adventure
             };
 
             foreach (var novelTag in novelTags)

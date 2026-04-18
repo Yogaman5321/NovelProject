@@ -6,10 +6,23 @@
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.0" />
+    <None Remove="Novels\7_1.txt" />
+    <None Remove="Novels\7_2.txt" />
+    <None Remove="Novels\7_3.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Novels\" />
+    <Content Include="Novels\7_1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Novels\7_2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Novels\7_3.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.0" />
   </ItemGroup>
 </Project>

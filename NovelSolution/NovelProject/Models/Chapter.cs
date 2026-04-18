@@ -11,7 +11,7 @@ namespace NovelProject.Models
         public int ChapterId { get; set; }
         public int NovelId { get; set; }
         public int ChapterNumber { get; set; }
-        public string ChapterFilePath { get; set; }
+        public string ChapterName { get; set; }
         public DateTime DateAdded { get; set; }
 
     }

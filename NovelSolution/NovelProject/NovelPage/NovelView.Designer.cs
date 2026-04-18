@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             uxTitleLabel = new System.Windows.Forms.Label();
-            uxChapterList = new System.Windows.Forms.ListBox();
             uxReviewBar = new System.Windows.Forms.TrackBar();
             label2 = new System.Windows.Forms.Label();
             uxAuthorLink = new System.Windows.Forms.LinkLabel();
             uxDescriptionBox = new System.Windows.Forms.RichTextBox();
             uxReadButton = new System.Windows.Forms.Button();
+            uxChapterList = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)uxReviewBar).BeginInit();
             SuspendLayout();
             // 
@@ -47,14 +47,6 @@
             uxTitleLabel.Size = new System.Drawing.Size(189, 45);
             uxTitleLabel.TabIndex = 0;
             uxTitleLabel.Text = "uxTitleLabel";
-            // 
-            // uxChapterList
-            // 
-            uxChapterList.FormattingEnabled = true;
-            uxChapterList.Location = new System.Drawing.Point(20, 103);
-            uxChapterList.Name = "uxChapterList";
-            uxChapterList.Size = new System.Drawing.Size(456, 319);
-            uxChapterList.TabIndex = 1;
             // 
             // uxReviewBar
             // 
@@ -90,6 +82,7 @@
             // 
             uxDescriptionBox.Location = new System.Drawing.Point(495, 54);
             uxDescriptionBox.Name = "uxDescriptionBox";
+            uxDescriptionBox.ReadOnly = true;
             uxDescriptionBox.Size = new System.Drawing.Size(282, 218);
             uxDescriptionBox.TabIndex = 7;
             uxDescriptionBox.Text = "";
@@ -104,16 +97,24 @@
             uxReadButton.UseVisualStyleBackColor = true;
             uxReadButton.Click += ReadButtonClick;
             // 
+            // uxChapterList
+            // 
+            uxChapterList.Location = new System.Drawing.Point(20, 89);
+            uxChapterList.Name = "uxChapterList";
+            uxChapterList.Size = new System.Drawing.Size(456, 333);
+            uxChapterList.TabIndex = 9;
+            uxChapterList.UseCompatibleStateImageBehavior = false;
+            // 
             // NovelView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(uxChapterList);
             Controls.Add(uxReadButton);
             Controls.Add(uxDescriptionBox);
             Controls.Add(uxAuthorLink);
             Controls.Add(label2);
             Controls.Add(uxReviewBar);
-            Controls.Add(uxChapterList);
             Controls.Add(uxTitleLabel);
             Name = "NovelView";
             Size = new System.Drawing.Size(800, 450);
@@ -125,11 +126,11 @@
         #endregion
 
         private System.Windows.Forms.Label uxTitleLabel;
-        private System.Windows.Forms.ListBox uxChapterList;
         private System.Windows.Forms.TrackBar uxReviewBar;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.LinkLabel uxAuthorLink;
         private System.Windows.Forms.RichTextBox uxDescriptionBox;
         private System.Windows.Forms.Button uxReadButton;
+        private System.Windows.Forms.ListView uxChapterList;
     }
 }

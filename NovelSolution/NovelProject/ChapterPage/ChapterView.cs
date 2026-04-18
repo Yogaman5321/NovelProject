@@ -1,4 +1,7 @@
-﻿using System;
+﻿using NovelProject.Models;
+using NovelProject.Navigation;
+using NovelProject.NovelPage;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,16 +13,18 @@ using System.Windows.Forms;
 
 namespace NovelProject.ChapterPage
 {
-    public partial class ChapterView : UserControl
+    public partial class ChapterView : UserControl, INavigatable
     {
 
         private ChapterController _controller;
 
-        public ChapterView(string title, int chapter)
+        private Novel _novel;
+        public ChapterView(Novel novel, int chapter)
         {
             InitializeComponent();
-
-            _controller = new ChapterController(title);
+            
+            _novel = novel;
+            _controller = new ChapterController(novel.NovelId.ToString());
             SetController(_controller);
             _controller.SetChapter(chapter);
         }
@@ -48,9 +53,13 @@ namespace NovelProject.ChapterPage
 
         private void ExitButtonClick(object sender, EventArgs e)
         {
-
+            _navigate?.Invoke(new NovelView(_novel));
         }
 
-
+        private Action<UserControl> _navigate;
+        public void SetNavigator(Action<UserControl> navigate)
+        {
+            _navigate = navigate;
+        }
     }
 }

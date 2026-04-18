@@ -1,5 +1,6 @@
 ﻿using NovelProject.AuthorPage;
 using NovelProject.ChapterPage;
+using NovelProject.Models;
 using NovelProject.Navigation;
 using System;
 using System.Collections;
@@ -20,10 +21,14 @@ namespace NovelProject.NovelPage
 
         private NovelController _controller;
 
-        public NovelView(string novelTitle)
+        Novel _novel;
+        public NovelView(Novel novel)
         {
             InitializeComponent();
-            SetController(new NovelController(novelTitle));
+            _novel = novel;
+            SetController(new NovelController(novel));
+            SetupListView();
+            PopulateNovelInfo();
         }
 
         private Action<UserControl> _navigate;
@@ -36,48 +41,59 @@ namespace NovelProject.NovelPage
         {
             _controller = controller;
 
-            _controller.OnNovelInfoLoaded += PopulateNovelInfo;
             _controller.OnChaptersLoaded += PopulateChapters;
 
             _controller.SetUpPage();
         }
 
-        private string _novelTitle;
-        private string _author;
-        public void PopulateNovelInfo(string title, string author, string description)
+        public void PopulateNovelInfo()
         {
-            uxTitleLabel.Text = title;
-                _novelTitle = title;
-            uxAuthorLink.Text = author;
-                _author = author;
-            uxDescriptionBox.Text = description;
+            uxTitleLabel.Text = _novel.NovelName;
+            uxAuthorLink.Text = _novel.AuthorName;
+            uxDescriptionBox.Text = _novel.Description;
         }
 
-        private void PopulateChapters(List<string> chapterTitles)
+        private void SetupListView()
+        {
+            uxChapterList.View = View.Details;
+            uxChapterList.FullRowSelect = true;
+
+            uxChapterList.Columns.Add("Chapter Number", 50);
+            uxChapterList.Columns.Add("Chapter Title", 200);
+            uxChapterList.Columns.Add("Date Added", 100);
+        }
+
+        private void PopulateChapters(List<Chapter> chapters)
         {
             uxChapterList.Items.Clear();
 
-            foreach (var chapter in chapterTitles)
+            foreach (var chapter in chapters)
             {
-                uxChapterList.Items.Add(chapter);
+                var item = new ListViewItem(chapter.ChapterNumber.ToString());
+
+                item.SubItems.Add(chapter.ChapterName);
+                item.SubItems.Add(chapter.DateAdded.ToString());
+
+                item.Tag = chapter; // for later retrieval
+
+                uxChapterList.Items.Add(item);
             }
         }
 
 
         private void AuthorLinkLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            _navigate?.Invoke(new AuthorView(_author));
+            //_navigate?.Invoke();
         }
 
         private void ReadButtonClick(object sender, EventArgs e)
         {
 
-            if (uxChapterList.SelectedIndex < 0)
-                return;
-
-            int chapterNumber = uxChapterList.SelectedIndex;
-
-            _navigate?.Invoke(new ChapterView(_novelTitle, chapterNumber));
+            if (uxChapterList.SelectedItems.Count > 0)
+            {
+                Chapter selectedChapter = (Chapter)uxChapterList.SelectedItems[0].Tag;
+                _navigate?.Invoke(new ChapterView(_novel, selectedChapter.ChapterNumber));
+            }
         }
 
     }
