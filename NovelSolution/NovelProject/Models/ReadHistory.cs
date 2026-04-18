@@ -13,5 +13,8 @@ namespace NovelProject.Models
         public int ChapterId { get; set; }
 
         public DateTime LastReadDate { get; set; }
+
+
+
     }
 }
