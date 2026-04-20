@@ -11,19 +11,21 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
+using NovelProject.NovelPage;
 
 namespace NovelProject.BrowserPage
 {
     public partial class BrowserView : UserControl, INavigatable
     {
         public BrowserHandler handler;
+        private string _currentUsername;
 
-        public BrowserView()
+        public BrowserView(string username)
         {
             InitializeComponent();
             SetupListView();
             uxRadio1.Checked = true;
-
+            _currentUsername = username;
             browserListView.DoubleClick += ListViewDoubleClick;            
             uxSearchButton.Click += SearchButtonClick;
 
@@ -201,7 +203,7 @@ namespace NovelProject.BrowserPage
             {
                 Novel selectedNovel = (Novel) browserListView.SelectedItems[0].Tag;
 
-                _navigate?.Invoke(new NovelPage.NovelView(selectedNovel));
+                _navigate?.Invoke(new NovelView(selectedNovel));
             }
         }
 

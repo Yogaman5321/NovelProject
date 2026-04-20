@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NovelProject.ReviewControl;
 
 
 namespace NovelProject
@@ -28,6 +29,9 @@ namespace NovelProject
 
     public delegate void NovelHandler();
     public delegate void NovelObserver(List<Novel> novels);
+
+    public delegate void ReviewObserver(ReviewState s, Review r);
+    public delegate void ReviewHandler(ReviewState s, string content, decimal rating, Novel novel, int reviewId);
 
     internal static class Program
     {

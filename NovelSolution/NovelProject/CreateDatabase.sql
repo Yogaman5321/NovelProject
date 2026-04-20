@@ -58,7 +58,7 @@ BEGIN
         UserId INT NOT NULL,
         NovelId INT NOT NULL,
         ReviewContent NVARCHAR(500) NOT NULL,
-        Rating DECIMAL(3,2) NOT NULL,
+        Rating DECIMAL(4,2) NOT NULL,
         ReviewPostedDate DATETIME NOT NULL DEFAULT(SYSDATETIMEOFFSET()),
         FOREIGN KEY (UserId) REFERENCES Users(UserId),
         FOREIGN KEY (NovelId) REFERENCES Novels(NovelId) ON DELETE CASCADE,
