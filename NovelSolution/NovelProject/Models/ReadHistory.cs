@@ -8,8 +8,7 @@ namespace NovelProject.Models
 {
     public class ReadHistory
     {
-        public int UserId { get; set; }
-
+        public int UserId { get; set; }        
         public int ChapterId { get; set; }
 
         public DateTime LastReadDate { get; set; }

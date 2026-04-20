@@ -36,16 +36,17 @@
             // WelcomeLabel
             // 
             WelcomeLabel.AutoSize = true;
-            WelcomeLabel.Location = new System.Drawing.Point(52, 54);
+            WelcomeLabel.Font = new System.Drawing.Font("Segoe Script", 22.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, 0);
+            WelcomeLabel.Location = new System.Drawing.Point(19, 77);
             WelcomeLabel.Name = "WelcomeLabel";
-            WelcomeLabel.Size = new System.Drawing.Size(105, 20);
+            WelcomeLabel.Size = new System.Drawing.Size(306, 58);
             WelcomeLabel.TabIndex = 0;
             WelcomeLabel.Text = "Welcome, user";
             // 
             // UxLastReadTB
             // 
             UxLastReadTB.AutoSize = true;
-            UxLastReadTB.Location = new System.Drawing.Point(33, 181);
+            UxLastReadTB.Location = new System.Drawing.Point(19, 146);
             UxLastReadTB.Name = "UxLastReadTB";
             UxLastReadTB.Size = new System.Drawing.Size(211, 20);
             UxLastReadTB.TabIndex = 1;
@@ -54,7 +55,7 @@
             // UxLastReadListBox
             // 
             UxLastReadListBox.FormattingEnabled = true;
-            UxLastReadListBox.Location = new System.Drawing.Point(16, 213);
+            UxLastReadListBox.Location = new System.Drawing.Point(19, 204);
             UxLastReadListBox.Name = "UxLastReadListBox";
             UxLastReadListBox.Size = new System.Drawing.Size(1142, 504);
             UxLastReadListBox.TabIndex = 2;
