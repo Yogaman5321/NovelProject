@@ -13,30 +13,42 @@ namespace NovelProject.HomePage
 {
     public partial class HomeView : UserControl
     {
-        private HomePageStateHandler handler;
-        private List<ReadHistory> _readHistory;
+        
+        private List<HistoryInfo> _readHistory;
+        private HomeController _controller;
         public HomeView(HomePageStateHandler handler)
         {
             //environment vars class to get username and set welcome label to username
-            HomeController controller = new HomeController(_readHistory);
+            _controller = new HomeController(_readHistory, HomeViewHandler);
             InitializeComponent();
-            this.handler = controller.handler;
+
             HomeView_Load();
         }
-
-        private HomePageStateHandler handle;
 
         private void HomeView_Load()
         {
             WelcomeLabel.Text = $"Welcome, !";
+            
 
-            handler(HomePageState.Default);
-
+        }            
+        private void HomeViewHandler(HomePageState h)
+            {
+            switch (h)
+            { 
+                case HomePageState.LoadRecentNovels:
+                    _controller.handler(HomePageState.Default);
+                    LoadReadHistory();
+                    break;
+            }
         }
 
-        //private void LoadRecentNovels()
-        //{
-        //    handler(HomePageState.LoadRecentNovels);
-        //}
+        private void LoadReadHistory()
+        {
+            foreach(HistoryInfo info in _readHistory)
+            {
+                UxLastReadListBox.Items.Add($"{info.ChapterTitle} - Last read on {info.LastReadDate}");
+            }
+        }
+
     }
 }

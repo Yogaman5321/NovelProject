@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 public enum HomePageState
 {
-    Default, 
-    LoadRecentNovels, 
+    Default,
+    LoadRecentNovels,
+
+
+}
+public class HistoryInfo()
+{
+    public string ChapterTitle { get; set; }
+    public DateTime LastReadDate { get; set; }
+
 
 
 }
@@ -16,12 +24,14 @@ namespace NovelProject.HomePage
 {
     public class HomeController
     {
-        private List<ReadHistory> _readHistory;
-        
-        private string _username;
-        public HomeController(List<ReadHistory> readHistory)
+        private List<HistoryInfo> _readHistory;
+
+        private HomePageStateHandler _viewHandle;
+
+        public HomeController(List<HistoryInfo> readHistory, HomePageStateHandler handler)
         {
             _readHistory = readHistory;
+            _viewHandle = handler;
 
         }
 
@@ -35,32 +45,42 @@ namespace NovelProject.HomePage
                     break;
                 case HomePageState.LoadRecentNovels:
                     //load most recent novels from database using read history of the user and add them to the view, up to 10 novels loaded at once. Include last read time and novel title in the view.
+                    LoadReadHistory();
+                    _viewHandle(HomePageState.LoadRecentNovels);
+
                     break;
             }
-        }   
+        }
 
         public void LoadReadHistory()
         {
             //get user's ID from databsae, then get novelID and lastreaddate from read history from database using user ID, filter based on readdate to get the most recent novels and add them to the view, up to 10 novels loaded at once. Include last read time and novel title in the view.
             _readHistory.Clear();
-            
-            string sql = @"
-                SELECT TOP 10 rh.NovelID, rh.LastReadDate, n.Title, n.Author, 
-                FROM ReadHistory rh
-                INNER JOIN Novels n ON rh.NovelID = n.ID
-                WHERE rh.UserID = (SELECT ID FROM Users WHERE Username = @Username)
-                ORDER BY rh.LastReadDate DESC";
 
-            /*using (var reader = DatabaseHelper.ExecuteReader(sql, new SqlParameter("@UserID,  EnvironmentVars.UserID)))
-             * {
-             *  while (reader.READ())
-             *  {
-             *      int novelID = reader.GetInt32(0);
-             *      DateTime lastReadDate = reader.GetDateTime(2);             
-             *      _readHistory.Add(new ReadHistory { NovelID = novelID, LastReadDate = lastReadDate });
-             * 
-             * 
-             **/
+            int userID = DatabaseHelper.ExecuteScalar<int>("SELECT ID FROM Users WHERE Username = @Username", new SqlParameter("@Username", Environment.UserName));
+
+            string sql = @"
+                SELECT TOP 10 C.ChapterName, RH.LastReadDate
+                FROM ReadHistory RH
+                INNER JOIN Chapters C ON RH.ChapterID = C.ID
+                WHERE RH.UserID = @UserID   
+                
+                ORDER BY RH.LastReadDate DESC;";
+
+            using (var reader = DatabaseHelper.ExecuteReader(sql, new SqlParameter("@UserID", userID)))
+            {
+                while (reader.Read())
+                {
+                    int chapterID = reader.GetInt32(0);
+                    DateTime lastReadDate = reader.GetDateTime(1);
+                    _readHistory.Add(new HistoryInfo { ChapterTitle = chapterID.ToString(), LastReadDate = lastReadDate });
+
+
+
+                }
+            }
+
+
         }
     }
 }
