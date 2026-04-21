@@ -110,21 +110,5 @@ namespace NovelProject.BrowserPage
                 return null;
             }
         }
-
-
-        // This belongs in the BrowserView. I'll move it over there once I have the search functionality working.
-        private void GenerateNovelCards()
-        {
-            // Logic to generate novel cards based on the current state of the browser and the novels loaded from the database
-            //get top 20 results from novel databasebased on the state of the browser and generate novel cards for each novel and add them to the listbox
-
-
-        }
-
-        private void GenerateTags()
-        {
-            //logic to add tags to the combo box based on all unique tags in the novel database 
-
-        }
     }
 }
