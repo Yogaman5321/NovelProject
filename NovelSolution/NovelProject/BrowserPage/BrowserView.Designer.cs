@@ -32,7 +32,7 @@
             uxSearchBar = new System.Windows.Forms.TextBox();
             uxRadio1 = new System.Windows.Forms.RadioButton();
             uxRadio2 = new System.Windows.Forms.RadioButton();
-            browserListView = new System.Windows.Forms.ListView();
+            resultsPanel = new System.Windows.Forms.FlowLayoutPanel();
             uxSearchButton = new System.Windows.Forms.Button();
             otherFilterBox = new System.Windows.Forms.ComboBox();
             label1 = new System.Windows.Forms.Label();
@@ -83,15 +83,16 @@
             uxRadio2.Text = "Author";
             uxRadio2.UseVisualStyleBackColor = true;
             // 
-            // browserListView
+            // resultsPanel
             // 
-            browserListView.Font = new System.Drawing.Font("Segoe UI Semibold", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            browserListView.Location = new System.Drawing.Point(19, 96);
-            browserListView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            browserListView.Name = "browserListView";
-            browserListView.Size = new System.Drawing.Size(630, 425);
-            browserListView.TabIndex = 5;
-            browserListView.UseCompatibleStateImageBehavior = false;
+            resultsPanel.AutoScroll = true;
+            resultsPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            resultsPanel.Location = new System.Drawing.Point(19, 96);
+            resultsPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            resultsPanel.Name = "resultsPanel";
+            resultsPanel.Size = new System.Drawing.Size(630, 425);
+            resultsPanel.TabIndex = 5;
+            resultsPanel.WrapContents = false;
             // 
             // uxSearchButton
             // 
@@ -107,7 +108,7 @@
             // otherFilterBox
             // 
             otherFilterBox.FormattingEnabled = true;
-            otherFilterBox.Location = new System.Drawing.Point(731, 345);
+            otherFilterBox.Location = new System.Drawing.Point(744, 345);
             otherFilterBox.Name = "otherFilterBox";
             otherFilterBox.Size = new System.Drawing.Size(151, 28);
             otherFilterBox.TabIndex = 7;
@@ -116,7 +117,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new System.Drawing.Font("Segoe UI", 12F);
-            label1.Location = new System.Drawing.Point(655, 345);
+            label1.Location = new System.Drawing.Point(668, 345);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(66, 28);
             label1.TabIndex = 8;
@@ -126,7 +127,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new System.Drawing.Font("Segoe UI", 12F);
-            label2.Location = new System.Drawing.Point(655, 138);
+            label2.Location = new System.Drawing.Point(668, 138);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(68, 28);
             label2.TabIndex = 10;
@@ -135,7 +136,7 @@
             // tagBox
             // 
             tagBox.FormattingEnabled = true;
-            tagBox.Location = new System.Drawing.Point(731, 138);
+            tagBox.Location = new System.Drawing.Point(744, 138);
             tagBox.Name = "tagBox";
             tagBox.Size = new System.Drawing.Size(151, 28);
             tagBox.TabIndex = 9;
@@ -160,7 +161,7 @@
             Controls.Add(label1);
             Controls.Add(otherFilterBox);
             Controls.Add(uxSearchButton);
-            Controls.Add(browserListView);
+            Controls.Add(resultsPanel);
             Controls.Add(uxRadio2);
             Controls.Add(uxRadio1);
             Controls.Add(uxSearchBar);
@@ -178,7 +179,7 @@
         private System.Windows.Forms.TextBox uxSearchBar;
         private System.Windows.Forms.RadioButton uxRadio1;
         private System.Windows.Forms.RadioButton uxRadio2;
-        private System.Windows.Forms.ListView browserListView;
+        private System.Windows.Forms.FlowLayoutPanel resultsPanel;
         private System.Windows.Forms.Button uxSearchButton;
         private System.Windows.Forms.ComboBox otherFilterBox;
         private System.Windows.Forms.Label label1;
