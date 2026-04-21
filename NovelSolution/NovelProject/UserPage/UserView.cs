@@ -16,36 +16,69 @@ namespace NovelProject.UserPage
 {
     public partial class UserView : UserControl, INavigatable
     {
+        public UserHandler handler;
         private string _currentUsername;
 
         public UserView(string username)
         {
             InitializeComponent();
             _currentUsername = username;
-            updateStats();
 
             if (username == EnvironmentVars.username)
             {
                 uxChangePasswordButton.Visible = true;
                 uxChangePasswordButton.Enabled = true;
             }
-            else 
+            else
             {
                 uxChangePasswordButton.Visible = false;
                 uxChangePasswordButton.Enabled = false;
             }
 
             SetupListViews();
-            AddNovels(UserController.getHistory(_currentUsername));
-            AddUploads();
-            AddComments();
+            this.Load += LoadUser;
+        }
+
+        private Action<UserControl> _navigate;
+        public void SetNavigator(Action<UserControl> navigate)
+        {
+            _navigate = navigate;
+        }
+
+        public void SetUserHandler(UserHandler handler)
+        {
+            this.handler = handler;
+        }
+
+        public void DisplayState(UserState s, UserPageData data)
+        {
+            switch (s)
+            {
+                case UserState.GotUserData:
+                    uxUserNameLabel.Text = $"{_currentUsername}";
+                    uxNovelsPostedLabel.Text = $"Novels Posted: {data.NovelsPosted}";
+                    uxNovelsReadLabel.Text = $"Novels Read: {data.NovelsRead}";
+                    uxReveiewsPostedLabel.Text = $"Reviews Posted: {data.ReviewsPosted}";
+                    AddNovels(data.History);
+                    AddUploads(data.Uploads);
+                    AddComments(data.Comments);
+                    break;
+                case UserState.PasswordChanged:
+                    MessageBox.Show("Password changed successfully!");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void LoadUser(object sender, EventArgs e)
+        {
+            handler(UserState.LoadUser, _currentUsername, null);
         }
 
         private void SetupListViews()
         {
-
             /* Read History */
-
             uxReadHistoryList.View = View.Details;
             uxReadHistoryList.FullRowSelect = true;
 
@@ -56,18 +89,14 @@ namespace NovelProject.UserPage
             uxReadHistoryList.Columns.Add("Last Read", 200);
 
             /* Novels Uploaded */
-
             uxUploadedNovels.View = View.Details;
             uxUploadedNovels.FullRowSelect = true;
 
             uxUploadedNovels.Columns.Add("Title", 200);
             uxUploadedNovels.Columns.Add("Author", 100);
 
-
             /* Comments */
-
             uxCommentBox.DrawMode = DrawMode.OwnerDrawVariable;
-
 
             uxCommentBox.MeasureItem += (s, e) =>
             {
@@ -91,7 +120,6 @@ namespace NovelProject.UserPage
                     new RectangleF(e.Bounds.X + 5, e.Bounds.Y + 2, e.Bounds.Width - 10, e.Bounds.Height - 4)
                 );
 
-                // separator line
                 e.Graphics.DrawLine(
                     Pens.LightGray,
                     e.Bounds.Left,
@@ -120,76 +148,35 @@ namespace NovelProject.UserPage
                 item.SubItems.Add(tuple.Item4[i].ToString());
                 item.SubItems.Add(lastRead);
 
-                item.Tag = novel; 
+                item.Tag = novel;
 
                 uxReadHistoryList.Items.Add(item);
             }
         }
 
-        public void AddUploads() {
+        private void AddUploads(List<string> uploads)
+        {
             uxUploadedNovels.Items.Clear();
-            string query = $"SELECT NovelName, AuthorName FROM Novels WHERE UploadedByUserId = (SELECT UserId FROM Users WHERE Username = '{_currentUsername}')";
-            var result = DatabaseHelper.ExecuteReader(query);
-
-            while (result.Read())
+            foreach (var entry in uploads)
             {
-                var item = new ListViewItem(result.GetString(0));
-                item.SubItems.Add(result.GetString(1));
+                var parts = entry.Split('|');
+                var item = new ListViewItem(parts[0]);
+                item.SubItems.Add(parts.Length > 1 ? parts[1] : "");
                 uxUploadedNovels.Items.Add(item);
             }
-
         }
 
-        public void AddComments()
+        private void AddComments(List<string> comments)
         {
             uxCommentBox.Items.Clear();
-            string query = $@"SELECT n.NovelName, c.ChapterNumber, s.CommentString
-                              FROM Comments s
-                              JOIN Chapters c on c.ChapterId = s.ChapterId
-                              JOIN Novels n on n.NovelId = c.NovelId
-                              where s.UserId = (Select UserId FROM Users WHERE Username = '{_currentUsername}')
-                               ";
-
-            var result = DatabaseHelper.ExecuteReader(query);
-            while (result.Read())
+            foreach (var comment in comments)
             {
-                string str = $" \n{result.GetString(0)}, Chapter: {result.GetInt32(1)} \n{result.GetString(2)}\n ";
-                uxCommentBox.Items.Add(str);
+                uxCommentBox.Items.Add(comment);
             }
-        }
-
-        public void updateStats()
-        {
-
-            string query = $@"
-                SELECT 
-                    (SELECT COUNT(*) FROM Novels WHERE UploadedByUserId = (SELECT UserId FROM Users WHERE Username = '{_currentUsername}')) AS NovelsPosted,
-                    (SELECT COUNT(distinct NovelId) FROM ReadHistories h WHERE h.UserId = (SELECT UserId FROM Users WHERE Username = '{_currentUsername}')) AS NovelsRead,
-                    (SELECT COUNT(*) FROM Reviews r JOIN Users u ON r.UserId = u.UserId WHERE u.Username = '{_currentUsername}') AS ReviewsPosted
-            ";
-
-            var result = DatabaseHelper.ExecuteReader(query);
-            int novelsPosted = 0;
-            int novelsRead = 0;
-            int reviewsPosted = 0;
-            if (result.Read())
-            {
-                novelsPosted = result.GetInt32(0);
-                novelsRead = result.GetInt32(1);
-                reviewsPosted = result.GetInt32(2);
-            }
-
-            uxUserNameLabel.Text = $"{_currentUsername}";
-            uxNovelsPostedLabel.Text = $"Novels Posted: {novelsPosted}";
-            uxNovelsReadLabel.Text = $"Novels Read: {novelsRead}";
-            uxReveiewsPostedLabel.Text = $"Reviews Posted: {reviewsPosted}";
         }
 
         private void ChangePasswordButtonClick(object sender, EventArgs e)
         {
-            string query = $"SELECT UserId FROM Users WHERE Username = '{_currentUsername}'";
-            int userID = DatabaseHelper.ExecuteScalar<int>(query);
-
             string input = Interaction.InputBox(
                 "New Password:",
                 "Input Required",
@@ -198,17 +185,8 @@ namespace NovelProject.UserPage
 
             if (!string.IsNullOrEmpty(input))
             {
-                string newHash = BCrypt.Net.BCrypt.HashPassword(input);
-                string updateQuery = $"UPDATE Users SET EncryptedPassword = '{newHash}' WHERE UserId = {userID}";
-                DatabaseHelper.ExecuteNonQuery(updateQuery);
-                MessageBox.Show("Password changed successfully!");
+                handler(UserState.ChangePassword, _currentUsername, input);
             }
-        }
-
-        private Action<UserControl> _navigate;
-        public void SetNavigator(Action<UserControl> navigate)
-        {
-            _navigate = navigate;
         }
     }
 }

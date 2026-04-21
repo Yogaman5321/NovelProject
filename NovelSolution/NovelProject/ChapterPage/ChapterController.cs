@@ -10,60 +10,63 @@ namespace NovelProject.ChapterPage
 {
     public class ChapterController
     {
+        public ChapterObserver observer;
 
-        public String NovelId { get; }
+        public string NovelId { get; }
         public int CurrentChapter { get; private set; }
 
-        public event ChapterDisplayHandler OnDisplayChapter;
-
         private int _maxChapters;
-        public ChapterController(string id)
+
+        public ChapterController(ChapterObserver observer, string id)
         {
+            this.observer = observer;
             NovelId = id;
             string query = $"SELECT COUNT(*) FROM Chapters WHERE NovelId = {NovelId}";
             _maxChapters = DatabaseHelper.ExecuteScalar<int>(query);
         }
 
-        public void SetChapter(int chapter)
+        public void HandleEvents(ChapterState state, int value)
         {
-            CurrentChapter = chapter;
-            UpdateText();
-        }
-
-        public void ChangeChapter(int chapterOffest)
-        {
-            if (CurrentChapter + chapterOffest > 0 &&  CurrentChapter + chapterOffest <= _maxChapters + 1)
+            switch (state)
             {
-                CurrentChapter += chapterOffest;
-                UpdateText();
+                case ChapterState.SetChapter:
+                    CurrentChapter = value;
+                    UpdateText();
+                    break;
+                case ChapterState.ChangeChapter:
+                    if (CurrentChapter + value > 0 && CurrentChapter + value <= _maxChapters + 1)
+                    {
+                        CurrentChapter += value;
+                        UpdateText();
+                    }
+                    break;
+                case ChapterState.UpdateReadHistory:
+                    UpdateReadHistory();
+                    break;
+                default:
+                    break;
             }
         }
 
-        public void UpdateText() 
+        private void UpdateText()
         {
-
             string text = "";
             try
             {
                 string basePath = AppContext.BaseDirectory;
-
                 string query = $"SELECT ChapterId FROM Chapters WHERE NovelId = {NovelId} AND ChapterNumber = {CurrentChapter}";
                 int chapterId = DatabaseHelper.ExecuteScalar<int>(query);
-
                 string path = Path.Combine(basePath, "Novels", $"{chapterId}.txt");
-
                 text = File.ReadAllText(path);
-            } 
+            }
             catch
             {
                 text = "No more chapters.";
             }
-
-            OnDisplayChapter?.Invoke(text);
-
+            observer(ChapterState.GotChapter, text, CurrentChapter);
         }
 
-        public void UpdateReadHistory()
+        private void UpdateReadHistory()
         {
             string query = $@"
                 IF EXISTS (SELECT 1 FROM ReadHistories WHERE UserId = (SELECT UserId FROM Users WHERE Username = '{EnvironmentVars.username}') AND NovelId = {NovelId})

@@ -16,48 +16,19 @@ namespace NovelProject.ChapterPage
 {
     public partial class ChapterView : UserControl, INavigatable
     {
-
-        private ChapterController _controller;
+        public ChapterHandler handler;
 
         private Novel _novel;
+        private int _initialChapter;
+        private int _currentChapter;
+
         public ChapterView(Novel novel, int chapter)
         {
             InitializeComponent();
-
             _novel = novel;
-            _controller = new ChapterController(novel.NovelId.ToString());
-            SetController(_controller);
-            _controller.SetChapter(chapter);
-        }
-
-        public void SetController(ChapterController controller)
-        {
-            _controller = controller;
-
-            _controller.OnDisplayChapter += DisplayChapter;
-        }
-
-        public void DisplayChapter(String chapter)
-        {
-            uxTextBox.Text = chapter;
-            uxChapterLabel.Text = $"Chapter {_controller.CurrentChapter}";
-
-            _controller.UpdateReadHistory();
-        }
-
-        private void ForwardButtonClick(object sender, EventArgs e)
-        {
-            _controller.ChangeChapter(1);
-        }
-
-        private void BackButtonClick(object sender, EventArgs e)
-        {
-            _controller.ChangeChapter(-1);
-        }
-
-        private void ExitButtonClick(object sender, EventArgs e)
-        {
-            _navigate?.Invoke(new NovelView(_novel));
+            _initialChapter = chapter;
+            _currentChapter = chapter;
+            this.Load += LoadChapter;
         }
 
         private Action<UserControl> _navigate;
@@ -66,13 +37,57 @@ namespace NovelProject.ChapterPage
             _navigate = navigate;
         }
 
+        public void SetChapterHandler(ChapterHandler handler)
+        {
+            this.handler = handler;
+        }
+
+        public void DisplayState(ChapterState s, string text, int currentChapter)
+        {
+            switch (s)
+            {
+                case ChapterState.GotChapter:
+                    _currentChapter = currentChapter;
+                    uxTextBox.Text = text;
+                    uxChapterLabel.Text = $"Chapter {currentChapter}";
+                    handler(ChapterState.UpdateReadHistory, 0);
+                    break;
+                case ChapterState.GotError:
+                    throw new Exception("Could not load chapter.");
+                default:
+                    break;
+            }
+        }
+
+        private void LoadChapter(object sender, EventArgs e)
+        {
+            handler(ChapterState.SetChapter, _initialChapter);
+        }
+
+        private void ForwardButtonClick(object sender, EventArgs e)
+        {
+            handler(ChapterState.ChangeChapter, 1);
+        }
+
+        private void BackButtonClick(object sender, EventArgs e)
+        {
+            handler(ChapterState.ChangeChapter, -1);
+        }
+
+        private void ExitButtonClick(object sender, EventArgs e)
+        {
+            var view = new NovelView(_novel);
+            var controller = new NovelController(view.DisplayState);
+            view.SetNovelHandler(controller.HandleEvents);
+            _navigate?.Invoke(view);
+        }
+
         private void ViewCommentsButtonClick(object sender, EventArgs e)
         {
-
             string query = $@"
                 SELECT ChapterId
                 FROM Chapters
-                WHERE NovelId = {_novel.NovelId} AND ChapterNumber = {_controller.CurrentChapter};
+                WHERE NovelId = {_novel.NovelId} AND ChapterNumber = {_currentChapter};
             ";
 
             var chapterId = DatabaseHelper.ExecuteScalar<int>(query);

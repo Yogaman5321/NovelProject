@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using BCrypt.Net;
+using Microsoft.Data.SqlClient;
+using Microsoft.VisualBasic;
 using NovelProject.Models;
 using System;
 using System.Collections.Generic;
@@ -11,12 +13,84 @@ namespace NovelProject.UserPage
 {
     public class UserController
     {
-        internal static object getDetails(string currentUsername)
+        public UserObserver observer;
+
+        public UserController(UserObserver observer)
         {
-            throw new NotImplementedException();
+            this.observer = observer;
         }
 
-        internal static Tuple<List<Novel>, List<decimal>, List<string>, List<int>> getHistory(string currentUsername)
+        public void HandleEvents(UserState state, string username, string newPassword)
+        {
+            switch (state)
+            {
+                case UserState.LoadUser:
+                    var data = LoadUserData(username);
+                    observer(UserState.GotUserData, data);
+                    break;
+                case UserState.ChangePassword:
+                    ChangePassword(username, newPassword);
+                    observer(UserState.PasswordChanged, null);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private UserPageData LoadUserData(string username)
+        {
+            var data = new UserPageData();
+
+            string query = $@"
+                SELECT 
+                    (SELECT COUNT(*) FROM Novels WHERE UploadedByUserId = (SELECT UserId FROM Users WHERE Username = '{username}')) AS NovelsPosted,
+                    (SELECT COUNT(distinct NovelId) FROM ReadHistories h WHERE h.UserId = (SELECT UserId FROM Users WHERE Username = '{username}')) AS NovelsRead,
+                    (SELECT COUNT(*) FROM Reviews r JOIN Users u ON r.UserId = u.UserId WHERE u.Username = '{username}') AS ReviewsPosted
+            ";
+
+            var statsReader = DatabaseHelper.ExecuteReader(query);
+            if (statsReader.Read())
+            {
+                data.NovelsPosted = statsReader.GetInt32(0);
+                data.NovelsRead = statsReader.GetInt32(1);
+                data.ReviewsPosted = statsReader.GetInt32(2);
+            }
+
+            data.History = GetHistory(username);
+
+            data.Uploads = new List<string>();
+            string uploadsQuery = $"SELECT NovelName, AuthorName FROM Novels WHERE UploadedByUserId = (SELECT UserId FROM Users WHERE Username = '{username}')";
+            var uploadsReader = DatabaseHelper.ExecuteReader(uploadsQuery);
+            while (uploadsReader.Read())
+            {
+                data.Uploads.Add($"{uploadsReader.GetString(0)}|{uploadsReader.GetString(1)}");
+            }
+
+            data.Comments = new List<string>();
+            string commentsQuery = $@"SELECT n.NovelName, c.ChapterNumber, s.CommentString
+                              FROM Comments s
+                              JOIN Chapters c on c.ChapterId = s.ChapterId
+                              JOIN Novels n on n.NovelId = c.NovelId
+                              where s.UserId = (Select UserId FROM Users WHERE Username = '{username}')";
+            var commentsReader = DatabaseHelper.ExecuteReader(commentsQuery);
+            while (commentsReader.Read())
+            {
+                data.Comments.Add($" \n{commentsReader.GetString(0)}, Chapter: {commentsReader.GetInt32(1)} \n{commentsReader.GetString(2)}\n ");
+            }
+
+            return data;
+        }
+
+        private void ChangePassword(string username, string newPassword)
+        {
+            string query = $"SELECT UserId FROM Users WHERE Username = '{username}'";
+            int userID = DatabaseHelper.ExecuteScalar<int>(query);
+            string newHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            string updateQuery = $"UPDATE Users SET EncryptedPassword = '{newHash}' WHERE UserId = {userID}";
+            DatabaseHelper.ExecuteNonQuery(updateQuery);
+        }
+
+        private static Tuple<List<Novel>, List<decimal>, List<string>, List<int>> GetHistory(string currentUsername)
         {
             string query = @"
                 SELECT *
@@ -34,7 +108,6 @@ namespace NovelProject.UserPage
                       AND r.UserId = (SELECT UserId FROM Users WHERE Username = @Username)
                 ) DESC;
                 ";
-
 
             var novels = new List<Novel>();
             using (var reader = DatabaseHelper.ExecuteReader(query, new SqlParameter("@Username", currentUsername)))
@@ -62,24 +135,11 @@ namespace NovelProject.UserPage
             {
                 string ratingQuery = $"SELECT Rating FROM Reviews WHERE NovelId = {item.NovelId} and UserId = (SELECT UserId FROM Users WHERE Username = '{currentUsername}')";
                 decimal averageRating = DatabaseHelper.ExecuteScalar<decimal>(ratingQuery);
-                if (averageRating > 0)
-                {
-                    ratings.Add(averageRating);
-                } else
-                {
-                    ratings.Add(-1);
-                }
+                ratings.Add(averageRating > 0 ? averageRating : -1);
 
                 string lastReadQuery = $"SELECT MAX(LastReadDate) FROM ReadHistories WHERE NovelId = {item.NovelId} and UserId = (SELECT UserId FROM Users WHERE Username = '{currentUsername}')";
                 DateTime? lastRead = DatabaseHelper.ExecuteScalar<DateTime?>(lastReadQuery);
-                if (!lastRead.HasValue)
-                {
-                    lastReads.Add("N/A");
-                }
-                else
-                {
-                    lastReads.Add(lastRead.Value.ToString("g"));
-                }
+                lastReads.Add(lastRead.HasValue ? lastRead.Value.ToString("g") : "N/A");
 
                 string lastChapterQuery = @"
                     SELECT TOP 1 LastChapterRead
@@ -94,14 +154,7 @@ namespace NovelProject.UserPage
                     new SqlParameter("@Username", currentUsername)
                 );
 
-                if (!lastChapterNumber.HasValue)
-                {
-                    lastChapter.Add(0);
-                }
-                else
-                {
-                    lastChapter.Add(lastChapterNumber.Value);
-                }
+                lastChapter.Add(lastChapterNumber.HasValue ? lastChapterNumber.Value : 0);
             }
 
             return Tuple.Create(novels, ratings, lastReads, lastChapter);

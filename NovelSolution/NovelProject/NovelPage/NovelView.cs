@@ -21,19 +21,19 @@ namespace NovelProject.NovelPage
 {
     public partial class NovelView : UserControl, INavigatable
     {
-
-        private NovelController _controller;
+        public NovelPageHandler handler;
 
         public Novel _novel;
+
         public NovelView(Novel novel)
         {
             InitializeComponent();
             _novel = novel;
-            SetController(new NovelController(novel));
             SetupListView();
             PopulateNovelInfo();
+            this.Load += LoadChapters;
 
-            if(EnvironmentVars.IsLoggedIn == true)
+            if (EnvironmentVars.IsLoggedIn == true)
             {
                 var reviewView = new ReviewView(_novel);
                 var reviewController = new ReviewController(reviewView.DisplayState);
@@ -42,8 +42,6 @@ namespace NovelProject.NovelPage
                 reviewView.Show();
                 reviewsPanel.Controls.Add(reviewView);
             }
-            
-
         }
 
         private Action<UserControl> _navigate;
@@ -52,13 +50,28 @@ namespace NovelProject.NovelPage
             _navigate = navigate;
         }
 
-        public void SetController(NovelController controller)
+        public void SetNovelHandler(NovelPageHandler handler)
         {
-            _controller = controller;
+            this.handler = handler;
+        }
 
-            _controller.OnChaptersLoaded += PopulateChapters;
+        public void DisplayState(NovelPageState s, List<Chapter> chapters)
+        {
+            switch (s)
+            {
+                case NovelPageState.GotChapters:
+                    PopulateChapters(chapters);
+                    break;
+                case NovelPageState.GotError:
+                    throw new Exception("Could not load chapters.");
+                default:
+                    break;
+            }
+        }
 
-            _controller.SetUpPage();
+        private void LoadChapters(object sender, EventArgs e)
+        {
+            handler(NovelPageState.SetupPage, _novel);
         }
 
         public void PopulateNovelInfo()
@@ -76,8 +89,6 @@ namespace NovelProject.NovelPage
             uxChapterList.Columns.Add("Chapter Number", 50);
             uxChapterList.Columns.Add("Chapter Title", 200);
             uxChapterList.Columns.Add("Date Added", 100);
-
-            
         }
 
         private void PopulateChapters(List<Chapter> chapters)
@@ -91,12 +102,11 @@ namespace NovelProject.NovelPage
                 item.SubItems.Add(chapter.ChapterName);
                 item.SubItems.Add(chapter.DateAdded.ToString());
 
-                item.Tag = chapter; // for later retrieval
+                item.Tag = chapter;
 
                 uxChapterList.Items.Add(item);
             }
         }
-
 
         private void AuthorLinkLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -110,20 +120,23 @@ namespace NovelProject.NovelPage
 
             if (!string.IsNullOrEmpty(username))
             {
-                _navigate?.Invoke(new UserView(username));
+                var view = new UserView(username);
+                var controller = new UserController(view.DisplayState);
+                view.SetUserHandler(controller.HandleEvents);
+                _navigate?.Invoke(view);
             }
-
         }
 
         private void ReadButtonClick(object sender, EventArgs e)
         {
-
             if (uxChapterList.SelectedItems.Count > 0)
             {
                 Chapter selectedChapter = (Chapter)uxChapterList.SelectedItems[0].Tag;
-                _navigate?.Invoke(new ChapterView(_novel, selectedChapter.ChapterNumber));
+                var view = new ChapterView(_novel, selectedChapter.ChapterNumber);
+                var controller = new ChapterController(view.DisplayState, _novel.NovelId.ToString());
+                view.SetChapterHandler(controller.HandleEvents);
+                _navigate?.Invoke(view);
             }
         }
-
     }
 }

@@ -13,42 +13,44 @@ namespace NovelProject.HomePage
 {
     public partial class HomeView : UserControl
     {
-        
-        private List<HistoryInfo> _readHistory;
-        private HomeController _controller;
-        public HomeView(HomePageStateHandler handler)
-        {
-            //environment vars class to get username and set welcome label to username
-            _controller = new HomeController(_readHistory, HomeViewHandler);
-            InitializeComponent();
+        public HomeHandler handler;
 
-            HomeView_Load();
+        public HomeView()
+        {
+            InitializeComponent();
+            WelcomeLabel.Text = $"Welcome, {EnvironmentVars.username}!";
+            this.Load += LoadHistory;
         }
 
-        private void HomeView_Load()
+        public void SetHomeHandler(HomeHandler handler)
         {
-            WelcomeLabel.Text = $"Welcome, !";
-            
+            this.handler = handler;
+        }
 
-        }            
-        private void HomeViewHandler(HomePageState h)
+        public void DisplayState(HomePageState s, List<HistoryInfo> history)
+        {
+            switch (s)
             {
-            switch (h)
-            { 
-                case HomePageState.LoadRecentNovels:
-                    _controller.handler(HomePageState.Default);
-                    LoadReadHistory();
+                case HomePageState.GotHistory:
+                    LoadReadHistory(history);
+                    break;
+                default:
                     break;
             }
         }
 
-        private void LoadReadHistory()
+        private void LoadHistory(object sender, EventArgs e)
         {
-            foreach(HistoryInfo info in _readHistory)
+            handler(HomePageState.LoadRecentNovels);
+        }
+
+        private void LoadReadHistory(List<HistoryInfo> history)
+        {
+            UxLastReadListBox.Items.Clear();
+            foreach (HistoryInfo info in history)
             {
                 UxLastReadListBox.Items.Add($"{info.ChapterTitle} - Last read on {info.LastReadDate}");
             }
         }
-
     }
 }

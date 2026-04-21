@@ -11,11 +11,33 @@ namespace NovelProject.AuthorPage
 {
     public class AuthorController
     {
+        public AuthorObserver observer;
 
-
-        public static List<Novel> GetNovelsByAuthor(string authorName)
+        public AuthorController(AuthorObserver observer)
         {
+            this.observer = observer;
+        }
 
+        public void HandleEvents(AuthorState state, string authorName, Novel novel)
+        {
+            switch (state)
+            {
+                case AuthorState.GetNovels:
+                    var novels = GetNovelsByAuthor(authorName);
+                    observer(novels != null ? AuthorState.GotNovels : AuthorState.GotError, novels);
+                    break;
+                case AuthorState.DeleteNovel:
+                    DeleteNovel(novel);
+                    var updatedNovels = GetNovelsByAuthor(EnvironmentVars.username);
+                    observer(updatedNovels != null ? AuthorState.GotNovels : AuthorState.GotError, updatedNovels);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private List<Novel> GetNovelsByAuthor(string authorName)
+        {
             string query = @"
             SELECT NovelId, NovelName, AuthorName, Description, DatePosted, UploadedByUserId
             FROM Novels
@@ -31,13 +53,12 @@ namespace NovelProject.AuthorPage
             int userId = DatabaseHelper.ExecuteScalar<int>(userIdQuery, new SqlParameter("@Username", authorName));
 
             List<SqlParameter> parameters = new List<SqlParameter>();
-                parameters.Add(new SqlParameter("@UploadedByUserId", userId));
+            parameters.Add(new SqlParameter("@UploadedByUserId", userId));
 
             return GetFilteredNovels(query, parameters.ToArray());
-
         }
 
-        public static void DeleteNovel(Novel selectedNovel)
+        private void DeleteNovel(Novel selectedNovel)
         {
             string query = @"
                 DELETE FROM Novels
@@ -50,7 +71,7 @@ namespace NovelProject.AuthorPage
             DatabaseHelper.ExecuteNonQuery(query, parameters.ToArray());
         }
 
-        private static List<Novel> GetFilteredNovels(string fullQuery, SqlParameter[] parameters)
+        private List<Novel> GetFilteredNovels(string fullQuery, SqlParameter[] parameters)
         {
             try
             {

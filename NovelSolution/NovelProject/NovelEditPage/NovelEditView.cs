@@ -17,8 +17,9 @@ namespace NovelProject.NovelEditPage
 {
     public partial class NovelEditView : UserControl, INavigatable
     {
+        public NovelEditHandler handler;
+        Novel _novel = null;
 
-        NovelEditController controller = new NovelEditController();
         public NovelEditView()
         {
             InitializeComponent();
@@ -29,10 +30,9 @@ namespace NovelProject.NovelEditPage
                 NovelName = "a2a9242b-8064-4f37-9d52-03d1b8710199_Test-Novel",
                 Description = "6c743292-2e78-42f9-acb9-0ebf11395f33"
             };
-            _novel = controller.CreateNovel(_novel);
+            this.Load += (s, e) => handler(NovelEditState.CreateNovel, _novel, null, null, null, null);
         }
 
-        Novel _novel = null;
         public NovelEditView(Novel novel)
         {
             InitializeComponent();
@@ -45,9 +45,51 @@ namespace NovelProject.NovelEditPage
             PopulateBoxes(novel.NovelId);
         }
 
+        private Action<UserControl> _navagate;
+        public void SetNavigator(Action<UserControl> navigate)
+        {
+            _navagate = navigate;
+        }
+
+        public void SetNovelEditHandler(NovelEditHandler handler)
+        {
+            this.handler = handler;
+        }
+
+        public void DisplayState(NovelEditState s, Novel novel, Chapter chapter)
+        {
+            switch (s)
+            {
+                case NovelEditState.NovelCreated:
+                    _novel = novel;
+                    break;
+                case NovelEditState.ChapterSaved:
+                    var savedItem = new ListViewItem(chapter.ChapterNumber.ToString());
+                    savedItem.SubItems.Add(chapter.ChapterName);
+                    savedItem.SubItems.Add(chapter.DateAdded.ToString());
+                    savedItem.Tag = chapter;
+                    uxChapterList.Items.Add(savedItem);
+                    break;
+                case NovelEditState.ChapterEdited:
+                    foreach (ListViewItem item in uxChapterList.Items)
+                    {
+                        if (item.Tag is Chapter c && c.ChapterId == chapter.ChapterId)
+                        {
+                            item.Tag = chapter;
+                            item.SubItems[0].Text = chapter.ChapterNumber.ToString();
+                            item.SubItems[1].Text = chapter.ChapterName;
+                            item.SubItems[2].Text = chapter.DateAdded.ToString();
+                            break;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void PopulateBoxes(int novelId)
         {
-
             string query = $@"
                     SELECT TagName FROM Tags
                     join NovelTags on Tags.TagId = NovelTags.TagId
@@ -58,10 +100,8 @@ namespace NovelProject.NovelEditPage
             {
                 while (reader.Read())
                 {
-
                     string TagName = reader.GetString(0);
                     uxTagsBox.Items.Add(TagName);
-
                 }
             }
 
@@ -86,19 +126,14 @@ namespace NovelProject.NovelEditPage
 
                     Debug.WriteLine($"Retrieved chapter: {chapter.ChapterName} by {chapter.ChapterId}");
 
-
                     var item = new ListViewItem(chapter.ChapterNumber.ToString());
-
                     item.SubItems.Add(chapter.ChapterName);
                     item.SubItems.Add(chapter.DateAdded.ToString());
-
-                    item.Tag = chapter; // for later retrieval
-
+                    item.Tag = chapter;
                     uxChapterList.Items.Add(item);
                 }
             }
         }
-
 
         private void SetupListView()
         {
@@ -112,13 +147,15 @@ namespace NovelProject.NovelEditPage
 
         private void SaveExitButtonClick(object sender, EventArgs e)
         {
-
             _novel.NovelName = uxTitleTextBox.Text;
             _novel.Description = uxDescriptionBox.Text;
 
-            controller.updateNovel(_novel, uxTagsBox.Items, uxChapterList.Items);
+            handler(NovelEditState.UpdateNovel, _novel, null, null, uxTagsBox.Items, uxChapterList.Items);
 
-            _navagate.Invoke(new AuthorView());
+            var view = new AuthorPage.AuthorView();
+            var authorController = new AuthorPage.AuthorController(view.DisplayState);
+            view.SetAuthorHandler(authorController.HandleEvents);
+            _navagate.Invoke(view);
         }
 
         private void AddTagButtonClick(object sender, EventArgs e)
@@ -127,7 +164,7 @@ namespace NovelProject.NovelEditPage
             if (!uxTagsBox.Items.Contains(text))
             {
                 uxTagTexbox.Text = "";
-                controller.addTag(text, "change me");
+                handler(NovelEditState.AddTag, null, null, text, null, null);
                 uxTagsBox.Items.Add(text);
             }
         }
@@ -146,16 +183,7 @@ namespace NovelProject.NovelEditPage
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 string title = dialog.TitleText;
-                Chapter chapter = controller.SaveChapter(_novel.NovelId, title, uxChapterList.Items.Count + 1);
-
-                var item = new ListViewItem(chapter.ChapterNumber.ToString());
-
-                item.SubItems.Add(chapter.ChapterName);
-                item.SubItems.Add(chapter.DateAdded.ToString());
-
-                item.Tag = chapter; // for later retrieval
-
-                uxChapterList.Items.Add(item);
+                handler(NovelEditState.SaveChapter, _novel, null, title, null, uxChapterList.Items);
             }
         }
 
@@ -166,30 +194,8 @@ namespace NovelProject.NovelEditPage
             {
                 string title = dialog.TitleText;
                 Chapter selectedChapter = (Chapter)uxChapterList.SelectedItems[0].Tag;
-                Chapter chapter = controller.EditChapter(selectedChapter, title);
-
-                foreach (ListViewItem item in uxChapterList.Items)
-                {
-                    if (item.Tag is Chapter c && c.ChapterId == chapter.ChapterId)
-                    {
-                        // update tag
-                        item.Tag = chapter;
-
-                        // update visible columns
-                        item.SubItems[0].Text = chapter.ChapterNumber.ToString();
-                        item.SubItems[1].Text = chapter.ChapterName;
-                        item.SubItems[2].Text = chapter.DateAdded.ToString();
-
-                        break;
-                    }
-                }
+                handler(NovelEditState.EditChapter, null, selectedChapter, title, null, null);
             }
-        }
-
-        private Action<UserControl> _navagate;
-        public void SetNavigator(Action<UserControl> navigate)
-        {
-            _navagate = navigate;
         }
 
         private void UpButtonClick(object sender, EventArgs e)
@@ -237,7 +243,6 @@ namespace NovelProject.NovelEditPage
             var itemA = uxChapterList.Items[indexA];
             var itemB = uxChapterList.Items[indexB];
 
-            // swap Tag data first (important)
             var tempTag = itemA.Tag;
             itemA.Tag = itemB.Tag;
             itemB.Tag = tempTag;
@@ -245,7 +250,6 @@ namespace NovelProject.NovelEditPage
             Chapter chaptera = (Chapter)itemA.Tag;
             Chapter chapterb = (Chapter)itemB.Tag;
 
-            // swap chapter numbers to reflect new order
             int tempNumber = chaptera.ChapterNumber;
             chaptera.ChapterNumber = chapterb.ChapterNumber;
             chapterb.ChapterNumber = tempNumber;
@@ -253,7 +257,6 @@ namespace NovelProject.NovelEditPage
             itemA.Tag = chaptera;
             itemB.Tag = chapterb;
 
-            // swap displayed values
             for (int i = 0; i < itemA.SubItems.Count; i++)
             {
                 var temp = itemA.SubItems[i].Text;
@@ -273,10 +276,7 @@ namespace NovelProject.NovelEditPage
                 if (item.Tag is Chapter chapter)
                 {
                     chapter.ChapterNumber = number;
-
-                    // update UI column
                     item.SubItems[0].Text = number.ToString();
-
                     number++;
                 }
             }
@@ -300,7 +300,6 @@ namespace NovelProject.NovelEditPage
             {
                 int index = uxChapterList.SelectedIndices[0];
                 uxChapterList.Items.RemoveAt(index);
-
                 RenumberChapters();
             }
         }

@@ -12,21 +12,28 @@ namespace NovelProject.NovelPage
 {
     public class NovelController
     {
+        public NovelPageObserver observer;
 
-        public event Action<List<Chapter>> OnChaptersLoaded;
-
-        Novel _novel;
-        public NovelController(Novel novel)
+        public NovelController(NovelPageObserver observer)
         {
-            _novel = novel;
+            this.observer = observer;
         }
 
-        public void SetUpPage() 
+        public void HandleEvents(NovelPageState state, Novel novel)
         {
+            switch (state)
+            {
+                case NovelPageState.SetupPage:
+                    var chapters = GetChapters(novel);
+                    observer(chapters != null ? NovelPageState.GotChapters : NovelPageState.GotError, chapters);
+                    break;
+                default:
+                    break;
+            }
+        }
 
-
-            List<Chapter> chapters = new List<Chapter>();
-
+        private List<Chapter> GetChapters(Novel novel)
+        {
             string query = @"
             SELECT NovelId, ChapterId, ChapterNumber, ChapterName, DateAdded
             FROM Chapters
@@ -35,13 +42,10 @@ namespace NovelProject.NovelPage
             ";
 
             List<SqlParameter> parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@NovelId", _novel.NovelId));
+            parameters.Add(new SqlParameter("@NovelId", novel.NovelId));
 
-            chapters = GetFilteredChapters(query, parameters.ToArray());
-
-            OnChaptersLoaded?.Invoke(chapters);
+            return GetFilteredChapters(query, parameters.ToArray());
         }
-
 
         private static List<Chapter> GetFilteredChapters(string fullQuery, SqlParameter[] parameters)
         {
@@ -71,6 +75,5 @@ namespace NovelProject.NovelPage
                 return null;
             }
         }
-
     }
 }

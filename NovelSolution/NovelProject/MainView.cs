@@ -1,7 +1,9 @@
 ﻿using NovelProject.AuthorPage;
+using NovelProject.AuthorPage;
 using NovelProject.BrowserPage;
 using NovelProject.HomePage;
 using NovelProject.Navigation;
+using NovelProject.NovelEditPage;
 using NovelProject.UserPage;
 using System;
 using System.Collections.Generic;
@@ -44,7 +46,10 @@ namespace NovelProject
             logOutButton.Visible = _accountMode;
             logOutButton.Enabled = _accountMode;
 
-            LoadView(new HomeView(default));
+            var homeView = new HomeView();
+            var homeController = new HomeController(homeView.DisplayState);
+            homeView.SetHomeHandler(homeController.HandleEvents);
+            LoadView(homeView);
         }
 
         private void LoadView(UserControl view)
@@ -70,10 +75,10 @@ namespace NovelProject
 
         private void homePageButton_Click(object sender, EventArgs e)
         {
-            //var view = new HomeView();
-            //var controller = new HomeController(view.DisplayState);
-            //view.SetHandler(controller.HandleEvents);
-            LoadView(new HomeView(default));
+            var view = new HomeView();
+            var controller = new HomeController(view.DisplayState);
+            view.SetHomeHandler(controller.HandleEvents);
+            LoadView(view);
         }
 
         private void browseNovelsButton_Click(object sender, EventArgs e)
@@ -87,19 +92,19 @@ namespace NovelProject
 
         private void authorDashboardButton_Click(object sender, EventArgs e)
         {
-            //var view = new AuthorView();
-            //var controller = new AuthorController(view.DisplayState);
-            //view.SetHandler(controller.HandleEvents);
+            var view = new AuthorView();
+            var controller = new AuthorController(view.DisplayState);
+            view.SetAuthorHandler(controller.HandleEvents);
 
-            LoadView(new AuthorView());
+            LoadView(view);
         }
 
         private void userProfileButton_Click(object sender, EventArgs e)
         {
-            //var view = new UserView();
-            //var controller = new UserController(view.DisplayState);
-            //view.SetHandler(controller.HandleEvents);
-            LoadView(new UserView(EnvironmentVars.username));
+            var view = new UserView(EnvironmentVars.username);
+            var controller = new UserController(view.DisplayState);
+            view.SetUserHandler(controller.HandleEvents);
+            LoadView(view);
         }
 
     }

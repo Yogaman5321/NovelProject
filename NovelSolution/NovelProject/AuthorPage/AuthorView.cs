@@ -1,5 +1,4 @@
-﻿using NovelProject.Models;
-using NovelProject.Navigation;
+﻿using NovelProject.Navigation;
 using NovelProject.NovelPage;
 using System;
 using System.Collections.Generic;
@@ -12,11 +11,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using NovelProject.Models;
 
 namespace NovelProject.AuthorPage
 {
     public partial class AuthorView : UserControl, INavigatable
     {
+        public AuthorHandler handler;
         private string _author;
         private List<Novel> _novels;
 
@@ -25,15 +26,40 @@ namespace NovelProject.AuthorPage
             InitializeComponent();
             DatabaseHelper.CleanNovels();
             _author = EnvironmentVars.username;
-            _novels = AuthorController.GetNovelsByAuthor(_author);
             SetupListView();
-            AddNovels();
+            this.Load += LoadNovels;
         }
 
         private Action<UserControl> _navigate;
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;
+        }
+
+        public void SetAuthorHandler(AuthorHandler handler)
+        {
+            this.handler = handler;
+        }
+
+        public void DisplayState(AuthorState s, List<Novel> novels)
+        {
+            switch (s)
+            {
+                case AuthorState.GotNovels:
+                    _novels = novels;
+                    AddNovels();
+                    break;
+                case AuthorState.GotError:
+                    // Replace this later
+                    throw new Exception("Could not get novels.");
+                default:
+                    break;
+            }
+        }
+
+        private void LoadNovels(object sender, EventArgs e)
+        {
+            handler(AuthorState.GetNovels, _author, null);
         }
 
         private void SetupListView()
@@ -67,8 +93,10 @@ namespace NovelProject.AuthorPage
 
         private void AddNewButtonClick(object sender, EventArgs e)
         {
-
-            _navigate(new NovelEditPage.NovelEditView());
+            var view = new NovelEditPage.NovelEditView();
+            var controller = new NovelEditPage.NovelEditController(view.DisplayState);
+            view.SetNovelEditHandler(controller.HandleEvents);
+            _navigate(view);
         }
 
         private void EditButtonClick(object sender, EventArgs e)
@@ -76,8 +104,10 @@ namespace NovelProject.AuthorPage
             if (uxNovelList.SelectedItems.Count > 0)
             {
                 Novel selectedNovel = (Novel)uxNovelList.SelectedItems[0].Tag;
-
-                _navigate(new NovelEditPage.NovelEditView(selectedNovel));
+                var view = new NovelEditPage.NovelEditView(selectedNovel);
+                var controller = new NovelEditPage.NovelEditController(view.DisplayState);
+                view.SetNovelEditHandler(controller.HandleEvents);
+                _navigate(view);
             }
         }
 
@@ -86,8 +116,10 @@ namespace NovelProject.AuthorPage
             if (uxNovelList.SelectedItems.Count > 0)
             {
                 Novel selectedNovel = (Novel)uxNovelList.SelectedItems[0].Tag;
-
-                _navigate(new NovelView(selectedNovel));
+                var view = new NovelPage.NovelView(selectedNovel);
+                var controller = new NovelPage.NovelController(view.DisplayState);
+                view.SetNovelHandler(controller.HandleEvents);
+                _navigate(view);
             }
         }
 
@@ -106,9 +138,7 @@ namespace NovelProject.AuthorPage
 
                 if (result == DialogResult.OK)
                 {
-                    AuthorController.DeleteNovel(selectedNovel);
-                    _novels.Remove(selectedNovel);
-                    AddNovels();
+                    handler(AuthorState.DeleteNovel, null, selectedNovel);
                 }
             }
         }

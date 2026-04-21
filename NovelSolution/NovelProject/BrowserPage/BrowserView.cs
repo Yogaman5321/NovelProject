@@ -63,12 +63,21 @@ namespace NovelProject.BrowserPage
                 card.Populate(novel);
                 card.SetNavigator(_navigate);
                 card.Width = cardWidth;
-                card.DoubleClick += (s, e) => _navigate?.Invoke(new NovelView(novel));
+
+                EventHandler navigateToNovel = (s, e) =>
+                {
+                    var view = new NovelView(novel);
+                    var controller = new NovelController(view.DisplayState);
+                    view.SetNovelHandler(controller.HandleEvents);
+                    _navigate?.Invoke(view);
+                };
+
+                card.DoubleClick += navigateToNovel;
 
                 // Propagate double-click from child controls on the card
                 foreach (Control child in card.Controls)
                 {
-                    child.DoubleClick += (s, e) => _navigate?.Invoke(new NovelView(novel));
+                    child.DoubleClick += navigateToNovel;
                 }
 
                 resultsPanel.Controls.Add(card);

@@ -1,6 +1,12 @@
 ﻿using Microsoft.Data.SqlClient;
 using NovelProject.LoginPage;
 using NovelProject.BrowserPage;
+using NovelProject.AuthorPage;
+using NovelProject.ChapterPage;
+using NovelProject.HomePage;
+using NovelProject.NovelEditPage;
+using NovelProject.NovelPage;
+using NovelProject.UserPage;
 using NovelProject.Models;
 using System;
 using System.Collections;
@@ -10,16 +16,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NovelProject.ReviewControl;
+using static System.Windows.Forms.ListView;
+using static System.Windows.Forms.ListBox;
 
 
 namespace NovelProject
 {
-
- 
-    
-    public delegate void HomePageStateHandler(HomePageState state);
-
-    public delegate void ChapterDisplayHandler(string text);
 
     public delegate void LoginHandler(LoginState s, string username, string password);
     public delegate void LoginObserver(LoginState s);
@@ -27,8 +29,23 @@ namespace NovelProject
     public delegate void BrowserHandler(BrowserState s, string query, List<SqlParameter> parameters);
     public delegate void BrowserObserver(BrowserState s, List<Novel> novels);
 
-    public delegate void NovelHandler();
-    public delegate void NovelObserver(List<Novel> novels);
+    public delegate void AuthorHandler(AuthorState s, string authorName, Novel novel);
+    public delegate void AuthorObserver(AuthorState s, List<Novel> novels);
+
+    public delegate void ChapterHandler(ChapterState s, int value);
+    public delegate void ChapterObserver(ChapterState s, string text, int currentChapter);
+
+    public delegate void HomeHandler(HomePageState s);
+    public delegate void HomeObserver(HomePageState s, List<HistoryInfo> history);
+
+    public delegate void NovelEditHandler(NovelEditState s, Novel novel, Chapter chapter, string title, ObjectCollection tags, ListViewItemCollection chapters);
+    public delegate void NovelEditObserver(NovelEditState s, Novel novel, Chapter chapter);
+
+    public delegate void NovelPageHandler(NovelPageState s, Novel novel);
+    public delegate void NovelPageObserver(NovelPageState s, List<Chapter> chapters);
+
+    public delegate void UserHandler(UserState s, string username, string newPassword);
+    public delegate void UserObserver(UserState s, UserPageData data);
 
     public delegate void ReviewObserver(ReviewState s, Review r);
     public delegate void ReviewHandler(ReviewState s, string content, decimal rating, Novel novel, int reviewId);

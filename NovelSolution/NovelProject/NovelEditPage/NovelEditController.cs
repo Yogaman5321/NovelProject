@@ -16,23 +16,56 @@ namespace NovelProject.NovelEditPage
 {
     public class NovelEditController
     {
-        internal Novel CreateNovel(Novel novel)
+        public NovelEditObserver observer;
+
+        public NovelEditController(NovelEditObserver observer)
+        {
+            this.observer = observer;
+        }
+
+        public void HandleEvents(NovelEditState state, Novel novel, Chapter chapter, string title, ObjectCollection tags, ListViewItemCollection chapters)
+        {
+            switch (state)
+            {
+                case NovelEditState.CreateNovel:
+                    var createdNovel = CreateNovel(novel);
+                    observer(NovelEditState.NovelCreated, createdNovel, null);
+                    break;
+                case NovelEditState.AddTag:
+                    AddTag(title, "change me");
+                    break;
+                case NovelEditState.UpdateNovel:
+                    UpdateNovel(novel, tags, chapters);
+                    break;
+                case NovelEditState.SaveChapter:
+                    var savedChapter = SaveChapter(novel.NovelId, title, chapters.Count + 1);
+                    observer(NovelEditState.ChapterSaved, null, savedChapter);
+                    break;
+                case NovelEditState.EditChapter:
+                    var editedChapter = EditChapter(chapter, title);
+                    observer(NovelEditState.ChapterEdited, null, editedChapter);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private Novel CreateNovel(Novel novel)
         {
             string query = $"INSERT INTO Novels (NovelName, UploadedByUserId, AuthorName, Description) VALUES ('{novel.NovelName}', 1, '{novel.AuthorName}', '{novel.Description}'); SELECT CAST(SCOPE_IDENTITY() AS INT)";
             int novelId = DatabaseHelper.ExecuteScalar<int>(query);
-
             novel.NovelId = novelId;
-
             return novel;
         }
 
-        internal Chapter EditChapter(Chapter chapter, string title)
+        private Chapter EditChapter(Chapter chapter, string title)
         {
             string query = $"UPDATE Chapters SET ChapterName = '{title}' WHERE ChapterId = {chapter.ChapterId}";
             DatabaseHelper.ExecuteNonQuery(query);
 
             return new Chapter
             {
+                ChapterId = chapter.ChapterId,
                 NovelId = chapter.NovelId,
                 ChapterNumber = chapter.ChapterNumber,
                 ChapterName = title,
@@ -40,17 +73,14 @@ namespace NovelProject.NovelEditPage
             };
         }
 
-        internal Chapter SaveChapter(int novelID, string title, int chapternumber)
+        private Chapter SaveChapter(int novelID, string title, int chapternumber)
         {
-
             string query = $"INSERT INTO Chapters (NovelId, ChapterNumber, ChapterName) VALUES ({novelID}, {chapternumber}, '{title}'); SELECT CAST(SCOPE_IDENTITY() AS INT)";
             int chapterId = DatabaseHelper.ExecuteScalar<int>(query);
 
             string basePath = AppContext.BaseDirectory;
-
             string newPath = Path.Combine(basePath, "Novels", $"{chapterId}.txt");
             string oldPath = Path.Combine(basePath, "Novels", $"{novelID}_{chapternumber}.txt");
-
             File.Move(oldPath, newPath, true);
 
             return new Chapter
@@ -63,7 +93,7 @@ namespace NovelProject.NovelEditPage
             };
         }
 
-        internal void updateNovel(Novel novel, ObjectCollection tags, ListViewItemCollection chapters)
+        private void UpdateNovel(Novel novel, ObjectCollection tags, ListViewItemCollection chapters)
         {
             string query = $"UPDATE Novels SET NovelName = '{novel.NovelName}', AuthorName = '{novel.AuthorName}', Description = '{novel.Description}' WHERE NovelId = {novel.NovelId}";
             DatabaseHelper.ExecuteNonQuery(query);
@@ -83,7 +113,6 @@ namespace NovelProject.NovelEditPage
                 }
             }
 
-
             DatabaseHelper.ExecuteNonQuery(
                 "UPDATE Chapters SET ChapterNumber = ChapterNumber + 10000 WHERE NovelId = @NovelId",
                 new SqlParameter("@NovelId", novel.NovelId)
@@ -93,7 +122,6 @@ namespace NovelProject.NovelEditPage
             {
                 if (item.Tag is Chapter chapter)
                 {
-
                     query = @"
                             UPDATE Chapters
                             SET 
@@ -104,29 +132,26 @@ namespace NovelProject.NovelEditPage
 
                     var parameters = new SqlParameter[]
                     {
-                    new SqlParameter("@ChapterNumber", chapter.ChapterNumber),
-                    new SqlParameter("@ChapterName", chapter.ChapterName),
-                    new SqlParameter("@ChapterId", chapter.ChapterId),
+                        new SqlParameter("@ChapterNumber", chapter.ChapterNumber),
+                        new SqlParameter("@ChapterName", chapter.ChapterName),
+                        new SqlParameter("@ChapterId", chapter.ChapterId),
                     };
 
                     DatabaseHelper.ExecuteNonQuery(query, parameters);
                 }
-
             }
 
             DatabaseHelper.ExecuteNonQuery("Delete FROM Chapters WHERE ChapterNumber > 10000");
         }
 
-        public void addTag(string name, string description) 
+        public void AddTag(string name, string description)
         {
-            //TODO: make the thing passing to this funciton add a description of its own
             string query = @"
                 IF NOT EXISTS (SELECT 1 FROM Tags WHERE TagName = @name)
                 BEGIN
                     INSERT INTO Tags (TagName, TagDescription)
                     VALUES (@name, @description)
                 END";
-
 
             var parameters = new SqlParameter[]
             {
@@ -135,7 +160,6 @@ namespace NovelProject.NovelEditPage
             };
 
             DatabaseHelper.ExecuteNonQuery(query, parameters);
-
         }
     }
 }
