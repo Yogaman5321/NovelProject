@@ -32,6 +32,7 @@
             uxForwardButton = new System.Windows.Forms.Button();
             uxExitButton = new System.Windows.Forms.Button();
             uxTextBox = new System.Windows.Forms.RichTextBox();
+            uxChapterLabel = new System.Windows.Forms.Label();
             SuspendLayout();
             // 
             // uxBackButton
@@ -73,10 +74,21 @@
             uxTextBox.TabIndex = 3;
             uxTextBox.Text = "";
             // 
+            // uxChapterLabel
+            // 
+            uxChapterLabel.AutoSize = true;
+            uxChapterLabel.Font = new System.Drawing.Font("Segoe UI", 14F);
+            uxChapterLabel.Location = new System.Drawing.Point(233, 15);
+            uxChapterLabel.Name = "uxChapterLabel";
+            uxChapterLabel.Size = new System.Drawing.Size(88, 25);
+            uxChapterLabel.TabIndex = 4;
+            uxChapterLabel.Text = "Chapter: ";
+            // 
             // ChapterView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(uxChapterLabel);
             Controls.Add(uxTextBox);
             Controls.Add(uxExitButton);
             Controls.Add(uxForwardButton);
@@ -84,6 +96,7 @@
             Name = "ChapterView";
             Size = new System.Drawing.Size(800, 450);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -92,5 +105,6 @@
         private System.Windows.Forms.Button uxForwardButton;
         private System.Windows.Forms.Button uxExitButton;
         private System.Windows.Forms.RichTextBox uxTextBox;
+        private System.Windows.Forms.Label uxChapterLabel;
     }
 }

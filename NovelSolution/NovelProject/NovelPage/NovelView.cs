@@ -1,7 +1,10 @@
-﻿using NovelProject.AuthorPage;
+﻿using Microsoft.Data.SqlClient;
+using NovelProject.AuthorPage;
 using NovelProject.ChapterPage;
 using NovelProject.Models;
 using NovelProject.Navigation;
+using NovelProject.ReviewControl;
+using NovelProject.UserPage;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +16,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using NovelProject.ReviewControl;
 
 namespace NovelProject.NovelPage
 {
@@ -98,7 +100,19 @@ namespace NovelProject.NovelPage
 
         private void AuthorLinkLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            //_navigate?.Invoke();
+            string username = DatabaseHelper.ExecuteScalar<string>(
+                @"SELECT u.Username
+                  FROM Novels n
+                  JOIN Users u ON n.UploadedByUserId = u.UserId
+                  WHERE n.NovelId = @NovelId",
+                new SqlParameter("@NovelId", _novel.NovelId)
+            );
+
+            if (!string.IsNullOrEmpty(username))
+            {
+                _navigate?.Invoke(new UserView(username));
+            }
+
         }
 
         private void ReadButtonClick(object sender, EventArgs e)

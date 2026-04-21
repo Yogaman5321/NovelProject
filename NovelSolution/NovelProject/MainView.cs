@@ -99,7 +99,7 @@ namespace NovelProject
             //var view = new UserView();
             //var controller = new UserController(view.DisplayState);
             //view.SetHandler(controller.HandleEvents);
-            LoadView(new UserView());
+            LoadView(new UserView(EnvironmentVars.username));
         }
 
     }

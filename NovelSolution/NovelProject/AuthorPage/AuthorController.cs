@@ -19,11 +19,19 @@ namespace NovelProject.AuthorPage
             string query = @"
             SELECT NovelId, NovelName, AuthorName, Description, DatePosted, UploadedByUserId
             FROM Novels
-            WHERE AuthorName = @AuthorName
+            WHERE UploadedByUserId = @UploadedByUserId
             ";
 
+            string userIdQuery = @"
+                SELECT UserId
+                FROM Users
+                WHERE Username = @Username
+            ";
+
+            int userId = DatabaseHelper.ExecuteScalar<int>(userIdQuery, new SqlParameter("@Username", authorName));
+
             List<SqlParameter> parameters = new List<SqlParameter>();
-                parameters.Add(new SqlParameter("@AuthorName", authorName));
+                parameters.Add(new SqlParameter("@UploadedByUserId", userId));
 
             return GetFilteredNovels(query, parameters.ToArray());
 

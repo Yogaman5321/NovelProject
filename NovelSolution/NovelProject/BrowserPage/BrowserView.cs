@@ -61,6 +61,7 @@ namespace NovelProject.BrowserPage
             {
                 var card = new NovelDisplayCard();
                 card.Populate(novel);
+                card.SetNavigator(_navigate);
                 card.Width = cardWidth;
                 card.DoubleClick += (s, e) => _navigate?.Invoke(new NovelView(novel));
 
@@ -195,6 +196,14 @@ namespace NovelProject.BrowserPage
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;
+
+            foreach (Control control in resultsPanel.Controls)
+            {
+                if (control is NovelDisplayCard card)
+                {
+                    card.SetNavigator(_navigate);
+                }
+            }
         }
 
         public void SetHandler(BrowserHandler handler)

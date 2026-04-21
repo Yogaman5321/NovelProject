@@ -39,6 +39,9 @@ namespace NovelProject.ChapterPage
         public void DisplayChapter(String chapter)
         {
             uxTextBox.Text = chapter;
+            uxChapterLabel.Text = $"Chapter {_controller.CurrentChapter}";
+
+            _controller.UpdateReadHistory();
         }
 
         private void ForwardButtonClick(object sender, EventArgs e)

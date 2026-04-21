@@ -62,5 +62,23 @@ namespace NovelProject.ChapterPage
             OnDisplayChapter?.Invoke(text);
 
         }
+
+        public void UpdateReadHistory()
+        {
+            string query = $@"
+                IF EXISTS (SELECT 1 FROM ReadHistories WHERE UserId = (SELECT UserId FROM Users WHERE Username = '{EnvironmentVars.username}') AND NovelId = {NovelId})
+                BEGIN
+                    UPDATE ReadHistories 
+                    SET LastChapterRead = {CurrentChapter}, LastReadDate = GETDATE() 
+                    WHERE UserId = (SELECT UserId FROM Users WHERE Username = '{EnvironmentVars.username}') AND NovelId = {NovelId}
+                END
+                ELSE
+                BEGIN
+                    INSERT INTO ReadHistories (UserId, NovelId, LastChapterRead) 
+                    VALUES ((SELECT UserId FROM Users WHERE Username = '{EnvironmentVars.username}'), {NovelId}, {CurrentChapter})
+                END
+            ";
+            DatabaseHelper.ExecuteNonQuery(query);
+        }
     }
 }

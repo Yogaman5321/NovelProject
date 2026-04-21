@@ -1,18 +1,21 @@
 ﻿using Microsoft.Data.SqlClient;
 using NovelProject.Models;
+using NovelProject.Navigation;
+using NovelProject.UserPage;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System;
 
 namespace NovelProject
 {
-    public partial class NovelDisplayCard : UserControl
+    public partial class NovelDisplayCard : UserControl, INavigatable
     {
         private static readonly Color DefaultBackground = SystemColors.Control;
         private static readonly Color HoverBackground = Color.FromArgb(220, 235, 252);
@@ -27,8 +30,10 @@ namespace NovelProject
             AttachHoverHandlers(this);
         }
 
+        Novel _novel;
         public void Populate(Novel novel)
         {
+            _novel = novel;
             novelNameLabel.Text = novel.NovelName;
             authorLinkLabel.Text = novel.AuthorName;
 
@@ -91,6 +96,31 @@ namespace NovelProject
             {
                 this.BackColor = DefaultBackground;
             }
+        }
+
+        private void authorLinkLabelLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+            string username = DatabaseHelper.ExecuteScalar<string>(
+            @"SELECT u.Username
+                          FROM Novels n
+                          JOIN Users u ON n.UploadedByUserId = u.UserId
+                          WHERE n.NovelId = @NovelId",
+            new SqlParameter("@NovelId", _novel.NovelId)
+            );
+
+            Debug.WriteLine(_navigate == null ? "NULL NAVIGATE" : "NAVIGATE OK");
+
+            if (!string.IsNullOrEmpty(username))
+            {
+                _navigate?.Invoke(new UserView(username));
+            }
+        }
+
+        private Action<UserControl> _navigate;
+        public void SetNavigator(Action<UserControl> navigate)
+        {
+            _navigate = navigate;
         }
     }
 }
