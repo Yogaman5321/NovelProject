@@ -24,16 +24,16 @@ namespace NovelProject.BrowserPage
         {
             InitializeComponent();
             DatabaseHelper.CleanNovels();
-            SetupListView();
+
             uxRadio1.Checked = true;
             _currentUsername = username;
-            browserListView.DoubleClick += ListViewDoubleClick;            
             uxSearchButton.Click += SearchButtonClick;
+            resultsPanel.Padding = Padding.Empty;
+            resultsPanel.SizeChanged += ResultsPanel_SizeChanged;
 
             GetTagBox();
             GetOtherFiltersBox();
             this.Load += GetInitialNovels;
-
         }
 
         public void DisplayState(BrowserState s, List<Novel> novels)
@@ -49,52 +49,46 @@ namespace NovelProject.BrowserPage
                 default:
                     break;
             }
-        }       
-
-
-
-        private void SetupListView()
-        {
-            browserListView.View = View.Details;
-            browserListView.FullRowSelect = true;
-
-            browserListView.Columns.Add("Title", 150);
-            browserListView.Columns.Add("Author", 100);
-            browserListView.Columns.Add("Rating", 50);
-            browserListView.Columns.Add("Date Added", 100);
         }
 
         private void DisplayResults(List<Novel> novels)
         {
-            browserListView.Items.Clear();
+            resultsPanel.Controls.Clear();
+
+            int cardWidth = resultsPanel.Width - SystemInformation.VerticalScrollBarWidth;
 
             foreach (var novel in novels)
             {
-                var item = new ListViewItem(novel.NovelName);
-                item.SubItems.Add(novel.AuthorName);
-                // Get average rating
-                item.SubItems.Add(DatabaseHelper.ExecuteScalar<double>(
-                    "SELECT ISNULL(AVG(CAST(Rating AS FLOAT)), 0) FROM Reviews WHERE NovelId = @novelId", 
-                    new SqlParameter("@novelId", novel.NovelId)).ToString("0.0"));
-                item.SubItems.Add(novel.DatePosted.ToString("yyyy-MM-dd"));
+                var card = new NovelDisplayCard();
+                card.Populate(novel);
+                card.Width = cardWidth;
+                card.DoubleClick += (s, e) => _navigate?.Invoke(new NovelView(novel));
 
-                item.Tag = novel;
+                // Propagate double-click from child controls on the card
+                foreach (Control child in card.Controls)
+                {
+                    child.DoubleClick += (s, e) => _navigate?.Invoke(new NovelView(novel));
+                }
 
-                browserListView.Items.Add(item);
+                resultsPanel.Controls.Add(card);
+            }
+        }
 
-                
+        private void ResultsPanel_SizeChanged(object sender, EventArgs e)
+        {
+            int cardWidth = resultsPanel.Width - SystemInformation.VerticalScrollBarWidth;
+            foreach (Control control in resultsPanel.Controls)
+            {
+                control.Width = cardWidth;
             }
         }
 
         private void SearchButtonClick(object sender, EventArgs e)
         {
             string query = BuildSearchQuery(out var parameters);
-
             handler(BrowserState.GetFilteredNovels, query, parameters);
         }
 
-
-        
         private string BuildSearchQuery(out List<SqlParameter> parameters)
         {
             var sb = new StringBuilder();
@@ -141,7 +135,7 @@ namespace NovelProject.BrowserPage
                 sb.Append(string.Join(" AND ", whereClauses));
             }
 
-            switch(otherFilterBox.SelectedItem.ToString())
+            switch (otherFilterBox.SelectedItem.ToString())
             {
                 case "Best Rated":
                     sb.Append(" ORDER BY (SELECT AVG(CAST(Rating AS FLOAT)) FROM Reviews r WHERE r.NovelId = n.NovelId) DESC");
@@ -162,7 +156,6 @@ namespace NovelProject.BrowserPage
                     break;
             }
 
-
             return sb.ToString();
         }
 
@@ -177,7 +170,7 @@ namespace NovelProject.BrowserPage
             tagBox.Items.Clear();
             tagBox.Items.Add("No Filter");
             tagBox.SelectedIndex = 0;
-            using(var reader = DatabaseHelper.ExecuteReader("SELECT TagName FROM Tags"))
+            using (var reader = DatabaseHelper.ExecuteReader("SELECT TagName FROM Tags"))
             {
                 while (reader.Read())
                 {
@@ -198,22 +191,11 @@ namespace NovelProject.BrowserPage
             otherFilterBox.SelectedIndex = 0;
         }
 
-        private void ListViewDoubleClick(object sender, EventArgs e)
-        {
-            if (browserListView.SelectedItems.Count > 0)
-            {
-                Novel selectedNovel = (Novel) browserListView.SelectedItems[0].Tag;
-
-                _navigate?.Invoke(new NovelView(selectedNovel));
-            }
-        }
-
         private Action<UserControl> _navigate;
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;
         }
-
 
         public void SetHandler(BrowserHandler handler)
         {
