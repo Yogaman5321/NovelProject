@@ -1,4 +1,5 @@
-﻿using NovelProject.Models;
+﻿using NovelProject.CommentPage;
+using NovelProject.Models;
 using NovelProject.Navigation;
 using NovelProject.NovelPage;
 using System;
@@ -22,7 +23,7 @@ namespace NovelProject.ChapterPage
         public ChapterView(Novel novel, int chapter)
         {
             InitializeComponent();
-            
+
             _novel = novel;
             _controller = new ChapterController(novel.NovelId.ToString());
             SetController(_controller);
@@ -63,6 +64,19 @@ namespace NovelProject.ChapterPage
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;
+        }
+
+        private void ViewCommentsButtonClick(object sender, EventArgs e)
+        {
+
+            string query = $@"
+                SELECT ChapterId
+                FROM Chapters
+                WHERE NovelId = {_novel.NovelId} AND ChapterNumber = {_controller.CurrentChapter};
+            ";
+
+            var chapterId = DatabaseHelper.ExecuteScalar<int>(query);
+            _navigate?.Invoke(new CommentView(chapterId));
         }
     }
 }

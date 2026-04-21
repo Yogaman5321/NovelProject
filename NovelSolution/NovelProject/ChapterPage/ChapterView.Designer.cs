@@ -33,6 +33,7 @@
             uxExitButton = new System.Windows.Forms.Button();
             uxTextBox = new System.Windows.Forms.RichTextBox();
             uxChapterLabel = new System.Windows.Forms.Label();
+            uxViewCommentsButton = new System.Windows.Forms.Button();
             SuspendLayout();
             // 
             // uxBackButton
@@ -84,17 +85,28 @@
             uxChapterLabel.TabIndex = 4;
             uxChapterLabel.Text = "Chapter: ";
             // 
+            // uxViewCommentsButton
+            // 
+            uxViewCommentsButton.Location = new System.Drawing.Point(658, 434);
+            uxViewCommentsButton.Name = "uxViewCommentsButton";
+            uxViewCommentsButton.Size = new System.Drawing.Size(117, 23);
+            uxViewCommentsButton.TabIndex = 5;
+            uxViewCommentsButton.Text = "View Comments";
+            uxViewCommentsButton.UseVisualStyleBackColor = true;
+            uxViewCommentsButton.Click += ViewCommentsButtonClick;
+            // 
             // ChapterView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(uxViewCommentsButton);
             Controls.Add(uxChapterLabel);
             Controls.Add(uxTextBox);
             Controls.Add(uxExitButton);
             Controls.Add(uxForwardButton);
             Controls.Add(uxBackButton);
             Name = "ChapterView";
-            Size = new System.Drawing.Size(800, 450);
+            Size = new System.Drawing.Size(814, 473);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -106,5 +118,6 @@
         private System.Windows.Forms.Button uxExitButton;
         private System.Windows.Forms.RichTextBox uxTextBox;
         private System.Windows.Forms.Label uxChapterLabel;
+        private System.Windows.Forms.Button uxViewCommentsButton;
     }
 }

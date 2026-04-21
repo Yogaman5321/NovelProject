@@ -35,12 +35,17 @@ namespace NovelProject.UserPage
                 uxChangePasswordButton.Enabled = false;
             }
 
-            SetupListView();
+            SetupListViews();
             AddNovels(UserController.getHistory(_currentUsername));
+            AddUploads();
+            AddComments();
         }
 
-        private void SetupListView()
+        private void SetupListViews()
         {
+
+            /* Read History */
+
             uxReadHistoryList.View = View.Details;
             uxReadHistoryList.FullRowSelect = true;
 
@@ -49,6 +54,54 @@ namespace NovelProject.UserPage
             uxReadHistoryList.Columns.Add("Author", 100);
             uxReadHistoryList.Columns.Add("Last Chapter", 100);
             uxReadHistoryList.Columns.Add("Last Read", 200);
+
+            /* Novels Uploaded */
+
+            uxUploadedNovels.View = View.Details;
+            uxUploadedNovels.FullRowSelect = true;
+
+            uxUploadedNovels.Columns.Add("Title", 200);
+            uxUploadedNovels.Columns.Add("Author", 100);
+
+
+            /* Comments */
+
+            uxCommentBox.DrawMode = DrawMode.OwnerDrawVariable;
+
+
+            uxCommentBox.MeasureItem += (s, e) =>
+            {
+                string text = uxCommentBox.Items[e.Index].ToString();
+                SizeF size = e.Graphics.MeasureString(text, uxCommentBox.Font, uxCommentBox.Width);
+                e.ItemHeight = (int)size.Height;
+            };
+
+            uxCommentBox.DrawItem += (s, e) =>
+            {
+                e.DrawBackground();
+
+                if (e.Index < 0) return;
+
+                string text = uxCommentBox.Items[e.Index].ToString();
+
+                e.Graphics.DrawString(
+                    text,
+                    uxCommentBox.Font,
+                    Brushes.Black,
+                    new RectangleF(e.Bounds.X + 5, e.Bounds.Y + 2, e.Bounds.Width - 10, e.Bounds.Height - 4)
+                );
+
+                // separator line
+                e.Graphics.DrawLine(
+                    Pens.LightGray,
+                    e.Bounds.Left,
+                    e.Bounds.Bottom - 1,
+                    e.Bounds.Right,
+                    e.Bounds.Bottom - 1
+                );
+
+                e.DrawFocusRectangle();
+            };
         }
 
         private void AddNovels(Tuple<List<Novel>, List<decimal>, List<string>, List<int>> tuple)
@@ -70,6 +123,38 @@ namespace NovelProject.UserPage
                 item.Tag = novel; 
 
                 uxReadHistoryList.Items.Add(item);
+            }
+        }
+
+        public void AddUploads() {
+            uxUploadedNovels.Items.Clear();
+            string query = $"SELECT NovelName, AuthorName FROM Novels WHERE UploadedByUserId = (SELECT UserId FROM Users WHERE Username = '{_currentUsername}')";
+            var result = DatabaseHelper.ExecuteReader(query);
+
+            while (result.Read())
+            {
+                var item = new ListViewItem(result.GetString(0));
+                item.SubItems.Add(result.GetString(1));
+                uxUploadedNovels.Items.Add(item);
+            }
+
+        }
+
+        public void AddComments()
+        {
+            uxCommentBox.Items.Clear();
+            string query = $@"SELECT n.NovelName, c.ChapterNumber, s.CommentString
+                              FROM Comments s
+                              JOIN Chapters c on c.ChapterId = s.ChapterId
+                              JOIN Novels n on n.NovelId = c.NovelId
+                              where s.UserId = (Select UserId FROM Users WHERE Username = '{_currentUsername}')
+                               ";
+
+            var result = DatabaseHelper.ExecuteReader(query);
+            while (result.Read())
+            {
+                string str = $" \n{result.GetString(0)}, Chapter: {result.GetInt32(1)} \n{result.GetString(2)}\n ";
+                uxCommentBox.Items.Add(str);
             }
         }
 
