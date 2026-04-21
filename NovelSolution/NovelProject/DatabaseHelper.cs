@@ -102,5 +102,33 @@ namespace NovelProject
             connection.Open();
             return command.ExecuteReader(CommandBehavior.CloseConnection);
         }
+
+        internal static void CleanNovels()
+        {
+            string query = @"
+                BEGIN TRANSACTION;
+
+                -- Get the NovelID
+                DECLARE @NovelID INT;
+
+                SELECT @NovelID = NovelID
+                FROM Novels
+                WHERE NovelName = 'a2a9242b-8064-4f37-9d52-03d1b8710199_Test-Novel';
+
+                -- Delete from child tables first
+                DELETE FROM Chapters
+                WHERE NovelID = @NovelID;
+
+                DELETE FROM NovelTags
+                WHERE NovelID = @NovelID;
+
+                -- Then delete the parent
+                DELETE FROM Novels
+                WHERE NovelID = @NovelID;
+
+                COMMIT;
+            ";
+            ExecuteNonQuery(query);
+        }
     }
 }

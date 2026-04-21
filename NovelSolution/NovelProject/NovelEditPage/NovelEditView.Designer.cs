@@ -42,11 +42,12 @@
             uxChapterList = new System.Windows.Forms.ListView();
             uxUpButton = new System.Windows.Forms.Button();
             uxDownButton = new System.Windows.Forms.Button();
+            uxChapterDelete = new System.Windows.Forms.Button();
             SuspendLayout();
             // 
             // uxEditChapterButton
             // 
-            uxEditChapterButton.Location = new System.Drawing.Point(289, 445);
+            uxEditChapterButton.Location = new System.Drawing.Point(253, 445);
             uxEditChapterButton.Name = "uxEditChapterButton";
             uxEditChapterButton.Size = new System.Drawing.Size(91, 23);
             uxEditChapterButton.TabIndex = 15;
@@ -73,7 +74,7 @@
             // 
             // uxAddChapterButton
             // 
-            uxAddChapterButton.Location = new System.Drawing.Point(386, 445);
+            uxAddChapterButton.Location = new System.Drawing.Point(350, 445);
             uxAddChapterButton.Name = "uxAddChapterButton";
             uxAddChapterButton.Size = new System.Drawing.Size(91, 23);
             uxAddChapterButton.TabIndex = 17;
@@ -174,10 +175,21 @@
             uxDownButton.UseVisualStyleBackColor = true;
             uxDownButton.Click += DownButtonClick;
             // 
+            // uxChapterDelete
+            // 
+            uxChapterDelete.Location = new System.Drawing.Point(447, 445);
+            uxChapterDelete.Name = "uxChapterDelete";
+            uxChapterDelete.Size = new System.Drawing.Size(30, 23);
+            uxChapterDelete.TabIndex = 29;
+            uxChapterDelete.Text = "🗑";
+            uxChapterDelete.UseVisualStyleBackColor = true;
+            uxChapterDelete.Click += ChapterDeleteClick;
+            // 
             // NovelEditView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(uxChapterDelete);
             Controls.Add(uxDownButton);
             Controls.Add(uxUpButton);
             Controls.Add(uxChapterList);
@@ -213,5 +225,6 @@
         private System.Windows.Forms.ListView uxChapterList;
         private System.Windows.Forms.Button uxUpButton;
         private System.Windows.Forms.Button uxDownButton;
+        private System.Windows.Forms.Button uxChapterDelete;
     }
 }

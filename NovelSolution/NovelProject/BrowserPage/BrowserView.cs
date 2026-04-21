@@ -21,6 +21,7 @@ namespace NovelProject.BrowserPage
         public BrowserView()
         {
             InitializeComponent();
+            DatabaseHelper.CleanNovels();
             SetupListView();
             uxRadio1.Checked = true;
 

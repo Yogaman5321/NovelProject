@@ -51,7 +51,7 @@ namespace NovelProject.NovelEditPage
             string newPath = Path.Combine(basePath, "Novels", $"{chapterId}.txt");
             string oldPath = Path.Combine(basePath, "Novels", $"{novelID}_{chapternumber}.txt");
 
-            File.Move(oldPath, newPath);
+            File.Move(oldPath, newPath, true);
 
             return new Chapter
             {
@@ -113,6 +113,8 @@ namespace NovelProject.NovelEditPage
                 }
 
             }
+
+            DatabaseHelper.ExecuteNonQuery("Delete FROM Chapters WHERE ChapterNumber > 10000");
         }
 
         public void addTag(string name, string description) 

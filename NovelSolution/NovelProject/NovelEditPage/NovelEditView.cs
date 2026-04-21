@@ -136,6 +136,8 @@ namespace NovelProject.NovelEditPage
         {
             string text = uxTagsBox.SelectedItem.ToString();
             uxTagsBox.Items.Remove(text);
+
+            DatabaseHelper.ExecuteNonQuery($"DELETE FROM NovelTags WHERE NovelId = {_novel.NovelId} AND TagId = (SELECT TagId FROM Tags WHERE TagName = '{text}')");
         }
 
         private void AddChapterButtonClick(object sender, EventArgs e)
@@ -163,7 +165,7 @@ namespace NovelProject.NovelEditPage
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 string title = dialog.TitleText;
-                Chapter selectedChapter = (Chapter) uxChapterList.SelectedItems[0].Tag;
+                Chapter selectedChapter = (Chapter)uxChapterList.SelectedItems[0].Tag;
                 Chapter chapter = controller.EditChapter(selectedChapter, title);
 
                 foreach (ListViewItem item in uxChapterList.Items)
@@ -242,7 +244,7 @@ namespace NovelProject.NovelEditPage
 
             Chapter chaptera = (Chapter)itemA.Tag;
             Chapter chapterb = (Chapter)itemB.Tag;
-    
+
             // swap chapter numbers to reflect new order
             int tempNumber = chaptera.ChapterNumber;
             chaptera.ChapterNumber = chapterb.ChapterNumber;
@@ -277,6 +279,29 @@ namespace NovelProject.NovelEditPage
 
                     number++;
                 }
+            }
+        }
+
+        private void ChapterDeleteClick(object sender, EventArgs e)
+        {
+            if (uxChapterList.SelectedIndices.Count == 0)
+            {
+                return;
+            }
+
+            var result = MessageBox.Show(
+                "Are you sure you want to delete this item?",
+                "Confirm Delete",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Warning
+            );
+
+            if (result == DialogResult.OK)
+            {
+                int index = uxChapterList.SelectedIndices[0];
+                uxChapterList.Items.RemoveAt(index);
+
+                RenumberChapters();
             }
         }
     }

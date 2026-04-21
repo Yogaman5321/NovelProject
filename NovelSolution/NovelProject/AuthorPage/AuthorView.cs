@@ -23,6 +23,7 @@ namespace NovelProject.AuthorPage
         public AuthorView()
         {
             InitializeComponent();
+            DatabaseHelper.CleanNovels();
             _author = EnvironmentVars.username;
             _novels = AuthorController.GetNovelsByAuthor(_author);
             SetupListView();
@@ -46,7 +47,7 @@ namespace NovelProject.AuthorPage
             uxNovelList.Columns.Add("Date Added", 50);
         }
 
-        private void AddNovels() 
+        private void AddNovels()
         {
             uxNovelList.Items.Clear();
 
@@ -74,7 +75,7 @@ namespace NovelProject.AuthorPage
         {
             if (uxNovelList.SelectedItems.Count > 0)
             {
-                Novel selectedNovel = (Novel )uxNovelList.SelectedItems[0].Tag;
+                Novel selectedNovel = (Novel)uxNovelList.SelectedItems[0].Tag;
 
                 _navigate(new NovelEditPage.NovelEditView(selectedNovel));
             }
@@ -87,6 +88,28 @@ namespace NovelProject.AuthorPage
                 Novel selectedNovel = (Novel)uxNovelList.SelectedItems[0].Tag;
 
                 _navigate(new NovelView(selectedNovel));
+            }
+        }
+
+        private void DeleteButtonClick(object sender, EventArgs e)
+        {
+            if (uxNovelList.SelectedItems.Count > 0)
+            {
+                Novel selectedNovel = (Novel)uxNovelList.SelectedItems[0].Tag;
+
+                var result = MessageBox.Show(
+                    "Are you sure you want to delete this item?",
+                    "Confirm Delete",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning
+                );
+
+                if (result == DialogResult.OK)
+                {
+                    AuthorController.DeleteNovel(selectedNovel);
+                    _novels.Remove(selectedNovel);
+                    AddNovels();
+                }
             }
         }
     }

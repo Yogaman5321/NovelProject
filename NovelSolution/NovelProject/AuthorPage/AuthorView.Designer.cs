@@ -33,6 +33,7 @@
             uxReadButton = new System.Windows.Forms.Button();
             uxEditButton = new System.Windows.Forms.Button();
             uxNovelList = new System.Windows.Forms.ListView();
+            uxDeleteButton = new System.Windows.Forms.Button();
             SuspendLayout();
             // 
             // uxNovelsLabel
@@ -47,7 +48,7 @@
             // 
             // uxAddNewButton
             // 
-            uxAddNewButton.Location = new System.Drawing.Point(533, 415);
+            uxAddNewButton.Location = new System.Drawing.Point(290, 454);
             uxAddNewButton.Name = "uxAddNewButton";
             uxAddNewButton.Size = new System.Drawing.Size(75, 23);
             uxAddNewButton.TabIndex = 2;
@@ -57,7 +58,7 @@
             // 
             // uxReadButton
             // 
-            uxReadButton.Location = new System.Drawing.Point(695, 415);
+            uxReadButton.Location = new System.Drawing.Point(533, 240);
             uxReadButton.Name = "uxReadButton";
             uxReadButton.Size = new System.Drawing.Size(75, 23);
             uxReadButton.TabIndex = 3;
@@ -67,7 +68,7 @@
             // 
             // uxEditButton
             // 
-            uxEditButton.Location = new System.Drawing.Point(614, 415);
+            uxEditButton.Location = new System.Drawing.Point(371, 454);
             uxEditButton.Name = "uxEditButton";
             uxEditButton.Size = new System.Drawing.Size(75, 23);
             uxEditButton.TabIndex = 4;
@@ -79,21 +80,32 @@
             // 
             uxNovelList.Location = new System.Drawing.Point(17, 59);
             uxNovelList.Name = "uxNovelList";
-            uxNovelList.Size = new System.Drawing.Size(510, 379);
+            uxNovelList.Size = new System.Drawing.Size(510, 389);
             uxNovelList.TabIndex = 5;
             uxNovelList.UseCompatibleStateImageBehavior = false;
+            // 
+            // uxDeleteButton
+            // 
+            uxDeleteButton.Location = new System.Drawing.Point(452, 454);
+            uxDeleteButton.Name = "uxDeleteButton";
+            uxDeleteButton.Size = new System.Drawing.Size(75, 23);
+            uxDeleteButton.TabIndex = 6;
+            uxDeleteButton.Text = "Delete";
+            uxDeleteButton.UseVisualStyleBackColor = true;
+            uxDeleteButton.Click += DeleteButtonClick;
             // 
             // AuthorView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(uxDeleteButton);
             Controls.Add(uxNovelList);
             Controls.Add(uxEditButton);
             Controls.Add(uxReadButton);
             Controls.Add(uxAddNewButton);
             Controls.Add(uxNovelsLabel);
             Name = "AuthorView";
-            Size = new System.Drawing.Size(800, 450);
+            Size = new System.Drawing.Size(851, 525);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -104,5 +116,6 @@
         private System.Windows.Forms.Button uxReadButton;
         private System.Windows.Forms.Button uxEditButton;
         private System.Windows.Forms.ListView uxNovelList;
+        private System.Windows.Forms.Button uxDeleteButton;
     }
 }
