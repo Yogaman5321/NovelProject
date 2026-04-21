@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using NovelProject.ReviewControl;
 
 namespace NovelProject.NovelPage
 {
@@ -21,7 +22,7 @@ namespace NovelProject.NovelPage
 
         private NovelController _controller;
 
-        Novel _novel;
+        public Novel _novel;
         public NovelView(Novel novel)
         {
             InitializeComponent();
@@ -29,6 +30,18 @@ namespace NovelProject.NovelPage
             SetController(new NovelController(novel));
             SetupListView();
             PopulateNovelInfo();
+
+            if(EnvironmentVars.IsLoggedIn == true)
+            {
+                var reviewView = new ReviewView(_novel);
+                var reviewController = new ReviewController(reviewView.DisplayState);
+                reviewView.SetHandler(reviewController.HandleEvents);
+
+                reviewView.Show();
+                reviewsPanel.Controls.Add(reviewView);
+            }
+            
+
         }
 
         private Action<UserControl> _navigate;
@@ -61,6 +74,8 @@ namespace NovelProject.NovelPage
             uxChapterList.Columns.Add("Chapter Number", 50);
             uxChapterList.Columns.Add("Chapter Title", 200);
             uxChapterList.Columns.Add("Date Added", 100);
+
+            
         }
 
         private void PopulateChapters(List<Chapter> chapters)

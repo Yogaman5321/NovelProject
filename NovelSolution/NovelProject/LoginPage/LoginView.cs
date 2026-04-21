@@ -32,18 +32,21 @@ namespace NovelProject
                 case LoginState.LoginAsGuest:
                     this.Invoke(new Action (() =>
                     {
+                        EnvironmentVars.username = "Guest";
                         LoginSucceeded?.Invoke("Guest", false);
                     }));
                     break;
                 case LoginState.SucceedLogin:
                     this.Invoke(new Action(() =>
                         {
+                            EnvironmentVars.username = usernameBox.Text;
                             LoginSucceeded?.Invoke(usernameBox.Text, true);
                         }));
                     break;
                 case LoginState.SucceedCreate:
                     this.Invoke(new Action(() =>
                         {
+                            EnvironmentVars.username = usernameBox.Text;
                             LoginSucceeded?.Invoke(usernameBox.Text, true);
                         }));
                     break;

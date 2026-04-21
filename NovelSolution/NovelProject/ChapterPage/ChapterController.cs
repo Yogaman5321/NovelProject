@@ -54,7 +54,7 @@ namespace NovelProject.ChapterPage
 
                 text = File.ReadAllText(path);
             } 
-            catch (Exception ex)
+            catch
             {
                 text = "No more chapters.";
             }

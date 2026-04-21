@@ -78,7 +78,7 @@ namespace NovelProject
 
         private void browseNovelsButton_Click(object sender, EventArgs e)
         {
-            var view = new BrowserView();
+            var view = new BrowserView(_username);
             var controller = new BrowserController(view.DisplayState);
             view.SetHandler(controller.HandleEvents);
 
