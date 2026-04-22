@@ -2,6 +2,7 @@
 using NovelProject.Models;
 using NovelProject.Navigation;
 using NovelProject.NovelPage;
+using NovelProject.CommentPage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -91,7 +92,11 @@ namespace NovelProject.ChapterPage
             ";
 
             var chapterId = DatabaseHelper.ExecuteScalar<int>(query);
-            _navigate?.Invoke(new CommentView(chapterId));
+            var view = new CommentView(chapterId);
+            var controller = new CommentController(view.DisplayState);
+            view.SetCommentHandler(controller.HandleEvents);
+            view.SetNavigator(_navigate);
+            _navigate?.Invoke(view);
         }
     }
 }

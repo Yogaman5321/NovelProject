@@ -100,7 +100,6 @@ namespace NovelProject
 
         private void authorLinkLabelLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
             string username = DatabaseHelper.ExecuteScalar<string>(
             @"SELECT u.Username
                           FROM Novels n
@@ -113,7 +112,10 @@ namespace NovelProject
 
             if (!string.IsNullOrEmpty(username))
             {
-                _navigate?.Invoke(new UserView(username));
+                var view = new UserView(username);
+                var controller = new UserController(view.DisplayState);
+                view.SetUserHandler(controller.HandleEvents);
+                _navigate?.Invoke(view);
             }
         }
 

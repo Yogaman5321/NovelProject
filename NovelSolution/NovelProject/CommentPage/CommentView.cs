@@ -1,6 +1,7 @@
 ﻿using NovelProject.ChapterPage;
 using NovelProject.Models;
 using NovelProject.Navigation;
+using NovelProject.ChapterPage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +16,10 @@ namespace NovelProject.CommentPage
 {
     public partial class CommentView : UserControl, INavigatable
     {
+        public CommentHandler handler;
+
         private int _chapterId;
+
         public CommentView(int chapterId)
         {
             InitializeComponent();
@@ -23,13 +27,45 @@ namespace NovelProject.CommentPage
 
             SetUpTable();
 
-            DisplayComments();
+            this.Load += LoadComments;
+        }
+
+        public void SetCommentHandler(CommentHandler handler)
+        {
+            this.handler = handler;
+        }
+
+        public void DisplayState(CommentState s, List<string> comments, Novel novel, int chapterNumber)
+        {
+            switch (s)
+            {
+                case CommentState.GotComments:
+                    uxCommentBox.Items.Clear();
+                    foreach (var comment in comments)
+                        uxCommentBox.Items.Add(comment);
+                    break;
+                case CommentState.CommentAdded:
+                    handler(CommentState.LoadComments, _chapterId, null);
+                    break;
+                case CommentState.GotChapter:
+                    var view = new ChapterView(novel, chapterNumber);
+                    var controller = new ChapterController(view.DisplayState, novel.NovelId.ToString());
+                    view.SetChapterHandler(controller.HandleEvents);
+                    _navigate.Invoke(view);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void LoadComments(object sender, EventArgs e)
+        {
+            handler(CommentState.LoadComments, _chapterId, null);
         }
 
         private void SetUpTable()
         {
             uxCommentBox.DrawMode = DrawMode.OwnerDrawVariable;
-
 
             uxCommentBox.MeasureItem += (s, e) =>
             {
@@ -66,58 +102,9 @@ namespace NovelProject.CommentPage
             };
         }
 
-        private void DisplayComments()
-        {
-            uxCommentBox.Items.Clear();
-
-            string query = $@"
-                SELECT c.CommentString, u.Username, c.CommentPostedDate
-                FROM Comments c
-                JOIN Users u ON c.UserId = u.UserId
-                WHERE c.ChapterId = {_chapterId}
-                ORDER BY c.CommentPostedDate ASC;
-            ";
-
-            var result = DatabaseHelper.ExecuteReader(query);
-            while (result.Read())
-            {
-                string str = $" \n{result.GetString(0)} \nBy: {result.GetString(1)} on {result.GetDateTime(2)}\n ";
-                uxCommentBox.Items.Add(str);
-            }
-        }
-
         private void BackButtonClick(object sender, EventArgs e)
         {
-            string novelQuery = $@"
-                SELECT n.NovelId, n.NovelName, n.AuthorName, n.Description, n.DatePosted, n.UploadedByUserId
-                FROM Novels n
-                JOIN Chapters c ON c.NovelId = n.NovelId
-                WHERE c.ChapterId = {_chapterId};
-            ";
-            Novel novel = null;
-            var novelResult = DatabaseHelper.ExecuteReader(novelQuery);
-
-            if (novelResult.Read())
-            {
-                novel = new Novel
-                {
-                    NovelId = novelResult.GetInt32(0),
-                    NovelName = novelResult.GetString(1),
-                    AuthorName = novelResult.GetString(2),
-                    Description = novelResult.GetString(3),
-                    DatePosted = novelResult.GetDateTime(4),
-                    UploadedByUserId = novelResult.GetInt32(5)
-                };
-            }
-
-            string chapterQuery = $@"
-                SELECT ChapterNumber
-                FROM Chapters
-                WHERE ChapterId = {_chapterId};
-            ";
-            var chapterResult = DatabaseHelper.ExecuteScalar<int>(chapterQuery);
-
-            _navigate.Invoke(new ChapterView(novel, chapterResult));
+            handler(CommentState.GetChapterForBack, _chapterId, null);
         }
 
         private void AddCommentButtonClick(object sender, EventArgs e)
@@ -125,22 +112,9 @@ namespace NovelProject.CommentPage
             string result = Prompt.ShowDialog("Enter Description", "Please enter text:");
 
             if (result == null)
-            {
                 return;
-            }
 
-            string query = $@"
-                INSERT INTO Comments (ChapterId, UserId, CommentString)
-                VALUES (
-                    {_chapterId},
-                    (SELECT UserId FROM Users WHERE Username = '{EnvironmentVars.username}'),
-                    '{result}'
-                );
-            ";
-
-            DatabaseHelper.ExecuteNonQuery(query);
-
-            DisplayComments();
+            handler(CommentState.AddComment, _chapterId, result);
         }
 
         private Action<UserControl> _navigate;

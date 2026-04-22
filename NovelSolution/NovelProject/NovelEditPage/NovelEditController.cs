@@ -52,7 +52,9 @@ namespace NovelProject.NovelEditPage
 
         private Novel CreateNovel(Novel novel)
         {
-            string query = $"INSERT INTO Novels (NovelName, UploadedByUserId, AuthorName, Description) VALUES ('{novel.NovelName}', 1, '{novel.AuthorName}', '{novel.Description}'); SELECT CAST(SCOPE_IDENTITY() AS INT)";
+            string userIdQuery = $"SELECT UserId FROM Users WHERE Username = '{EnvironmentVars.username}'";
+            int userId = DatabaseHelper.ExecuteScalar<int>(userIdQuery);
+            string query = $"INSERT INTO Novels (NovelName, UploadedByUserId, AuthorName, Description) VALUES ('{novel.NovelName}', {userId}, '{novel.AuthorName}', '{novel.Description}'); SELECT CAST(SCOPE_IDENTITY() AS INT)";
             int novelId = DatabaseHelper.ExecuteScalar<int>(query);
             novel.NovelId = novelId;
             return novel;

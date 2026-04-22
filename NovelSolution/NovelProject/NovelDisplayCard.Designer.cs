@@ -47,43 +47,43 @@
             novelNameLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, 0);
             novelNameLabel.Location = new System.Drawing.Point(0, 0);
             novelNameLabel.Name = "novelNameLabel";
-            novelNameLabel.Size = new System.Drawing.Size(102, 21);
+            novelNameLabel.Size = new System.Drawing.Size(124, 28);
             novelNameLabel.TabIndex = 0;
             novelNameLabel.Text = "NovelName";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(3, 23);
+            label1.Location = new System.Drawing.Point(3, 31);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(44, 15);
+            label1.Size = new System.Drawing.Size(55, 20);
             label1.TabIndex = 1;
             label1.Text = "Rating:";
             // 
             // ratingLabel
             // 
             ratingLabel.AutoSize = true;
-            ratingLabel.Location = new System.Drawing.Point(48, 23);
+            ratingLabel.Location = new System.Drawing.Point(55, 31);
             ratingLabel.Name = "ratingLabel";
-            ratingLabel.Size = new System.Drawing.Size(66, 15);
+            ratingLabel.Size = new System.Drawing.Size(84, 20);
             ratingLabel.TabIndex = 2;
             ratingLabel.Text = "RatingHere";
             // 
             // viewsLabel
             // 
             viewsLabel.AutoSize = true;
-            viewsLabel.Location = new System.Drawing.Point(48, 38);
+            viewsLabel.Location = new System.Drawing.Point(55, 51);
             viewsLabel.Name = "viewsLabel";
-            viewsLabel.Size = new System.Drawing.Size(131, 15);
+            viewsLabel.Size = new System.Drawing.Size(162, 20);
             viewsLabel.TabIndex = 3;
             viewsLabel.Text = "CountInReadingHistory";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(3, 38);
+            label2.Location = new System.Drawing.Point(3, 51);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(40, 15);
+            label2.Size = new System.Drawing.Size(50, 20);
             label2.TabIndex = 4;
             label2.Text = "Views:";
             // 
@@ -92,9 +92,9 @@
             authorLinkLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             authorLinkLabel.AutoSize = true;
             authorLinkLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            authorLinkLabel.Location = new System.Drawing.Point(228, 2);
+            authorLinkLabel.Location = new System.Drawing.Point(261, 3);
             authorLinkLabel.Name = "authorLinkLabel";
-            authorLinkLabel.Size = new System.Drawing.Size(97, 21);
+            authorLinkLabel.Size = new System.Drawing.Size(119, 28);
             authorLinkLabel.TabIndex = 7;
             authorLinkLabel.TabStop = true;
             authorLinkLabel.Text = "AuthorHere";
@@ -103,42 +103,41 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(228, 23);
+            label3.Location = new System.Drawing.Point(261, 31);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(57, 15);
+            label3.Size = new System.Drawing.Size(70, 20);
             label3.TabIndex = 8;
             label3.Text = "Chapters:";
             // 
             // chapterCountLabel
             // 
             chapterCountLabel.AutoSize = true;
-            chapterCountLabel.Location = new System.Drawing.Point(283, 23);
+            chapterCountLabel.Location = new System.Drawing.Point(323, 31);
             chapterCountLabel.Name = "chapterCountLabel";
-            chapterCountLabel.Size = new System.Drawing.Size(100, 15);
+            chapterCountLabel.Size = new System.Drawing.Size(122, 20);
             chapterCountLabel.TabIndex = 9;
             chapterCountLabel.Text = "CountOfChapters";
             // 
             // tagsFlowLayoutPanel
             // 
             tagsFlowLayoutPanel.AutoScroll = true;
-            tagsFlowLayoutPanel.Location = new System.Drawing.Point(39, 56);
-            tagsFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            tagsFlowLayoutPanel.Location = new System.Drawing.Point(45, 75);
             tagsFlowLayoutPanel.Name = "tagsFlowLayoutPanel";
-            tagsFlowLayoutPanel.Size = new System.Drawing.Size(342, 26);
+            tagsFlowLayoutPanel.Size = new System.Drawing.Size(391, 35);
             tagsFlowLayoutPanel.TabIndex = 10;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new System.Drawing.Point(3, 57);
+            label5.Location = new System.Drawing.Point(3, 76);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(37, 15);
+            label5.Size = new System.Drawing.Size(45, 20);
             label5.TabIndex = 11;
             label5.Text = "Tags: ";
             // 
             // NovelDisplayCard
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             Controls.Add(label5);
@@ -151,9 +150,8 @@
             Controls.Add(ratingLabel);
             Controls.Add(label1);
             Controls.Add(novelNameLabel);
-            Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             Name = "NovelDisplayCard";
-            Size = new System.Drawing.Size(390, 83);
+            Size = new System.Drawing.Size(446, 111);
             ResumeLayout(false);
             PerformLayout();
         }

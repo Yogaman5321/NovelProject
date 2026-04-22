@@ -8,6 +8,7 @@ using NovelProject.NovelEditPage;
 using NovelProject.NovelPage;
 using NovelProject.UserPage;
 using NovelProject.Models;
+using NovelProject.CommentPage;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -46,6 +47,9 @@ namespace NovelProject
 
     public delegate void UserHandler(UserState s, string username, string newPassword);
     public delegate void UserObserver(UserState s, UserPageData data);
+
+    public delegate void CommentHandler(CommentState s, int chapterId, string commentText);
+    public delegate void CommentObserver(CommentState s, List<string> comments, Novel novel, int chapterNumber);
 
     public delegate void ReviewObserver(ReviewState s, Review r);
     public delegate void ReviewHandler(ReviewState s, string content, decimal rating, Novel novel, int reviewId);
