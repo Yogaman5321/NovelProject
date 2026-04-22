@@ -44,7 +44,7 @@ namespace NovelProject.UserPage
             string query = $@"
                 SELECT 
                     (SELECT COUNT(*) FROM Novels WHERE UploadedByUserId = (SELECT UserId FROM Users WHERE Username = '{username}')) AS NovelsPosted,
-                    (SELECT COUNT(distinct NovelId) FROM ReadHistories h WHERE h.UserId = (SELECT UserId FROM Users WHERE Username = '{username}')) AS NovelsRead,
+                    (SELECT COUNT(DISTINCT c.NovelId) FROM ReadHistories h INNER JOIN Chapters c ON c.ChapterId = h.ChapterId WHERE h.UserId = (SELECT UserId FROM Users WHERE Username = '{username}')) AS NovelsRead,
                     (SELECT COUNT(*) FROM Reviews r JOIN Users u ON r.UserId = u.UserId WHERE u.Username = '{username}') AS ReviewsPosted
             ";
 
@@ -93,21 +93,17 @@ namespace NovelProject.UserPage
         private static Tuple<List<Novel>, List<decimal>, List<string>, List<int>> GetHistory(string currentUsername)
         {
             string query = @"
-                SELECT *
-                FROM Novels n
-                WHERE EXISTS (
-                    SELECT 1
+                WITH LastRead AS (
+                    SELECT c.NovelId, MAX(r.LastReadDate) AS MaxLastRead
                     FROM ReadHistories r
-                    WHERE r.NovelId = n.NovelId
-                      AND r.UserId = (SELECT UserId FROM Users WHERE Username = @Username)
+                    INNER JOIN Chapters c ON c.ChapterId = r.ChapterId
+                    WHERE r.UserId = (SELECT UserId FROM Users WHERE Username = @Username)
+                    GROUP BY c.NovelId
                 )
-                ORDER BY (
-                    SELECT MAX(r.LastReadDate)
-                    FROM ReadHistories r
-                    WHERE r.NovelId = n.NovelId
-                      AND r.UserId = (SELECT UserId FROM Users WHERE Username = @Username)
-                ) DESC;
-                ";
+                SELECT n.NovelId, n.NovelName, n.AuthorName, n.Description, n.DatePosted, n.UploadedByUserId
+                FROM Novels n
+                INNER JOIN LastRead lr ON lr.NovelId = n.NovelId
+                ORDER BY lr.MaxLastRead DESC;";
 
             var novels = new List<Novel>();
             using (var reader = DatabaseHelper.ExecuteReader(query, new SqlParameter("@Username", currentUsername)))
@@ -131,29 +127,40 @@ namespace NovelProject.UserPage
             var ratings = new List<decimal>();
             var lastReads = new List<string>();
             var lastChapter = new List<int>();
+
             foreach (var item in novels)
             {
-                string ratingQuery = $"SELECT Rating FROM Reviews WHERE NovelId = {item.NovelId} and UserId = (SELECT UserId FROM Users WHERE Username = '{currentUsername}')";
+                string ratingQuery = $"SELECT Rating FROM Reviews WHERE NovelId = {item.NovelId} AND UserId = (SELECT UserId FROM Users WHERE Username = '{currentUsername}')";
                 decimal averageRating = DatabaseHelper.ExecuteScalar<decimal>(ratingQuery);
                 ratings.Add(averageRating > 0 ? averageRating : -1);
 
-                string lastReadQuery = $"SELECT MAX(LastReadDate) FROM ReadHistories WHERE NovelId = {item.NovelId} and UserId = (SELECT UserId FROM Users WHERE Username = '{currentUsername}')";
-                DateTime? lastRead = DatabaseHelper.ExecuteScalar<DateTime?>(lastReadQuery);
+                string lastReadQuery = @"
+                    SELECT MAX(r.LastReadDate)
+                    FROM ReadHistories r
+                    INNER JOIN Chapters c ON c.ChapterId = r.ChapterId
+                    WHERE c.NovelId = @NovelId
+                      AND r.UserId = (SELECT UserId FROM Users WHERE Username = @Username)";
+
+                DateTime? lastRead = DatabaseHelper.ExecuteScalar<DateTime?>(
+                    lastReadQuery,
+                    new SqlParameter("@NovelId", item.NovelId),
+                    new SqlParameter("@Username", currentUsername)
+                );
                 lastReads.Add(lastRead.HasValue ? lastRead.Value.ToString("g") : "N/A");
 
                 string lastChapterQuery = @"
-                    SELECT TOP 1 LastChapterRead
-                    FROM ReadHistories
-                    WHERE NovelId = @NovelId
-                    AND UserId = (SELECT UserId FROM Users WHERE Username = @Username)
-                    ORDER BY LastReadDate DESC";
+                    SELECT TOP 1 c.ChapterNumber
+                    FROM ReadHistories r
+                    INNER JOIN Chapters c ON c.ChapterId = r.ChapterId
+                    WHERE c.NovelId = @NovelId
+                      AND r.UserId = (SELECT UserId FROM Users WHERE Username = @Username)
+                    ORDER BY r.LastReadDate DESC";
 
                 int? lastChapterNumber = DatabaseHelper.ExecuteScalar<int?>(
                     lastChapterQuery,
                     new SqlParameter("@NovelId", item.NovelId),
                     new SqlParameter("@Username", currentUsername)
                 );
-
                 lastChapter.Add(lastChapterNumber.HasValue ? lastChapterNumber.Value : 0);
             }
 

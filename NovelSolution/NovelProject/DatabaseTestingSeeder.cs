@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.IO;
 using Microsoft.Data.SqlClient;
 
 namespace NovelProject
@@ -18,11 +19,12 @@ namespace NovelProject
             SeedNovelTags();
             SeedReviews();
             SeedChapters();
+            SeedComments();
+            SeedReadHistories();
         }
 
         private static void SeedUsers()
         {
-            // Check if database is already seeded
             string checkQuery = "SELECT COUNT(*) FROM Users";
             int userCount = DatabaseHelper.ExecuteScalar<int>(checkQuery);
 
@@ -32,25 +34,52 @@ namespace NovelProject
                 return;
             }
 
-            // Seed test user
-            string insertUserQuery = @"INSERT INTO Users (Username, EncryptedPassword) 
-                                      VALUES (@Username, @EncryptedPassword)";
+            string csvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedingFiles", "UserSeed.csv");
 
-            var parameters = new SqlParameter[]
+            if (!File.Exists(csvPath))
             {
-                new SqlParameter("@Username", "Hunter"),
-                new SqlParameter("@EncryptedPassword", BCrypt.Net.BCrypt.HashPassword("password123")),
-            };
-
-            int rowsAffected = DatabaseHelper.ExecuteNonQuery(insertUserQuery, parameters);
-
-            if (rowsAffected > 0)
-            {
-                Debug.WriteLine("Database seeded successfully with test user 'Hunter'.");
+                Debug.WriteLine($"UserSeed.csv not found at '{csvPath}'. Skipping user seeding.");
+                return;
             }
-            else
+
+            string insertUserQuery = @"INSERT INTO Users (Username, EncryptedPassword, AccountCreatedDate) 
+                                      VALUES (@Username, @EncryptedPassword, @AccountCreatedDate)";
+
+            string[] lines = File.ReadAllLines(csvPath);
+
+            // Skip the header row
+            foreach (string line in lines.Skip(1))
             {
-                Debug.WriteLine("Failed to seed database.");
+                string[] parts = ParseCsvLine(line);
+
+                if (parts.Length < 2)
+                {
+                    Debug.WriteLine($"Skipping malformed CSV line: '{line}'");
+                    continue;
+                }
+
+                string username = parts[0].Trim();
+                string password = parts[1].Trim();
+                string createdDateStr = parts.Length > 2 ? parts[2].Trim() : null;
+                DateTime? createdDate = null;
+                if (!string.IsNullOrEmpty(createdDateStr) && DateTime.TryParse(createdDateStr, out DateTime parsedDate))
+                {
+                    createdDate = parsedDate;
+                }
+
+                var parameters = new SqlParameter[]
+                {
+                    new SqlParameter("@Username", username),
+                    new SqlParameter("@EncryptedPassword", BCrypt.Net.BCrypt.HashPassword(password)),
+                    new SqlParameter("@AccountCreatedDate", (object)createdDate ?? DBNull.Value),
+                };
+
+                int rowsAffected = DatabaseHelper.ExecuteNonQuery(insertUserQuery, parameters);
+
+                if (rowsAffected > 0)
+                    Debug.WriteLine($"Seeded user '{username}' successfully.");
+                else
+                    Debug.WriteLine($"Failed to seed user '{username}'.");
             }
         }
 
@@ -58,50 +87,143 @@ namespace NovelProject
         {
             string checkQuery = "SELECT COUNT(*) FROM Novels";
             int novelCount = DatabaseHelper.ExecuteScalar<int>(checkQuery);
-            if (novelCount > 0) 
+            if (novelCount > 0)
             {
                 Debug.WriteLine("Database already seeded with novels. Skipping seeding.");
                 return;
             }
 
-            string insertNovelQuery = @"INSERT INTO Novels (NovelName, AuthorName, Description, UploadedByUserId) 
-                                        VALUES (@NovelName, @AuthorName, @Description, @UploadedByUserId)";
+            string csvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedingFiles", "NovelSeed.csv");
 
-            var novels = new List<(string NovelName, string AuthorName, string Description, int UploadedByUserId)>
+            if (!File.Exists(csvPath))
             {
-                ("The Enchanted Forest", "Jane Doe", "A magical adventure in a mysterious forest.", 1),
-                ("Space Odyssey", "John Smith", "A thrilling journey through space and time.", 1),
-                ("Love in Paris", "Emily Johnson", "A romantic tale set in the city of love.", 1),
-                ("The Lost Kingdom", "Arthur King", "A quest to reclaim a forgotten throne.", 1),
-                ("Haunted Manor", "Sarah Night", "A chilling story of a haunted house.", 1),
-                ("Galactic Frontier", "Rick Star", "Exploring the unknown edges of the galaxy.", 1),
-                ("Author Test Novel", "hunter", "This is to test the author view functionality.", 1),
-            };
+                Debug.WriteLine($"NovelSeed.csv not found at '{csvPath}'. Skipping novel seeding.");
+                return;
+            }
 
-            foreach (var novel in novels)
+            string insertNovelQuery = @"INSERT INTO Novels (UploadedByUserId, AuthorName, NovelName, Description, DatePosted) 
+                                        VALUES (@UploadedByUserId, @AuthorName, @NovelName, @Description, @DatePosted)";
+
+            string[] lines = File.ReadAllLines(csvPath);
+
+            foreach (string line in lines.Skip(1))
             {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                string[] parts = ParseCsvLine(line);
+
+                if (parts.Length < 4)
+                {
+                    Debug.WriteLine($"Skipping malformed CSV line: '{line}'");
+                    continue;
+                }
+
+                if (!int.TryParse(parts[0].Trim(), out int uploadedByUserId))
+                {
+                    Debug.WriteLine($"Skipping line with invalid UploadedByUserId: '{line}'");
+                    continue;
+                }
+
+                string authorName = parts[1].Trim();
+                string novelName = parts[2].Trim();
+                string description = parts[3].Trim();
+                string dateStr = parts.Length > 4 ? parts[4].Trim() : null;
+
+                DateTime? datePosted = null;
+                if (!string.IsNullOrEmpty(dateStr) && DateTime.TryParse(dateStr, out DateTime parsedDate))
+                    datePosted = parsedDate;
+
                 var parameters = new SqlParameter[]
                 {
-                    new SqlParameter("@NovelName", novel.NovelName),
-                    new SqlParameter("@AuthorName", novel.AuthorName),
-                    new SqlParameter("@Description", novel.Description),
-                    new SqlParameter("@UploadedByUserId", novel.UploadedByUserId),
+                    new SqlParameter("@UploadedByUserId", uploadedByUserId),
+                    new SqlParameter("@AuthorName", authorName),
+                    new SqlParameter("@NovelName", novelName),
+                    new SqlParameter("@Description", description),
+                    new SqlParameter("@DatePosted", (object)datePosted ?? DBNull.Value),
                 };
+
                 int rowsAffected = DatabaseHelper.ExecuteNonQuery(insertNovelQuery, parameters);
+
                 if (rowsAffected > 0)
-                {
-                    Debug.WriteLine($"Inserted novel '{novel.NovelName}' successfully.");
-                }
+                    Debug.WriteLine($"Seeded novel '{novelName}' successfully.");
                 else
-                {
-                    Debug.WriteLine($"Failed to insert novel '{novel.NovelName}'.");
-                }
+                    Debug.WriteLine($"Failed to seed novel '{novelName}'.");
             }
         }
 
         private static void SeedChapters()
         {
-            return;
+            string checkQuery = "SELECT COUNT(*) FROM Chapters";
+            int chapterCount = DatabaseHelper.ExecuteScalar<int>(checkQuery);
+
+            if (chapterCount > 0)
+            {
+                Debug.WriteLine("Database already seeded with chapters. Skipping seeding.");
+                return;
+            }
+
+            string csvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedingFiles", "ChapterSeed.csv");
+
+            if (!File.Exists(csvPath))
+            {
+                Debug.WriteLine($"ChapterSeed.csv not found at '{csvPath}'. Skipping chapter seeding.");
+                return;
+            }
+
+            string novelsFolder = Path.Combine(AppContext.BaseDirectory, "Novels");
+            Directory.CreateDirectory(novelsFolder);
+
+            string insertQuery = @"INSERT INTO Chapters (NovelId, ChapterNumber, ChapterName)
+                                   VALUES (@NovelId, @ChapterNumber, @ChapterName);
+                                   SELECT CAST(SCOPE_IDENTITY() AS INT)";
+
+            string[] lines = File.ReadAllLines(csvPath);
+
+            foreach (string line in lines.Skip(1))
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                string[] parts = ParseCsvLine(line);
+
+                if (parts.Length < 3)
+                {
+                    Debug.WriteLine($"Skipping malformed CSV line: '{line}'");
+                    continue;
+                }
+
+                if (!int.TryParse(parts[0].Trim(), out int novelId) ||
+                    !int.TryParse(parts[1].Trim(), out int chapterNumber))
+                {
+                    Debug.WriteLine($"Skipping line with invalid NovelId or ChapterNumber: '{line}'");
+                    continue;
+                }
+
+                string chapterName = parts[2].Trim();
+
+                var parameters = new SqlParameter[]
+                {
+                    new SqlParameter("@NovelId", novelId),
+                    new SqlParameter("@ChapterNumber", chapterNumber),
+                    new SqlParameter("@ChapterName", chapterName),
+                };
+
+                int chapterId = DatabaseHelper.ExecuteScalar<int>(insertQuery, parameters);
+
+                if (chapterId > 0)
+                {
+                    string filePath = Path.Combine(novelsFolder, $"{chapterId}.txt");
+                    string content = $"Chapter {chapterNumber}: {chapterName}\n\n" +
+                                     $"This is placeholder content for chapter {chapterNumber} of novel {novelId}.\n\n" +
+                                     string.Concat(Enumerable.Repeat($"Lorem ipsum dolor sit amet for {chapterName}. ", 20));
+
+                    File.WriteAllText(filePath, content);
+                    Debug.WriteLine($"Seeded chapter '{chapterName}' (ChapterId={chapterId}) and wrote '{chapterId}.txt'.");
+                }
+                else
+                {
+                    Debug.WriteLine($"Failed to seed chapter '{chapterName}'.");
+                }
+            }
         }
 
         private static void SeedTags()
@@ -109,41 +231,51 @@ namespace NovelProject
             string checkQuery = "SELECT COUNT(*) FROM Tags";
             int tagCount = DatabaseHelper.ExecuteScalar<int>(checkQuery);
 
-            if (tagCount > 0) 
+            if (tagCount > 0)
             {
-                Debug.WriteLine("Database already seeded with tags. Skipping seeding.");
+                Debug.WriteLine("Database already seeded. Skipping seeding.");
                 return;
             }
 
-            string insertTagQuery = @"INSERT INTO Tags (TagName, TagDescription) VALUES (@Name, @Description)";
+            string csvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedingFiles", "TagSeed.csv");
 
-            var tags = new List<(string Name, string Description)>
+            if (!File.Exists(csvPath))
             {
-                ("Fantasy", "Novels that contain magical or supernatural elements."),
-                ("Science Fiction", "Novels that explore futuristic concepts and advanced technology."),
-                ("Romance", "Novels that focus on romantic relationships."),
-                ("Mystery", "Novels that involve solving a crime or uncovering secrets."),
-                ("Horror", "Novels that aim to evoke fear and suspense."),
-                ("Adventure", "Novels with exciting journeys or quests."),
-                ("Drama", "Novels with intense character development and interaction."),
-            };
+                Debug.WriteLine($"TagSeed.csv not found at '{csvPath}'. Skipping tag seeding.");
+                return;
+            }
 
-            foreach (var tag in tags)
+            string insertUserQuery = @"INSERT INTO Tags (TagName, TagDescription) 
+                                      VALUES (@tagName, @tagDescription)";
+
+            string[] lines = File.ReadAllLines(csvPath);
+
+            // Skip the header row
+            foreach (string line in lines.Skip(1))
             {
+                string[] parts = ParseCsvLine(line);
+
+                if (parts.Length < 2)
+                {
+                    Debug.WriteLine($"Skipping malformed CSV line: '{line}'");
+                    continue;
+                }
+
+                string tagName = parts[0].Trim();
+                string tagDesc = parts[1].Trim();
+
                 var parameters = new SqlParameter[]
                 {
-                    new SqlParameter("@Name", tag.Name),
-                    new SqlParameter("@Description", tag.Description),
+                    new SqlParameter("@tagName", tagName),
+                    new SqlParameter("@tagDescription", tagDesc),
                 };
-                int rowsAffected = DatabaseHelper.ExecuteNonQuery(insertTagQuery, parameters);
+
+                int rowsAffected = DatabaseHelper.ExecuteNonQuery(insertUserQuery, parameters);
+
                 if (rowsAffected > 0)
-                {
-                    Debug.WriteLine($"Inserted tag '{tag.Name}' successfully.");
-                }
+                    Debug.WriteLine($"Seeded tag '{tagName}' successfully.");
                 else
-                {
-                    Debug.WriteLine($"Failed to insert tag '{tag.Name}'.");
-                }
+                    Debug.WriteLine($"Failed to seed tag '{tagName}'.");
             }
         }
 
@@ -152,49 +284,51 @@ namespace NovelProject
             string checkQuery = "SELECT COUNT(*) FROM NovelTags";
             int novelTagCount = DatabaseHelper.ExecuteScalar<int>(checkQuery);
 
-            if (novelTagCount > 0) 
+            if (novelTagCount > 0)
             {
-                Debug.WriteLine("Database already seeded with novel tags. Skipping seeding.");
+                Debug.WriteLine("Database already seeded. Skipping seeding.");
                 return;
             }
 
-            string insertNovelTagQuery = @"INSERT INTO NovelTags (NovelId, TagId) VALUES (@NovelId, @TagId)";
+            string csvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedingFiles", "NovelTagSeed.csv");
 
-            var novelTags = new List<(int NovelId, int TagId)>
+            if (!File.Exists(csvPath))
             {
-                (1, 1), // The Enchanted Forest - Fantasy
-                (1, 4), // The Enchanted Forest - Mystery
-                (1, 6), // The Enchanted Forest - Adventure
-                (2, 2), // Space Odyssey - Science Fiction
-                (2, 5), // Space Odyssey - Horror
-                (2, 6), // Space Odyssey - Adventure
-                (3, 3), // Love in Paris - Romance
-                (3, 7), // Love in Paris - Drama
-                (4, 1), // The Lost Kingdom - Fantasy
-                (4, 6), // The Lost Kingdom - Adventure
-                (5, 5), // Haunted Manor - Horror
-                (5, 4), // Haunted Manor - Mystery
-                (6, 2), // Galactic Frontier - Science Fiction
-                (6, 6), // Galactic Frontier - Adventure
-                (7, 6), // Author Test Novel - Adventure
-            };
+                Debug.WriteLine($"NovelTagSeed.csv not found at '{csvPath}'. Skipping tag seeding.");
+                return;
+            }
 
-            foreach (var novelTag in novelTags)
+            string insertUserQuery = @"INSERT INTO NovelTags (NovelId, TagId) 
+                                      VALUES (@novelId, @tagId)";
+
+            string[] lines = File.ReadAllLines(csvPath);
+
+            // Skip the header row
+            foreach (string line in lines.Skip(1))
             {
+                string[] parts = ParseCsvLine(line);
+
+                if (parts.Length < 2)
+                {
+                    Debug.WriteLine($"Skipping malformed CSV line: '{line}'");
+                    continue;
+                }
+
+                string novelId = parts[0].Trim();
+                string tagId = parts[1].Trim();
+
                 var parameters = new SqlParameter[]
                 {
-                    new SqlParameter("@NovelId", novelTag.NovelId),
-                    new SqlParameter("@TagId", novelTag.TagId),
+                    new SqlParameter("@novelId", novelId),
+                    new SqlParameter("@tagId", tagId),
                 };
-                int rowsAffected = DatabaseHelper.ExecuteNonQuery(insertNovelTagQuery, parameters);
+
+                int rowsAffected = DatabaseHelper.ExecuteNonQuery(insertUserQuery, parameters);
+
                 if (rowsAffected > 0)
-                {
-                    Debug.WriteLine($"Inserted novel tag (NovelId: {novelTag.NovelId}, TagId: {novelTag.TagId}) successfully.");
-                }
+                    Debug.WriteLine($"Seeded novelTag novel '{novelId}', tag '{tagId}' successfully.");
                 else
-                {
-                    Debug.WriteLine($"Failed to insert novel tag (NovelId: {novelTag.NovelId}, TagId: {novelTag.TagId}).");
-                }
+                    Debug.WriteLine($"Did not Seed novelTag '{novelId}', '{tagId}'.");
             }
         }
 
@@ -202,49 +336,219 @@ namespace NovelProject
         {
             string checkQuery = "SELECT COUNT(*) FROM Reviews";
             int reviewCount = DatabaseHelper.ExecuteScalar<int>(checkQuery);
+
             if (reviewCount > 0)
             {
-                Debug.WriteLine("Database already seeded with reviews. Skipping seeding.");
+                Debug.WriteLine("Database already seeded. Skipping seeding.");
                 return;
             }
 
-            string insertReviewQuery = @"INSERT INTO Reviews (UserId, NovelId, ReviewContent, Rating) VALUES (@UserId, @NovelId, @ReviewContent, @Rating)";
+            string csvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedingFiles", "ReviewSeed.csv");
 
-            var reviews = new List<(int UserId, int NovelId, string ReviewContent, decimal Rating)>
+            if (!File.Exists(csvPath))
             {
-                (1, 1, "Absolutely loved the magical world!", 9.50m),
-                (1, 2, "A mind-bending journey through the stars.", 8.75m),
-                (1, 3, "A sweet and touching romance.", 8.20m),
-                (1, 4, "Epic adventure with great characters.", 9.00m),
-                (1, 5, "Spooky and suspenseful!", 7.80m),
-                (1, 6, "Fascinating look at the galaxy's edge.", 8.90m),
-            };
+                Debug.WriteLine($"ReviewSeed.csv not found at '{csvPath}'. Skipping tag seeding.");
+                return;
+            }
 
-            foreach (var review in reviews)
+            string insertUserQuery = @"INSERT INTO Reviews (UserId, NovelId, ReviewContent, Rating, ReviewPostedDate) 
+                                      VALUES (@userId, @novelId, @reviewContent, @rating, @reviewPostedDate)";
+
+            string[] lines = File.ReadAllLines(csvPath);
+
+            // Skip the header row
+            foreach (string line in lines.Skip(1))
             {
+                string[] parts = ParseCsvLine(line);
+
+                if (parts.Length < 2)
+                {
+                    Debug.WriteLine($"Skipping malformed CSV line: '{line}'");
+                    continue;
+                }
+
+                string userId = parts[0];
+                string novelId = parts[1];
+                string reviewContent = parts[2];
+                string rating = parts[3];
+                string dateStr = parts.Length > 4 ? parts[4].Trim() : null;
+
+                DateTime? reviewPostedDate = null;
+                if (!string.IsNullOrEmpty(dateStr) && DateTime.TryParse(dateStr, out DateTime parsedDate))
+                    reviewPostedDate = parsedDate;
+
+
                 var parameters = new SqlParameter[]
                 {
-                    new SqlParameter("@UserId", review.UserId),
-                    new SqlParameter("@NovelId", review.NovelId),
-                    new SqlParameter("@ReviewContent", review.ReviewContent),
-                    new SqlParameter("@Rating", review.Rating),
+                    new SqlParameter("@userId", userId),
+                    new SqlParameter("@novelId", novelId),
+                    new SqlParameter("@reviewContent", reviewContent),
+                    new SqlParameter("@rating", rating),
+                    new SqlParameter("@reviewPostedDate", reviewPostedDate)
                 };
-                int rowsAffected = DatabaseHelper.ExecuteNonQuery(insertReviewQuery, parameters);
+
+                int rowsAffected = DatabaseHelper.ExecuteNonQuery(insertUserQuery, parameters);
+
                 if (rowsAffected > 0)
-                {
-                    Debug.WriteLine($"Inserted review for NovelId: {review.NovelId} successfully.");
-                }
+                    Debug.WriteLine($"Seeded review user '{userId}', novel '{novelId}' successfully.");
                 else
-                {
-                    Debug.WriteLine($"Failed to insert review for NovelId: {review.NovelId}.");
-                }
+                    Debug.WriteLine($"Did not seed review user '{userId}', novel '{novelId}' successfully.");
             }
         }
 
         private static void SeedComments()
         {
+            string checkQuery = "SELECT COUNT(*) FROM Comments";
+            int commentCount = DatabaseHelper.ExecuteScalar<int>(checkQuery);
+
+            if (commentCount > 0)
+            {
+                Debug.WriteLine("Database already seeded. Skipping seeding.");
+                return;
+            }
+
+            string csvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedingFiles", "CommentSeed.csv");
+
+            if (!File.Exists(csvPath))
+            {
+                Debug.WriteLine($"CommentSeed.csv not found at '{csvPath}'. Skipping comment seeding.");
+                return;
+            }
+
+            string insertCommentQuery = @"INSERT INTO Comments (UserId, ChapterId, CommentString, CommentPostedDate) 
+                                      VALUES (@userId, @chapterId, @commentString, @commentPostedDate)";
+
+            string[] lines = File.ReadAllLines(csvPath);
+
+            // Skip the header row
+            foreach (string line in lines.Skip(1))
+            {
+                string[] parts = ParseCsvLine(line);
+
+                if (parts.Length < 2)
+                {
+                    Debug.WriteLine($"Skipping malformed CSV line: '{line}'");
+                    continue;
+                }
+
+                string userId = parts[0];
+                string chapterId = parts[1];
+                string commentString = parts[2];
+                string dateStr = parts.Length > 3 ? parts[3].Trim() : null;
+                DateTime? commentPostedDate = null;
+                if (!string.IsNullOrEmpty(dateStr) && DateTime.TryParse(dateStr, out DateTime parsedDate))
+                    commentPostedDate = parsedDate;
+
+
+                var parameters = new SqlParameter[]
+                {
+                    new SqlParameter("@userId", userId),
+                    new SqlParameter("@chapterId", chapterId),
+                    new SqlParameter("@commentString", commentString),
+                    new SqlParameter("@commentPostedDate", commentPostedDate)
+                };
+
+                int rowsAffected = DatabaseHelper.ExecuteNonQuery(insertCommentQuery, parameters);
+
+                if (rowsAffected > 0)
+                    Debug.WriteLine($"Seeded comment user '{userId}', chapter '{chapterId}' successfully.");
+                else
+                    Debug.WriteLine($"Did not seed comment user '{userId}', chapter '{chapterId}' successfully.");
+            }
         }
 
-        //private void SeedReadHistories() don't know if we need this?
+        private static void SeedReadHistories()
+        {
+            string checkQuery = "SELECT COUNT(*) FROM ReadHistories";
+            int count = DatabaseHelper.ExecuteScalar<int>(checkQuery);
+
+            if (count > 0)
+            {
+                Debug.WriteLine("Database already seeded with read histories. Skipping seeding.");
+                return;
+            }
+
+            string csvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedingFiles", "ReadHistorySeed.csv");
+
+            if (!File.Exists(csvPath))
+            {
+                Debug.WriteLine($"ReadHistorySeed.csv not found at '{csvPath}'. Skipping read history seeding.");
+                return;
+            }
+
+            string insertQuery = @"INSERT INTO ReadHistories (UserId, ChapterId, LastReadDate)
+                                   VALUES (@UserId, @ChapterId, @LastReadDate)";
+
+            string[] lines = File.ReadAllLines(csvPath);
+
+            foreach (string line in lines.Skip(1))
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                string[] parts = ParseCsvLine(line);
+
+                if (parts.Length < 3)
+                {
+                    Debug.WriteLine($"Skipping malformed CSV line: '{line}'");
+                    continue;
+                }
+
+                if (!int.TryParse(parts[0].Trim(), out int userId) ||
+                    !int.TryParse(parts[1].Trim(), out int chapterId))
+                {
+                    Debug.WriteLine($"Skipping line with invalid UserId or ChapterId: '{line}'");
+                    continue;
+                }
+
+                if (!DateTime.TryParse(parts[2].Trim(), out DateTime lastReadDate))
+                {
+                    Debug.WriteLine($"Skipping line with invalid LastReadDate: '{line}'");
+                    continue;
+                }
+
+                var parameters = new SqlParameter[]
+                {
+                    new SqlParameter("@UserId", userId),
+                    new SqlParameter("@ChapterId", chapterId),
+                    new SqlParameter("@LastReadDate", lastReadDate),
+                };
+
+                int rowsAffected = DatabaseHelper.ExecuteNonQuery(insertQuery, parameters);
+
+                if (rowsAffected > 0)
+                    Debug.WriteLine($"Seeded read history UserId={userId}, ChapterId={chapterId} successfully.");
+                else
+                    Debug.WriteLine($"Failed to seed read history UserId={userId}, ChapterId={chapterId}.");
+            }
+        }
+
+        private static string[] ParseCsvLine(string line)
+        {
+            var fields = new List<string>();
+            bool inQuotes = false;
+            var current = new StringBuilder();
+
+            for (int i = 0; i < line.Length; i++)
+            {
+                char c = line[i];
+
+                if (c == '"')
+                {
+                    inQuotes = !inQuotes;
+                }
+                else if (c == ',' && !inQuotes)
+                {
+                    fields.Add(current.ToString());
+                    current.Clear();
+                }
+                else
+                {
+                    current.Append(c);
+                }
+            }
+
+            fields.Add(current.ToString());
+            return fields.ToArray();
+        }
     }
 }

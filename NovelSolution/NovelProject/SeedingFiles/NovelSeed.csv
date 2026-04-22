@@ -1,0 +1,82 @@
+﻿UploadedByUserId,AuthorName,NovelName,Description,DatePosted
+12,Jane Austen,Pride and Prejudice Reimagined,A modern retelling of a classic romance,2023-02-14 10:22:31
+7,Arthur Conan Doyle,Shadow of Sherlock,A new mystery inspired by Holmes,2023-03-01 14:05:12
+25,Mark Twain,Mississippi Tales,Adventures along the great river,2023-01-19 09:11:45
+44,Emily Brontë,Winds of Wuthering,A dark and stormy romance,2023-05-23 18:44:02
+3,George Orwell,Neo 2084,A dystopian future revisited,2023-07-11 12:33:56
+18,J.K. Rowling,Wizarding Legacy,A new generation of magic users,2023-08-02 16:20:10
+31,Brandon Sanderson,Storms of Eternity,Epic fantasy with vast worlds,2023-09-14 11:05:27
+9,Agatha Christie,The Final Clue,A detective solves her last case,2023-10-30 20:41:03
+50,Isaac Asimov,Galactic Minds,Exploring intelligence across stars,2023-11-21 07:55:19
+2,Ernest Hemingway,Sea of Silence,A quiet tale of struggle and sea,2023-12-05 13:17:44
+15,Fyodor Dostoevsky,Sins of the Mind,Psychological drama of guilt,2024-01-10 09:42:11
+27,Leo Tolstoy,War of Hearts,Love and conflict intertwined,2024-02-02 15:25:33
+6,Stephen King,Night Terrors Rising,Horror awakens in a small town,2024-03-18 22:14:59
+11,Neil Gaiman,Dreamwalkers,A journey through dreams,2024-04-01 08:33:47
+42,Robin Hobb,Dragon’s Path,Fantasy tale of dragons and fate,2024-04-19 17:59:12
+36,George R.R. Martin,Winter’s Echo,Political intrigue in cold lands,2024-05-03 19:22:08
+1,Patrick Rothfuss,The Silent Name,A bard’s untold story,2024-05-20 10:11:51
+23,Web Author A,Leveling Beyond,An RPG-style progression fantasy,2024-06-01 12:01:00
+45,Web Author B,System Ascension,A hero rises through a system,2024-06-11 14:44:22
+8,Web Author C,The Dungeon Core,A sentient dungeon grows power,2024-06-25 09:55:36
+19,Web Author D,Reborn as a Slime King,Reincarnation with powers,2024-07-03 11:45:12
+29,Web Author E,Infinite Mana,A mage breaks limits,2024-07-15 16:33:28
+13,Web Author F,Chronicles of Grind,Slow growth and strategy,2024-07-28 20:12:09
+39,Web Author G,The Last Summoner,Calling creatures to battle,2024-08-02 07:08:55
+22,Web Author H,Path of the Sword,Swordsmanship and honor,2024-08-10 18:19:44
+4,Web Author I,Heavenly Cultivation,Cultivation fantasy epic,2024-08-19 13:05:30
+48,Web Author J,Monster Evolution,Creatures evolving endlessly,2024-08-29 21:55:18
+33,Web Author K,The Guild Master,Managing a powerful guild,2024-09-01 10:02:44
+16,Web Author L,Void Walker,Exploring the void realms,2024-09-12 08:42:16
+41,Web Author M,The Time Hacker,Manipulating time streams,2024-09-25 19:11:01
+28,Web Author N,Shadow Assassin,A stealthy killer’s rise,2024-10-03 15:33:27
+10,Web Author O,The Arcane Library,Magic hidden in books,2024-10-11 11:17:50
+5,Web Author P,Kingdom Builder,From nothing to empire,2024-10-19 09:28:33
+34,Web Author Q,The Fallen Hero,A disgraced hero returns,2024-10-27 14:50:19
+17,Web Author R,Beast Tamer,Taming magical creatures,2024-11-02 16:02:48
+47,Web Author S,The Endless Tower,Climbing for power,2024-11-09 20:30:10
+21,Web Author T,Alchemy Reborn,A genius returns to youth,2024-11-18 13:12:37
+37,Web Author U,Blade of Eternity,A sword that never dulls,2024-11-25 17:41:52
+30,Web Author V,Realm Traveler,Jumping between worlds,2024-12-02 09:05:23
+14,Web Author W,The Hidden Class,A secret power awakens,2024-12-10 18:27:45
+24,Web Author X,The Iron Path,Relentless pursuit of strength,2024-12-18 07:49:16
+46,Web Author Y,Skyship Chronicles,Adventure in the skies,2024-12-24 22:11:02
+20,Web Author Z,The Eternal Dungeon,Endless dungeon crawling,2025-01-03 10:33:28
+26,Author AA,Fragments of Fate,Choices shape destiny,2025-01-10 12:15:39
+32,Author BB,Glass Kingdom,A fragile empire stands,2025-01-17 15:42:11
+38,Author CC,Silver Threads,Interwoven lives collide,2025-01-25 08:59:55
+43,Author DD,Obsidian Heart,Dark love story unfolds,2025-02-01 18:05:42
+35,Author EE,Crimson Night,Vampires rule the city,2025-02-08 21:13:19
+40,Author FF,Golden Horizon,Hope beyond the sea,2025-02-16 14:26:03
+49,Author GG,Forgotten Legends,Ancient myths awaken,2025-02-24 11:08:57
+18,Author HH,Shattered Realms,Worlds collide violently,2025-03-02 09:44:10
+12,Author II,Silent Echoes,Memories haunt the present,2025-03-09 17:22:41
+7,Author JJ,Blazing Star,A hero rises in flames,2025-03-15 19:33:55
+25,Author KK,Midnight Voyage,Sailing through darkness,2025-03-21 13:18:22
+44,Author LL,Iron Will,Strength against adversity,2025-03-28 16:44:36
+3,Author MM,Crystal Skies,A world above the clouds,2025-04-01 08:12:09
+18,Author NN,Runic Power,Ancient magic rediscovered,2025-04-05 11:55:42
+31,Author OO,Stormbreaker,A warrior commands storms,2025-04-09 14:03:27
+9,Author PP,Phantom Edge,A blade of shadows,2025-04-12 20:41:03
+50,Author QQ,Infinite Loop,Time repeats endlessly,2025-04-15 07:55:19
+2,Author RR,Deep Space Call,A mission beyond stars,2025-04-18 13:17:44
+15,Author SS,Wild Frontier,Life on the edge,2025-04-20 09:42:11
+27,Author TT,Hidden Truths,Secrets unravel slowly,2025-04-21 15:25:33
+6,Author UU,Dark Horizon,The end approaches,2025-04-22 10:14:59
+11,Author VV,Lightbringer,A beacon of hope rises,2025-04-22 11:33:47
+42,Author WW,Frozen Ash,A cold aftermath,2025-04-22 12:59:12
+36,Author XX,Emerald Dream,A lush fantasy tale,2025-04-22 13:22:08
+1,Author YY,Silent Blade,A quiet killer moves,2025-04-22 14:11:51
+23,Author ZZ,Last Dawn,The final sunrise,2025-04-22 15:01:00
+45,Author AAA,Stormcaller,Calling thunder and rain,2025-04-22 15:44:22
+8,Author BBB,Shadow Realm,A world of darkness,2025-04-22 16:55:36
+19,Author CCC,Broken Chains,Freedom regained,2025-04-22 17:45:12
+29,Author DDD,Rising Phoenix,Rebirth through fire,2025-04-22 18:33:28
+13,Author EEE,Iron Crown,A ruler’s burden,2025-04-22 19:12:09
+39,Author FFF,Lost Kingdom,A vanished empire found,2025-04-22 20:08:55
+22,Author GGG,Final Horizon,The edge of existence,2025-04-22 21:19:44
+4,Author HHH,Arcane Storm,Magic unleashed wildly,2025-04-22 22:05:30
+48,Author III,Dragonfall,Dragons descend again,2025-04-22 22:55:18
+33,Author JJJ,Starbound,Journey among the stars,2025-04-22 23:02:44
+16,Author KKK,Hidden Ember,A spark remains,2025-04-22 23:42:16
+41,Author LLL,Dark Spiral,Descending into chaos,2025-04-22 23:59:01

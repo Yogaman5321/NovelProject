@@ -41,7 +41,7 @@ namespace NovelProject.HomePage
             string sql = @"
                 SELECT TOP 10 C.ChapterName, RH.LastReadDate
                 FROM ReadHistories RH
-                INNER JOIN Chapters C ON RH.LastChapterRead = C.ChapterNumber
+                INNER JOIN Chapters C ON C.ChapterId = RH.ChapterId
                 WHERE RH.UserId = @UserID
                 ORDER BY RH.LastReadDate DESC;";
 

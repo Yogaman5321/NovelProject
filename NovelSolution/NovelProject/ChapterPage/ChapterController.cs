@@ -69,17 +69,22 @@ namespace NovelProject.ChapterPage
         private void UpdateReadHistory()
         {
             string query = $@"
-                IF EXISTS (SELECT 1 FROM ReadHistories WHERE UserId = (SELECT UserId FROM Users WHERE Username = '{EnvironmentVars.username}') AND NovelId = {NovelId})
-                BEGIN
-                    UPDATE ReadHistories 
-                    SET LastChapterRead = {CurrentChapter}, LastReadDate = GETDATE() 
-                    WHERE UserId = (SELECT UserId FROM Users WHERE Username = '{EnvironmentVars.username}') AND NovelId = {NovelId}
-                END
-                ELSE
-                BEGIN
-                    INSERT INTO ReadHistories (UserId, NovelId, LastChapterRead) 
-                    VALUES ((SELECT UserId FROM Users WHERE Username = '{EnvironmentVars.username}'), {NovelId}, {CurrentChapter})
-                END
+                DECLARE @ChapterId INT;
+                SELECT @ChapterId = ChapterId
+                FROM Chapters
+                WHERE NovelId = {NovelId} AND ChapterNumber = {CurrentChapter};
+
+                MERGE ReadHistories AS target
+                USING (
+                    SELECT (SELECT UserId FROM Users WHERE Username = '{EnvironmentVars.username}') AS UserId,
+                           @ChapterId AS ChapterId
+                ) AS source
+                ON target.UserId = source.UserId AND target.ChapterId = source.ChapterId
+                WHEN MATCHED THEN
+                    UPDATE SET LastReadDate = GETDATE()
+                WHEN NOT MATCHED THEN
+                    INSERT (UserId, ChapterId)
+                    VALUES (source.UserId, source.ChapterId);
             ";
             DatabaseHelper.ExecuteNonQuery(query);
         }

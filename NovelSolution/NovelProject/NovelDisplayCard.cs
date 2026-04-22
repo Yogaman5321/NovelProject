@@ -40,17 +40,21 @@ namespace NovelProject
             // Views: not yet implemented (ReadHistory table pending)
             viewsLabel.Text = "N/A";
 
-            // Average rating
-            double rating = DatabaseHelper.ExecuteScalar<double>(
-                "SELECT ISNULL(AVG(CAST(Rating AS FLOAT)), 0) FROM Reviews WHERE NovelId = @novelId",
-                new SqlParameter("@novelId", novel.NovelId));
-            ratingLabel.Text = rating.ToString("0.0");
-
-            // Chapter count
-            int chapterCount = DatabaseHelper.ExecuteScalar<int>(
-                "SELECT COUNT(*) FROM Chapters WHERE NovelId = @novelId",
-                new SqlParameter("@novelId", novel.NovelId));
-            chapterCountLabel.Text = chapterCount.ToString();
+            // Average rating + chapter count in a single query
+            using (var reader = DatabaseHelper.ExecuteReader(
+                @"SELECT
+                    ISNULL(AVG(CAST(r.Rating AS FLOAT)), 0) AS AvgRating,
+                    (SELECT COUNT(*) FROM Chapters WHERE NovelId = @novelId) AS ChapterCount
+                  FROM Reviews r
+                  WHERE r.NovelId = @novelId",
+                new SqlParameter("@novelId", novel.NovelId)))
+            {
+                if (reader.Read())
+                {
+                    ratingLabel.Text = reader.GetDouble(0).ToString("0.0");
+                    chapterCountLabel.Text = reader.GetInt32(1).ToString();
+                }
+            }
 
             // Tags
             tagsFlowLayoutPanel.Controls.Clear();

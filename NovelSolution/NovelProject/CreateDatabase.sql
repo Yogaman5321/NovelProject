@@ -97,13 +97,11 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'ReadHistories')
 BEGIN
     CREATE TABLE ReadHistories (
-        ReadHistoryId INT PRIMARY KEY IDENTITY(1,1),
         UserId INT NOT NULL,
-        NovelId INT NOT NULL,
-        LastChapterRead INT NOT NULL,
+        ChapterId INT NOT NULL,
         LastReadDate DATETIME NOT NULL DEFAULT(SYSDATETIMEOFFSET()),
-        FOREIGN KEY (UserId) REFERENCES Users(UserId),
-        FOREIGN KEY (NovelId) REFERENCES Novels(NovelId) ON DELETE CASCADE
+        FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE,
+        FOREIGN KEY (ChapterId) REFERENCES Chapters(ChapterId) ON DELETE CASCADE
     );
 END
 GO

@@ -6,6 +6,42 @@
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="SeedingFiles\ChapterSeed.csv" />
+    <None Remove="SeedingFiles\CommentSeed.csv" />
+    <None Remove="SeedingFiles\NovelSeed.csv" />
+    <None Remove="SeedingFiles\NovelTagSeed.csv" />
+    <None Remove="SeedingFiles\ReadHistorySeed.csv" />
+    <None Remove="SeedingFiles\ReviewSeed.csv" />
+    <None Remove="SeedingFiles\TagSeed.csv" />
+    <None Remove="SeedingFiles\UserSeed.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SeedingFiles\ChapterSeed.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedingFiles\CommentSeed.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedingFiles\NovelSeed.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedingFiles\NovelTagSeed.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedingFiles\ReadHistorySeed.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedingFiles\ReviewSeed.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedingFiles\TagSeed.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SeedingFiles\UserSeed.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.0" />
   </ItemGroup>

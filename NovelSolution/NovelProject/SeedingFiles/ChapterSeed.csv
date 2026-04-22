@@ -1,0 +1,401 @@
+﻿NovelId,ChapterNumber,ChapterName,DateAdded
+1,1,The Baker Street Call,2023-03-05 08:00:00
+1,2,A Curious Clue,2023-03-12 09:00:00
+1,3,Into the Fog,2023-03-21 10:00:00
+1,4,The First Suspect,2023-04-01 08:30:00
+1,5,Shadows and Lies,2023-04-10 11:00:00
+1,6,A Hidden Connection,2023-04-20 14:00:00
+1,7,The Chase Begins,2023-05-02 09:00:00
+1,8,Closing the Net,2023-05-15 10:00:00
+1,9,The Final Deduction,2023-06-01 13:00:00
+1,10,Justice Served,2023-06-20 15:00:00
+2,1,The River Awakens,2023-01-25 09:00:00
+2,2,Muddy Waters,2023-02-03 10:00:00
+2,3,Strangers on the Bank,2023-02-14 11:00:00
+2,4,The Old Ferryman,2023-02-26 09:30:00
+2,5,Storm on the Mississippi,2023-03-10 14:00:00
+2,6,A Town Without Law,2023-03-25 10:00:00
+2,7,The Hidden Cargo,2023-04-08 11:00:00
+2,8,Downriver,2023-04-22 09:00:00
+2,9,The Last Bend,2023-05-07 13:00:00
+2,10,Home Again,2023-05-22 15:00:00
+3,1,The First Storm,2023-05-30 08:00:00
+3,2,A Bitter Meeting,2023-06-08 09:00:00
+3,3,Shadows on the Moor,2023-06-19 10:00:00
+3,4,Old Wounds,2023-07-01 08:00:00
+3,5,The Locked Room,2023-07-14 11:00:00
+3,6,Winter's Embrace,2023-07-28 14:00:00
+3,7,A Cruel Heart,2023-08-10 09:00:00
+3,8,Lost in the Dark,2023-08-25 10:00:00
+3,9,The Final Letter,2023-09-08 13:00:00
+3,10,After the Storm,2023-09-24 15:00:00
+4,1,The New Order,2023-07-18 09:00:00
+4,2,Citizens of the Grid,2023-07-28 10:00:00
+4,3,Room 101 Revisited,2023-08-08 11:00:00
+4,4,The Underground,2023-08-20 09:00:00
+4,5,Cracks in the System,2023-09-02 14:00:00
+4,6,A Dangerous Broadcast,2023-09-15 10:00:00
+4,7,The Resistance Grows,2023-09-29 11:00:00
+4,8,Into the Outer Zones,2023-10-12 09:00:00
+4,9,The Truth Revealed,2023-10-27 13:00:00
+4,10,A World Reborn,2023-11-10 15:00:00
+5,1,The Next Generation,2023-08-09 08:00:00
+5,2,First Day at School,2023-08-19 09:00:00
+5,3,The Old Spell,2023-09-01 10:00:00
+5,4,A Familiar Danger,2023-09-15 08:00:00
+5,5,The Forbidden Archive,2023-09-29 11:00:00
+5,6,A New Alliance,2023-10-14 14:00:00
+5,7,Dark Magic Rising,2023-10-28 09:00:00
+5,8,The Mentor's Secret,2023-11-11 10:00:00
+5,9,The Final Trial,2023-11-25 13:00:00
+5,10,Legacy Fulfilled,2023-12-09 15:00:00
+6,1,The World Beyond,2023-09-21 09:00:00
+6,2,The Gathering Storm,2023-10-02 10:00:00
+6,3,A Warrior's Oath,2023-10-14 11:00:00
+6,4,The Ancient Map,2023-10-27 09:00:00
+6,5,Into the Wilds,2023-11-09 14:00:00
+6,6,The Enemy Revealed,2023-11-22 10:00:00
+6,7,Battle at the Gates,2023-12-06 11:00:00
+6,8,The Cost of War,2023-12-20 09:00:00
+6,9,The Storm Unleashed,2024-01-05 13:00:00
+6,10,Peace and Ashes,2024-01-20 15:00:00
+7,1,One Last Case,2023-11-06 08:00:00
+7,2,A Body in the Library,2023-11-17 09:00:00
+7,3,The First Interview,2023-11-28 10:00:00
+7,4,A Missing Key,2023-12-10 08:00:00
+7,5,The Detective's Doubt,2023-12-22 11:00:00
+7,6,A Second Death,2024-01-05 14:00:00
+7,7,Unraveling the Web,2024-01-19 09:00:00
+7,8,The Trap is Set,2024-02-02 10:00:00
+7,9,Caught in the Act,2024-02-16 13:00:00
+7,10,The Final Clue Revealed,2024-03-01 15:00:00
+8,1,Departure from Earth,2023-11-28 09:00:00
+8,2,The Outer Rim,2023-12-08 10:00:00
+8,3,First Contact,2023-12-20 11:00:00
+8,4,The Signal,2024-01-03 09:00:00
+8,5,A Strange Intelligence,2024-01-17 14:00:00
+8,6,The Crew Divides,2024-02-01 10:00:00
+8,7,Into the Nebula,2024-02-15 11:00:00
+8,8,The Mind Network,2024-03-01 09:00:00
+8,9,War Among Stars,2024-03-16 13:00:00
+8,10,A New Horizon,2024-04-01 15:00:00
+9,1,Out to Sea,2023-12-12 08:00:00
+9,2,The Calm Before,2023-12-22 09:00:00
+9,3,Lost at Sea,2024-01-05 10:00:00
+9,4,Days Without Water,2024-01-18 08:00:00
+9,5,A Distant Shore,2024-02-01 11:00:00
+9,6,The Silence Speaks,2024-02-15 14:00:00
+9,7,Reckoning,2024-03-01 09:00:00
+9,8,A Rescue at Dawn,2024-03-16 10:00:00
+9,9,Return to Land,2024-04-01 13:00:00
+9,10,What the Sea Leaves,2024-04-18 15:00:00
+10,1,Guilt,2024-01-17 09:00:00
+10,2,The First Confession,2024-01-27 10:00:00
+10,3,Shadows of the Past,2024-02-07 11:00:00
+10,4,A Breaking Mind,2024-02-19 09:00:00
+10,5,The Interrogation,2024-03-03 14:00:00
+10,6,Buried Truths,2024-03-17 10:00:00
+10,7,The Edge of Reason,2024-03-31 11:00:00
+10,8,Descent,2024-04-14 09:00:00
+10,9,The Reckoning,2024-04-28 13:00:00
+10,10,Absolution,2024-05-12 15:00:00
+11,1,Letters from the Front,2024-02-09 09:00:00
+11,2,A Love Interrupted,2024-02-20 10:00:00
+11,3,The Battlefield,2024-03-03 11:00:00
+11,4,A Brief Peace,2024-03-16 09:00:00
+11,5,The Second Offensive,2024-03-30 14:00:00
+11,6,Waiting at Home,2024-04-13 10:00:00
+11,7,Reunion,2024-04-27 11:00:00
+11,8,A Heart at War,2024-05-11 09:00:00
+12,1,Something in the Dark,2024-03-25 08:00:00
+12,2,The First Disappearance,2024-04-05 09:00:00
+12,3,Strange Noises,2024-04-17 10:00:00
+12,4,The Town Awakens,2024-04-30 08:00:00
+12,5,Into the Woods,2024-05-13 11:00:00
+12,6,A Night Without End,2024-05-27 14:00:00
+12,7,The Source of Fear,2024-06-10 09:00:00
+12,8,Last Light,2024-06-24 10:00:00
+13,1,Entering the Dream,2024-04-08 09:00:00
+13,2,The Waking Realm,2024-04-19 10:00:00
+13,3,A Dreamer's Guide,2024-05-02 11:00:00
+13,4,The Nightmare's Edge,2024-05-15 09:00:00
+13,5,Lost in the Subconscious,2024-05-29 14:00:00
+13,6,The Dream Warden,2024-06-12 10:00:00
+13,7,Breaking Through,2024-06-27 11:00:00
+13,8,Wake Up Call,2024-07-11 09:00:00
+14,1,A Dragon's Egg,2024-04-26 08:00:00
+14,2,The Path North,2024-05-08 09:00:00
+14,3,Fire in the Village,2024-05-21 10:00:00
+14,4,The Dragon Rider,2024-06-04 08:00:00
+14,5,Trial of Flames,2024-06-18 11:00:00
+14,6,The Old Wyrm,2024-07-02 14:00:00
+14,7,Wings Across the Sky,2024-07-17 09:00:00
+14,8,The Dragon's Rest,2024-08-01 10:00:00
+15,1,The Frozen Court,2024-05-10 09:00:00
+15,2,Whispers in the Hall,2024-05-22 10:00:00
+15,3,The Cold Conspiracy,2024-06-04 11:00:00
+15,4,A Kingdom Divided,2024-06-18 09:00:00
+15,5,The Ice Campaign,2024-07-02 14:00:00
+15,6,Betrayal at the Throne,2024-07-17 10:00:00
+15,7,The Echo of War,2024-08-01 11:00:00
+15,8,A Bitter Peace,2024-08-16 09:00:00
+16,1,A Name Forgotten,2024-05-27 08:00:00
+16,2,The First Chord,2024-06-07 09:00:00
+16,3,The Listener's Road,2024-06-20 10:00:00
+16,4,A Song for Silence,2024-07-04 08:00:00
+16,5,The Name Thief,2024-07-18 11:00:00
+16,6,A Bard's Bargain,2024-08-01 14:00:00
+16,7,Echoes and Shadows,2024-08-15 09:00:00
+16,8,The Name Reclaimed,2024-08-30 10:00:00
+17,1,The System Awakens,2024-06-08 09:00:00
+17,2,First Level Up,2024-06-19 10:00:00
+17,3,A Stronger Enemy,2024-07-02 11:00:00
+17,4,The Hidden Dungeon,2024-07-16 09:00:00
+17,5,Beyond the Limit,2024-07-30 14:00:00
+17,6,A New Skill,2024-08-13 10:00:00
+17,7,The Rival Appears,2024-08-27 11:00:00
+17,8,Level Infinity,2024-09-10 09:00:00
+18,1,Tutorial Begin,2024-06-18 08:00:00
+18,2,The First Quest,2024-06-29 09:00:00
+18,3,Rare Loot,2024-07-12 10:00:00
+18,4,The Boss Fight,2024-07-26 08:00:00
+18,5,Ascending the Ranks,2024-08-09 11:00:00
+18,6,An Unlikely Ally,2024-08-23 14:00:00
+18,7,The Leaderboard,2024-09-06 09:00:00
+18,8,Final Ascension,2024-09-20 10:00:00
+19,1,A Core is Born,2024-07-02 09:00:00
+19,2,First Minion,2024-07-13 10:00:00
+19,3,The Unwanted Adventurers,2024-07-26 11:00:00
+19,4,Traps and Tricks,2024-08-09 09:00:00
+19,5,A Deeper Level,2024-08-23 14:00:00
+19,6,The Core Evolves,2024-09-06 10:00:00
+19,7,Siege of the Dungeon,2024-09-20 11:00:00
+19,8,The Core Endures,2024-10-04 09:00:00
+20,1,What Am I Now,2024-07-10 08:00:00
+20,2,Eating Everything,2024-07-21 09:00:00
+20,3,First Subordinates,2024-08-03 10:00:00
+20,4,The Slime Kingdom,2024-08-17 08:00:00
+20,5,A Human Visits,2024-08-31 11:00:00
+20,6,Skills Absorbed,2024-09-14 14:00:00
+20,7,The Slime Army,2024-09-28 09:00:00
+20,8,King of All Slimes,2024-10-12 10:00:00
+21,1,The Bottomless Well,2024-07-22 09:00:00
+21,2,First Casting,2024-08-02 10:00:00
+21,3,The Mana Overload,2024-08-16 11:00:00
+21,4,A Rival Mage,2024-08-30 09:00:00
+21,5,The Arcane Tower,2024-09-13 14:00:00
+21,6,Limitless Power,2024-09-27 10:00:00
+21,7,The Final Incantation,2024-10-11 11:00:00
+22,1,Starting from Zero,2024-08-04 08:00:00
+22,2,The Daily Routine,2024-08-15 09:00:00
+22,3,A Slow Climb,2024-08-28 10:00:00
+22,4,Setbacks and Lessons,2024-09-11 08:00:00
+22,5,The Turning Point,2024-09-25 11:00:00
+22,6,Earned Strength,2024-10-09 14:00:00
+22,7,The Grind Pays Off,2024-10-23 09:00:00
+23,1,The First Summoning,2024-08-09 09:00:00
+23,2,A Beast Responds,2024-08-20 10:00:00
+23,3,The Contract,2024-09-03 11:00:00
+23,4,Trial of Loyalty,2024-09-17 09:00:00
+23,5,The Summoner's Call,2024-10-01 14:00:00
+23,6,An Army of Creatures,2024-10-15 10:00:00
+23,7,The Final Summon,2024-10-29 11:00:00
+24,1,The First Blade,2024-08-17 08:00:00
+24,2,A Teacher's Lesson,2024-08-28 09:00:00
+24,3,The Iron Stance,2024-09-11 10:00:00
+24,4,Cut Through Steel,2024-09-25 08:00:00
+24,5,Honor and Blood,2024-10-09 11:00:00
+24,6,The Rival's Challenge,2024-10-23 14:00:00
+24,7,The Path's End,2024-11-06 09:00:00
+25,1,Gathering Qi,2024-08-26 09:00:00
+25,2,The First Stage,2024-09-06 10:00:00
+25,3,Breaking Through,2024-09-20 11:00:00
+25,4,A Master's Warning,2024-10-04 09:00:00
+25,5,The Mountain Trial,2024-10-18 14:00:00
+25,6,Heaven's Gate,2024-11-01 10:00:00
+25,7,Reaching the Peak,2024-11-15 11:00:00
+26,1,Mutation Begins,2024-09-05 08:00:00
+26,2,A New Form,2024-09-16 09:00:00
+26,3,The Apex Predator,2024-09-30 10:00:00
+26,4,Evolution Chain,2024-10-14 08:00:00
+26,5,The Hunter Becomes Prey,2024-10-28 11:00:00
+26,6,Beyond the Species,2024-11-11 14:00:00
+26,7,Ultimate Form,2024-11-25 09:00:00
+27,1,Opening Day,2024-09-08 09:00:00
+27,2,The First Members,2024-09-19 10:00:00
+27,3,A Rival Guild,2024-10-03 11:00:00
+27,4,Quest Management,2024-10-17 09:00:00
+27,5,Internal Conflict,2024-10-31 14:00:00
+27,6,The Big Contract,2024-11-14 10:00:00
+27,7,Masters of the Guild,2024-11-28 11:00:00
+28,1,Step into the Void,2024-09-19 08:00:00
+28,2,Echoes in Nothing,2024-09-30 09:00:00
+28,3,The First Gateway,2024-10-14 10:00:00
+28,4,Lost Between Worlds,2024-10-28 08:00:00
+28,5,The Void's Hunger,2024-11-11 11:00:00
+28,6,Mapping the Unknown,2024-11-25 14:00:00
+28,7,Return from Nothing,2024-12-09 09:00:00
+29,1,The First Loop,2024-10-02 09:00:00
+29,2,A Date Altered,2024-10-13 10:00:00
+29,3,The Paradox Begins,2024-10-27 11:00:00
+29,4,Chasing the Timeline,2024-11-10 09:00:00
+29,5,A Moment Stolen,2024-11-24 14:00:00
+29,6,Unraveling History,2024-12-08 10:00:00
+29,7,The Final Timestamp,2024-12-22 11:00:00
+30,1,The Contract,2024-10-10 08:00:00
+30,2,A Target in the Dark,2024-10-21 09:00:00
+30,3,Unseen Approach,2024-11-04 10:00:00
+30,4,The Kill,2024-11-18 08:00:00
+30,5,A Dangerous Discovery,2024-12-02 11:00:00
+30,6,Hunted in Return,2024-12-16 14:00:00
+30,7,The Last Shadow,2024-12-30 09:00:00
+31,1,Dust and Parchment,2024-10-18 09:00:00
+31,2,The Forbidden Section,2024-10-30 10:00:00
+31,3,A Spell Gone Wrong,2024-11-13 11:00:00
+31,4,The Librarian's Secret,2024-11-27 09:00:00
+31,5,Reading Between the Lines,2024-12-11 14:00:00
+32,1,An Empty Land,2024-10-26 08:00:00
+32,2,First Subjects,2024-11-07 09:00:00
+32,3,A Growing Threat,2024-11-21 10:00:00
+32,4,Alliances and Betrayals,2024-12-05 08:00:00
+32,5,The Kingdom Stands,2024-12-19 11:00:00
+33,1,A Hero's Disgrace,2024-11-03 09:00:00
+33,2,Walking Among the Low,2024-11-15 10:00:00
+33,3,A Reason to Fight,2024-11-29 11:00:00
+33,4,Clawing Back,2024-12-13 09:00:00
+33,5,The Hero Reborn,2024-12-27 14:00:00
+34,1,A Wild Bond,2024-11-09 08:00:00
+34,2,First Taming,2024-11-21 09:00:00
+34,3,A Dangerous Beast,2024-12-05 10:00:00
+34,4,Trust and Fangs,2024-12-19 08:00:00
+34,5,Master of Beasts,2025-01-02 11:00:00
+35,1,The Ground Floor,2024-11-16 09:00:00
+35,2,Climbing Higher,2024-11-28 10:00:00
+35,3,The Mid-Tower Boss,2024-12-12 11:00:00
+35,4,No Way Down,2024-12-26 09:00:00
+35,5,What Lies at the Top,2025-01-09 14:00:00
+36,1,Returning to Youth,2024-11-25 08:00:00
+36,2,The Old Formulas,2024-12-07 09:00:00
+36,3,A New Ingredient,2024-12-21 10:00:00
+36,4,The Master Alchemist,2025-01-04 08:00:00
+36,5,The Perfect Brew,2025-01-18 11:00:00
+37,1,The Unbreakable Edge,2024-12-02 09:00:00
+37,2,A Worthy Wielder,2024-12-14 10:00:00
+37,3,Sharpened by Battle,2024-12-28 11:00:00
+37,4,The Sword's Curse,2025-01-11 09:00:00
+37,5,Eternity's Cut,2025-01-25 14:00:00
+38,1,Portal Zero,2024-12-09 08:00:00
+38,2,A Foreign World,2024-12-21 09:00:00
+38,3,Lost in Translation,2025-01-04 10:00:00
+38,4,The Realm Hunters,2025-01-18 08:00:00
+38,5,The Way Back,2025-02-01 11:00:00
+39,1,A Useless Rank,2024-12-17 09:00:00
+39,2,The Hidden Menu,2024-12-29 10:00:00
+39,3,Abilities Unknown,2025-01-12 11:00:00
+39,4,The First Real Fight,2025-01-26 09:00:00
+39,5,Class Revealed,2025-02-09 14:00:00
+40,1,Bare Fists,2024-12-25 08:00:00
+40,2,The Iron Dojo,2025-01-06 09:00:00
+40,3,Trial and Error,2025-01-20 10:00:00
+40,4,Breaking the Limit,2025-02-03 08:00:00
+40,5,The Path Ends Here,2025-02-17 11:00:00
+41,1,All Aboard,2024-12-31 09:00:00
+41,2,Above the Clouds,2025-01-12 10:00:00
+41,3,Sky Pirates,2025-01-26 11:00:00
+41,4,The Final Voyage,2025-02-09 09:00:00
+42,1,The Descent,2025-01-10 08:00:00
+42,2,Floor After Floor,2025-01-22 09:00:00
+42,3,No Exit,2025-02-05 10:00:00
+42,4,What Lives Below,2025-02-19 08:00:00
+43,1,A Shattered Choice,2025-01-17 09:00:00
+43,2,Pieces of the Past,2025-01-29 10:00:00
+43,3,The Turning Point,2025-02-12 11:00:00
+43,4,Fate Reformed,2025-02-26 09:00:00
+44,1,A Delicate Throne,2025-01-24 08:00:00
+44,2,Cracks in the Court,2025-02-05 09:00:00
+44,3,The Breaking Point,2025-02-19 10:00:00
+44,4,Rebuilding in Shards,2025-03-05 08:00:00
+45,1,Woven Together,2025-02-01 09:00:00
+45,2,A Loose Thread,2025-02-13 10:00:00
+45,3,Pulled Apart,2025-02-27 11:00:00
+45,4,Stitched Back,2025-03-13 09:00:00
+46,1,A Heart of Stone,2025-02-08 08:00:00
+46,2,The Dark Temptation,2025-02-20 09:00:00
+46,3,Forbidden Love,2025-03-06 10:00:00
+46,4,Shattered and Whole,2025-03-20 08:00:00
+47,1,After Midnight,2025-02-15 09:00:00
+47,2,The First Bite,2025-02-27 10:00:00
+47,3,The Crimson Court,2025-03-13 11:00:00
+47,4,Dawn's Last Hope,2025-03-27 09:00:00
+48,1,Setting Sail,2025-02-23 08:00:00
+48,2,The Long Way Round,2025-03-07 09:00:00
+48,3,Land of Gold,2025-03-21 10:00:00
+48,4,Worth the Journey,2025-04-04 08:00:00
+49,1,The Ancient Codex,2025-03-03 09:00:00
+49,2,A God Awakens,2025-03-15 10:00:00
+49,3,Myth Made Flesh,2025-03-29 11:00:00
+49,4,The Legend Lives On,2025-04-12 09:00:00
+50,1,The Breaking of Worlds,2025-03-09 08:00:00
+50,2,Realms Collide,2025-03-21 09:00:00
+50,3,The Unifier,2025-04-04 10:00:00
+50,4,One World Remains,2025-04-17 08:00:00
+51,1,A Familiar Voice,2025-03-16 09:00:00
+51,2,Memories Return,2025-03-28 10:00:00
+51,3,Speaking Again,2025-04-10 11:00:00
+52,1,The Spark Ignites,2025-03-22 08:00:00
+52,2,Rising Through the Dark,2025-04-03 09:00:00
+52,3,A Star is Born,2025-04-15 10:00:00
+53,1,Departure at Midnight,2025-03-28 09:00:00
+53,2,Fog on the Water,2025-04-09 10:00:00
+53,3,The Island Revealed,2025-04-20 11:00:00
+54,1,Against All Odds,2025-04-04 08:00:00
+54,2,The Weight of It,2025-04-13 09:00:00
+54,3,Unbroken,2025-04-21 10:00:00
+55,1,Above the Atmosphere,2025-04-08 09:00:00
+55,2,Crystal Formations,2025-04-16 10:00:00
+55,3,A Sky Worth Saving,2025-04-22 09:00:00
+56,1,Ancient Symbols,2025-04-10 08:00:00
+56,2,The Rune Awakens,2025-04-17 09:00:00
+56,3,Written in Power,2025-04-22 10:00:00
+57,1,Thunder and Steel,2025-04-14 09:00:00
+57,2,Into the Eye,2025-04-18 10:00:00
+57,3,The Storm Silenced,2025-04-22 11:00:00
+58,1,The Invisible Blade,2025-04-16 08:00:00
+58,2,Struck from Nothing,2025-04-19 09:00:00
+58,3,The Phantom's End,2025-04-22 12:00:00
+59,1,It Begins Again,2025-04-18 09:00:00
+59,2,Finding the Pattern,2025-04-20 10:00:00
+59,3,Breaking the Loop,2025-04-22 13:00:00
+60,1,The Distant Signal,2025-04-19 08:00:00
+60,2,Into Deep Space,2025-04-21 09:00:00
+60,3,An Answer from the Dark,2025-04-22 14:00:00
+61,1,Riding Out West,2025-04-21 09:00:00
+61,2,The Law and the Land,2025-04-22 08:00:00
+61,3,A Frontier Earned,2025-04-22 15:00:00
+62,1,The Lie Unravels,2025-04-21 16:00:00
+62,2,Deeper Down,2025-04-22 09:00:00
+62,3,Nothing Hidden Forever,2025-04-22 16:00:00
+63,1,The Edge of Everything,2025-04-22 11:00:00
+63,2,No Light Ahead,2025-04-22 17:00:00
+64,1,First Light,2025-04-22 12:30:00
+64,2,The Beacon Rises,2025-04-22 18:00:00
+65,1,Cold Morning,2025-04-22 14:00:00
+65,2,Embers in the Snow,2025-04-22 19:00:00
+66,1,The Green Vision,2025-04-22 14:30:00
+66,2,A Dreamer's Garden,2025-04-22 20:00:00
+67,1,The Quiet Kill,2025-04-22 15:30:00
+67,2,Footsteps in the Dark,2025-04-22 21:00:00
+68,1,The Final Sunrise,2025-04-22 16:00:00
+68,2,What We Leave Behind,2025-04-22 22:00:00
+69,1,The First Thunder,2025-04-22 16:30:00
+70,1,Into the Dark,2025-04-22 18:00:00
+71,1,The First Link Falls,2025-04-22 19:00:00
+72,1,From the Ashes,2025-04-22 20:00:00
+73,1,A Heavy Head,2025-04-22 20:30:00
+74,1,The Empty Throne,2025-04-22 21:00:00
+75,1,The Last Frontier,2025-04-22 22:00:00
+76,1,Magic Unleashed,2025-04-22 23:00:00
+77,1,The Sky Darkens,2025-04-22 23:30:00
+78,1,Lift Off,2025-04-22 23:45:00
+79,1,A Faint Glow,2025-04-22 23:55:00
+80,1,The First Turn,2025-04-22 23:59:30

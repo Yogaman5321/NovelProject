@@ -104,7 +104,22 @@ namespace NovelProject.BrowserPage
             var sb = new StringBuilder();
             parameters = new List<SqlParameter>();
 
-            bool filterByTag = tagBox.SelectedIndex > 0; // 0 is "No Filter"
+            bool filterByTag = tagBox.SelectedIndex > 0;
+            string sortOption = otherFilterBox.SelectedItem.ToString();
+            bool needsStats = sortOption == "Best Rated" || sortOption == "Popular";
+
+            // Prepend stats CTE only when needed for ORDER BY
+            if (needsStats)
+            {
+                sb.Append(@"WITH NovelStats AS (
+                SELECT NovelId,
+                    AVG(CAST(Rating AS FLOAT)) AS AvgRating,
+                    COUNT(ReviewId) AS ReviewCount
+                FROM Reviews
+                GROUP BY NovelId
+                ) ");
+            }
+
             if (filterByTag)
             {
                 sb.Append("SELECT n.* FROM Novels n ");
@@ -113,30 +128,31 @@ namespace NovelProject.BrowserPage
             }
             else
             {
-                sb.Append("SELECT * FROM Novels n ");
+                sb.Append("SELECT n.* FROM Novels n ");
             }
 
-            // Build WHERE clauses
+            if (needsStats)
+                sb.Append("LEFT JOIN NovelStats ns ON n.NovelId = ns.NovelId ");
+
             List<string> whereClauses = new();
 
             string searchText = uxSearchBar.Text.Trim();
             if (!string.IsNullOrEmpty(searchText))
             {
                 if (uxRadio1.Checked) // Title
-                {
                     whereClauses.Add("n.NovelName LIKE @searchText + '%'");
-                }
                 else if (uxRadio2.Checked) // Author
-                {
                     whereClauses.Add("n.AuthorName LIKE @searchText + '%'");
-                }
+
                 parameters.Add(new SqlParameter("@searchText", searchText));
             }
 
             if (filterByTag)
             {
                 whereClauses.Add("t.TagName = @tagName");
-                parameters.Add(new SqlParameter("@tagName", tagBox.SelectedItem.ToString()));
+                string selectedItem = tagBox.SelectedItem.ToString();
+                string tagName = selectedItem[..selectedItem.LastIndexOf(" (")].Trim();
+                parameters.Add(new SqlParameter("@tagName", tagName));
             }
 
             if (whereClauses.Count > 0)
@@ -145,13 +161,13 @@ namespace NovelProject.BrowserPage
                 sb.Append(string.Join(" AND ", whereClauses));
             }
 
-            switch (otherFilterBox.SelectedItem.ToString())
+            switch (sortOption)
             {
                 case "Best Rated":
-                    sb.Append(" ORDER BY (SELECT AVG(CAST(Rating AS FLOAT)) FROM Reviews r WHERE r.NovelId = n.NovelId) DESC");
+                    sb.Append(" ORDER BY ISNULL(ns.AvgRating, 0) DESC");
                     break;
                 case "Popular":
-                    sb.Append(" ORDER BY (SELECT COUNT(*) FROM Reviews r WHERE r.NovelId = n.NovelId) DESC");
+                    sb.Append(" ORDER BY ISNULL(ns.ReviewCount, 0) DESC");
                     break;
                 case "Newest":
                     sb.Append(" ORDER BY n.DatePosted DESC");
@@ -180,11 +196,18 @@ namespace NovelProject.BrowserPage
             tagBox.Items.Clear();
             tagBox.Items.Add("No Filter");
             tagBox.SelectedIndex = 0;
-            using (var reader = DatabaseHelper.ExecuteReader("SELECT TagName FROM Tags"))
+
+
+            using (var reader = DatabaseHelper.ExecuteReader(
+                @"SELECT t.TagName, COUNT(nt.NovelId) AS NovelCount
+                  FROM Tags t
+                  LEFT JOIN NovelTags nt ON t.TagId = nt.TagId
+                  GROUP BY t.TagName
+                  ORDER BY NovelCount DESC"))
             {
                 while (reader.Read())
                 {
-                    tagBox.Items.Add(reader.GetString(0));
+                    tagBox.Items.Add($"{reader.GetString(0)} ({reader.GetInt32(1)})");
                 }
             }
         }
