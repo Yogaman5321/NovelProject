@@ -22,6 +22,8 @@ namespace NovelProject.ChapterPage
         private Novel _novel;
         private int _initialChapter;
         private int _currentChapter;
+        private int _maxChapters;
+        private Action<UserControl> _navigate;
 
         public ChapterView(Novel novel, int chapter)
         {
@@ -32,7 +34,7 @@ namespace NovelProject.ChapterPage
             this.Load += LoadChapter;
         }
 
-        private Action<UserControl> _navigate;
+        
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;
@@ -43,6 +45,11 @@ namespace NovelProject.ChapterPage
             this.handler = handler;
         }
 
+        public void SetMaxChapters(int maxChapters)
+        {
+            _maxChapters = maxChapters;
+        }
+
         public void DisplayState(ChapterState s, string text, int currentChapter)
         {
             switch (s)
@@ -51,6 +58,8 @@ namespace NovelProject.ChapterPage
                     _currentChapter = currentChapter;
                     uxTextBox.Text = text;
                     uxChapterLabel.Text = $"Chapter {currentChapter}";
+                    uxBackButton.Enabled = currentChapter > 1;
+                    uxForwardButton.Enabled = currentChapter < _maxChapters;
                     handler(ChapterState.UpdateReadHistory, 0);
                     break;
                 case ChapterState.GotError:

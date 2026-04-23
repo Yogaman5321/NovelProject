@@ -135,6 +135,7 @@ namespace NovelProject.NovelPage
                 var view = new ChapterView(_novel, selectedChapter.ChapterNumber);
                 var controller = new ChapterController(view.DisplayState, _novel.NovelId.ToString());
                 view.SetChapterHandler(controller.HandleEvents);
+                view.SetMaxChapters(controller.MaxChapters);
                 _navigate?.Invoke(view);
             }
         }

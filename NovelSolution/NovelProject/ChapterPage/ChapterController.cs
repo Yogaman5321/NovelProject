@@ -14,6 +14,7 @@ namespace NovelProject.ChapterPage
 
         public string NovelId { get; }
         public int CurrentChapter { get; private set; }
+        public int MaxChapters => _maxChapters;
 
         private int _maxChapters;
 
