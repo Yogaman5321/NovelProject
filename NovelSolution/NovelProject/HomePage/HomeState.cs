@@ -12,11 +12,5 @@ namespace NovelProject.HomePage
         LoadRecentNovels,
         GotHistory,
         GotError
-    }
-
-    public class HistoryInfo
-    {
-        public string ChapterTitle { get; set; }
-        public DateTime LastReadDate { get; set; }
-    }
+    }    
 }

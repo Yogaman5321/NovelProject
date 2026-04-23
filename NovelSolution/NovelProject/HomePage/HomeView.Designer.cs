@@ -46,7 +46,7 @@
             // UxLastReadTB
             // 
             UxLastReadTB.AutoSize = true;
-            UxLastReadTB.Location = new System.Drawing.Point(19, 146);
+            UxLastReadTB.Location = new System.Drawing.Point(19, 181);
             UxLastReadTB.Name = "UxLastReadTB";
             UxLastReadTB.Size = new System.Drawing.Size(211, 20);
             UxLastReadTB.TabIndex = 1;
@@ -57,7 +57,7 @@
             UxLastReadListBox.FormattingEnabled = true;
             UxLastReadListBox.Location = new System.Drawing.Point(19, 204);
             UxLastReadListBox.Name = "UxLastReadListBox";
-            UxLastReadListBox.Size = new System.Drawing.Size(1142, 504);
+            UxLastReadListBox.Size = new System.Drawing.Size(286, 504);
             UxLastReadListBox.TabIndex = 2;
             // 
             // HomeView

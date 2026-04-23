@@ -39,9 +39,10 @@ namespace NovelProject.HomePage
                 new SqlParameter("@Username", EnvironmentVars.username));
 
             string sql = @"
-                SELECT TOP 10 C.ChapterName, RH.LastReadDate
+                SELECT TOP 10 N.NovelId, N.NovelName, C.ChapterNumber, C.ChapterName, RH.LastReadDate
                 FROM ReadHistories RH
                 INNER JOIN Chapters C ON C.ChapterId = RH.ChapterId
+                INNER JOIN Novels   N ON N.NovelId   = C.NovelId
                 WHERE RH.UserId = @UserID
                 ORDER BY RH.LastReadDate DESC;";
 
@@ -49,9 +50,14 @@ namespace NovelProject.HomePage
             {
                 while (reader.Read())
                 {
-                    string chapterTitle = reader.GetString(0);
-                    DateTime lastReadDate = reader.GetDateTime(1);
-                    history.Add(new HistoryInfo { ChapterTitle = chapterTitle, LastReadDate = lastReadDate });
+                    history.Add(new HistoryInfo
+                    {
+                        NovelId       = reader.GetInt32(0),
+                        NovelName     = reader.GetString(1),
+                        ChapterNumber = reader.GetInt32(2),
+                        ChapterTitle  = reader.GetString(3),
+                        LastReadDate  = reader.GetDateTime(4)
+                    });
                 }
             }
 

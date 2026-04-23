@@ -2,7 +2,6 @@
 using NovelProject.Models;
 using NovelProject.Navigation;
 using NovelProject.NovelPage;
-using NovelProject.CommentPage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -1,7 +1,6 @@
 ﻿using NovelProject.ChapterPage;
 using NovelProject.Models;
 using NovelProject.Navigation;
-using NovelProject.ChapterPage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

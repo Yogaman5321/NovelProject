@@ -1,5 +1,4 @@
 ﻿using NovelProject.AuthorPage;
-using NovelProject.AuthorPage;
 using NovelProject.BrowserPage;
 using NovelProject.HomePage;
 using NovelProject.Navigation;
