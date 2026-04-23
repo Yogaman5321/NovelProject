@@ -91,11 +91,19 @@ namespace NovelProject.HomePage
         {
             if (e.Index < 0) return;
 
-            string text = UxLastReadListBox.Items[e.Index].ToString();
-            SizeF size = e.Graphics.MeasureString(text, UxLastReadListBox.Font,
-                UxLastReadListBox.ClientSize.Width);
+            string[] lines = UxLastReadListBox.Items[e.Index].ToString().Split('\n');
+            int width = UxLastReadListBox.ClientSize.Width - 4;
+            int totalHeight = 4;
 
-            e.ItemHeight = (int)Math.Ceiling(size.Height) + 4;
+            foreach (string line in lines)
+            {
+                Size size = TextRenderer.MeasureText(line, UxLastReadListBox.Font,
+                    new Size(width, int.MaxValue),
+                    TextFormatFlags.WordBreak);
+                totalHeight += size.Height;
+            }
+
+            e.ItemHeight = totalHeight;
         }
 
         private void UxLastReadListBox_DrawItem(object sender, DrawItemEventArgs e)
@@ -104,12 +112,22 @@ namespace NovelProject.HomePage
 
             e.DrawBackground();
 
-            string text = UxLastReadListBox.Items[e.Index].ToString();
-            Rectangle bounds = new Rectangle(e.Bounds.X + 2, e.Bounds.Y + 2,
-                e.Bounds.Width - 4, e.Bounds.Height - 4);
+            string[] lines = UxLastReadListBox.Items[e.Index].ToString().Split('\n');
+            int width = e.Bounds.Width - 4;
+            int y = e.Bounds.Y + 2;
 
-            using var brush = new SolidBrush(e.ForeColor);
-            e.Graphics.DrawString(text, e.Font, brush, bounds);
+            foreach (string line in lines)
+            {
+                Size size = TextRenderer.MeasureText(line, e.Font,
+                    new Size(width, int.MaxValue),
+                    TextFormatFlags.WordBreak);
+
+                Rectangle lineBounds = new Rectangle(e.Bounds.X + 2, y, width, size.Height);
+                TextRenderer.DrawText(e.Graphics, line, e.Font, lineBounds, e.ForeColor,
+                    TextFormatFlags.WordBreak);
+
+                y += size.Height;
+            }
 
             e.DrawFocusRectangle();
         }
