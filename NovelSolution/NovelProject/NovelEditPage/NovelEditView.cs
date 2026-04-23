@@ -1,5 +1,4 @@
-﻿using NovelProject.AuthorPage;
-using NovelProject.Models;
+﻿using NovelProject.Models;
 using NovelProject.Navigation;
 using System;
 using System.Collections.Generic;
@@ -18,12 +17,16 @@ namespace NovelProject.NovelEditPage
     public partial class NovelEditView : UserControl, INavigatable
     {
         public NovelEditHandler handler;
+        private Action<UserControl> _navagate;
         Novel _novel = null;
+        private readonly ToolTip _tagToolTip = new ToolTip();
+        private int _lastHoveredTagIndex = -1;
 
         public NovelEditView()
         {
             InitializeComponent();
             SetupListView();
+            SetupTagTooltips();
             _novel = new Novel()
             {
                 AuthorName = EnvironmentVars.username,
@@ -37,6 +40,7 @@ namespace NovelProject.NovelEditPage
         {
             InitializeComponent();
             SetupListView();
+            SetupTagTooltips();
             _novel = novel;
 
             uxTitleTextBox.Text = novel.NovelName;
@@ -45,7 +49,7 @@ namespace NovelProject.NovelEditPage
             PopulateBoxes(novel.NovelId);
         }
 
-        private Action<UserControl> _navagate;
+        
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navagate = navigate;
@@ -62,6 +66,7 @@ namespace NovelProject.NovelEditPage
             {
                 case NovelEditState.NovelCreated:
                     _novel = novel;
+                    PopulateAllTagsAsAvailable();
                     break;
                 case NovelEditState.ChapterSaved:
                     var savedItem = new ListViewItem(chapter.ChapterNumber.ToString());
@@ -88,30 +93,94 @@ namespace NovelProject.NovelEditPage
             }
         }
 
+        private void SetupTagTooltips()
+        {
+            _tagToolTip.InitialDelay = 400;
+            _tagToolTip.ReshowDelay = 200;
+            _tagToolTip.AutoPopDelay = 5000;
+
+            uxTagsToAddBox.MouseMove += TagListBox_MouseMove;
+            uxTagsToAddBox.MouseLeave += TagListBox_MouseLeave;
+            uxTagsBox.MouseMove += TagListBox_MouseMove;
+            uxTagsBox.MouseLeave += TagListBox_MouseLeave;
+        }
+
+        private void TagListBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            var listBox = (ListBox)sender;
+            int index = listBox.IndexFromPoint(e.Location);
+
+            if (index == _lastHoveredTagIndex)
+                return;
+
+            _lastHoveredTagIndex = index;
+
+            if (index != ListBox.NoMatches && listBox.Items[index] is Tag tag)
+            {
+                _tagToolTip.Show(tag.TagDescription ?? string.Empty, listBox, e.X + 15, e.Y + 10);
+            }
+            else
+            {
+                _tagToolTip.Hide(listBox);
+            }
+        }
+
+        private void TagListBox_MouseLeave(object sender, EventArgs e)
+        {
+            _tagToolTip.Hide((ListBox)sender);
+            _lastHoveredTagIndex = -1;
+        }
+
+        private Tag ReadTag(System.Data.Common.DbDataReader reader)
+        {
+            return new Tag
+            {
+                TagId = reader.GetInt32(0),
+                TagName = reader.GetString(1),
+                TagDescription = reader.IsDBNull(2) ? string.Empty : reader.GetString(2)
+            };
+        }
+
         private void PopulateBoxes(int novelId)
         {
-            string query = $@"
-                    SELECT TagName FROM Tags
-                    join NovelTags on Tags.TagId = NovelTags.TagId
-                    WHERE NovelTags.NovelId = {novelId}
-                    ";
+            string currentTagsQuery = $@"
+                SELECT Tags.TagId, TagName, TagDescription FROM Tags
+                JOIN NovelTags ON Tags.TagId = NovelTags.TagId
+                WHERE NovelTags.NovelId = {novelId}
+                ORDER BY TagName ASC
+            ";
 
-            using (var reader = DatabaseHelper.ExecuteReader(query))
+            using (var reader = DatabaseHelper.ExecuteReader(currentTagsQuery))
             {
                 while (reader.Read())
                 {
-                    string TagName = reader.GetString(0);
-                    uxTagsBox.Items.Add(TagName);
+                    uxTagsBox.Items.Add(ReadTag(reader));
                 }
             }
 
-            query = $@"
-                    SELECT ChapterId, NovelId, ChapterNumber, ChapterName, DateAdded FROM Chapters
-                    WHERE NovelId = {novelId}
-                    ORDER BY ChapterNumber
-                    ";
+            string availableTagsQuery = $@"
+                SELECT TagId, TagName, TagDescription FROM Tags
+                WHERE TagId NOT IN (
+                    SELECT TagId FROM NovelTags WHERE NovelId = {novelId}
+                )
+                ORDER BY TagName ASC
+            ";
 
-            using (var reader = DatabaseHelper.ExecuteReader(query))
+            using (var reader = DatabaseHelper.ExecuteReader(availableTagsQuery))
+            {
+                while (reader.Read())
+                {
+                    uxTagsToAddBox.Items.Add(ReadTag(reader));
+                }
+            }
+
+            string chaptersQuery = $@"
+                SELECT ChapterId, NovelId, ChapterNumber, ChapterName, DateAdded FROM Chapters
+                WHERE NovelId = {novelId}
+                ORDER BY ChapterNumber
+            ";
+
+            using (var reader = DatabaseHelper.ExecuteReader(chaptersQuery))
             {
                 while (reader.Read())
                 {
@@ -131,6 +200,19 @@ namespace NovelProject.NovelEditPage
                     item.SubItems.Add(chapter.DateAdded.ToString());
                     item.Tag = chapter;
                     uxChapterList.Items.Add(item);
+                }
+            }
+        }
+
+        private void PopulateAllTagsAsAvailable()
+        {
+            uxTagsToAddBox.Items.Clear();
+
+            using (var reader = DatabaseHelper.ExecuteReader("SELECT TagId, TagName, TagDescription FROM Tags"))
+            {
+                while (reader.Read())
+                {
+                    uxTagsToAddBox.Items.Add(ReadTag(reader));
                 }
             }
         }
@@ -160,21 +242,20 @@ namespace NovelProject.NovelEditPage
 
         private void AddTagButtonClick(object sender, EventArgs e)
         {
-            string text = uxTagTexbox.Text;
-            if (!uxTagsBox.Items.Contains(text))
-            {
-                uxTagTexbox.Text = "";
-                handler(NovelEditState.AddTag, null, null, text, null, null);
-                uxTagsBox.Items.Add(text);
-            }
+            if (uxTagsToAddBox.SelectedItem is not Tag tag)
+                return;
+
+            uxTagsToAddBox.Items.Remove(tag);
+            uxTagsBox.Items.Add(tag);
         }
 
         private void DeleteButtonClick(object sender, EventArgs e)
         {
-            string text = uxTagsBox.SelectedItem.ToString();
-            uxTagsBox.Items.Remove(text);
+            if (uxTagsBox.SelectedItem is not Tag tag)
+                return;
 
-            DatabaseHelper.ExecuteNonQuery($"DELETE FROM NovelTags WHERE NovelId = {_novel.NovelId} AND TagId = (SELECT TagId FROM Tags WHERE TagName = '{text}')");
+            uxTagsBox.Items.Remove(tag);
+            uxTagsToAddBox.Items.Add(tag);
         }
 
         private void AddChapterButtonClick(object sender, EventArgs e)
@@ -201,16 +282,12 @@ namespace NovelProject.NovelEditPage
         private void UpButtonClick(object sender, EventArgs e)
         {
             if (uxChapterList.SelectedIndices.Count == 0)
-            {
                 return;
-            }
 
             int index = uxChapterList.SelectedIndices[0];
 
             if (index <= 0)
-            {
                 return;
-            }
 
             SwapChapters(index, index - 1);
 
@@ -221,16 +298,12 @@ namespace NovelProject.NovelEditPage
         private void DownButtonClick(object sender, EventArgs e)
         {
             if (uxChapterList.SelectedIndices.Count == 0)
-            {
                 return;
-            }
 
             int index = uxChapterList.SelectedIndices[0];
 
             if (index >= uxChapterList.Items.Count - 1)
-            {
                 return;
-            }
 
             SwapChapters(index, index + 1);
 
@@ -285,9 +358,7 @@ namespace NovelProject.NovelEditPage
         private void ChapterDeleteClick(object sender, EventArgs e)
         {
             if (uxChapterList.SelectedIndices.Count == 0)
-            {
                 return;
-            }
 
             var result = MessageBox.Show(
                 "Are you sure you want to delete this item?",

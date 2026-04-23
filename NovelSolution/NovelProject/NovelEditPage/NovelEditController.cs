@@ -100,19 +100,18 @@ namespace NovelProject.NovelEditPage
             string query = $"UPDATE Novels SET NovelName = '{novel.NovelName}', AuthorName = '{novel.AuthorName}', Description = '{novel.Description}' WHERE NovelId = {novel.NovelId}";
             DatabaseHelper.ExecuteNonQuery(query);
 
-            foreach (var tag in tags)
+            DatabaseHelper.ExecuteNonQuery(
+                "DELETE FROM NovelTags WHERE NovelId = @NovelId",
+                new SqlParameter("@NovelId", novel.NovelId)
+            );
+
+            foreach (Tag tag in tags)
             {
-                string getTagIdQuery = $"SELECT TagId FROM Tags WHERE TagName = '{tag}'";
-                int tagId = DatabaseHelper.ExecuteScalar<int>(getTagIdQuery);
-                try
-                {
-                    query = $"INSERT INTO NovelTags (NovelId, TagId) VALUES ({novel.NovelId}, {tagId})";
-                    DatabaseHelper.ExecuteNonQuery(query);
-                }
-                catch (SqlException ex) when (ex.Number == 2627) // Unique constraint violation
-                {
-                    Debug.WriteLine($"Tag '{tag}' already exists for NovelId {novel.NovelId}, skipping.");
-                }
+                DatabaseHelper.ExecuteNonQuery(
+                    "INSERT INTO NovelTags (NovelId, TagId) VALUES (@NovelId, @TagId)",
+                    new SqlParameter("@NovelId", novel.NovelId),
+                    new SqlParameter("@TagId", tag.TagId)
+                );
             }
 
             DatabaseHelper.ExecuteNonQuery(

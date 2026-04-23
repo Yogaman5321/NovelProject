@@ -14,6 +14,7 @@ namespace NovelProject.Models
 
         public string TagDescription { get; set; }
 
+        public override string ToString() => TagName;
 
     }
 }
