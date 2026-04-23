@@ -37,14 +37,14 @@ namespace NovelProject
             novelNameLabel.Text = novel.NovelName;
             authorLinkLabel.Text = novel.AuthorName;
 
-            // Views: not yet implemented (ReadHistory table pending)
-            viewsLabel.Text = "N/A";
-
-            // Average rating + chapter count in a single query
+            // Average rating + chapter count + total views in a single query
             using (var reader = DatabaseHelper.ExecuteReader(
                 @"SELECT
                     ISNULL(AVG(CAST(r.Rating AS FLOAT)), 0) AS AvgRating,
-                    (SELECT COUNT(*) FROM Chapters WHERE NovelId = @novelId) AS ChapterCount
+                    (SELECT COUNT(*) FROM Chapters WHERE NovelId = @novelId) AS ChapterCount,
+                    (SELECT COUNT(*) FROM ReadHistories rh
+                     INNER JOIN Chapters c ON rh.ChapterId = c.ChapterId
+                     WHERE c.NovelId = @novelId) AS ViewCount
                   FROM Reviews r
                   WHERE r.NovelId = @novelId",
                 new SqlParameter("@novelId", novel.NovelId)))
@@ -53,6 +53,7 @@ namespace NovelProject
                 {
                     ratingLabel.Text = reader.GetDouble(0).ToString("0.0");
                     chapterCountLabel.Text = reader.GetInt32(1).ToString();
+                    viewsLabel.Text = reader.GetInt32(2).ToString("N0");
                 }
             }
 

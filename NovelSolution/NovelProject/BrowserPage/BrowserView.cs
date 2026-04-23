@@ -107,6 +107,40 @@ namespace NovelProject.BrowserPage
             bool filterByTag = tagBox.SelectedIndex > 0;
             string sortOption = otherFilterBox.SelectedItem.ToString();
             bool needsStats = sortOption == "Best Rated" || sortOption == "Popular";
+            bool needsViewCount = sortOption == "View Count";
+
+            // Building this early since it's a much more complex query that wouldn't fit with any of the logic below.
+            if (sortOption == "Recommended")
+            {
+                parameters.Add(new SqlParameter("@username", _currentUsername));
+
+                sb.Append(@"
+                    WITH UserReadNovels AS (
+                        SELECT DISTINCT c.NovelId
+                        FROM ReadHistories rh
+                        INNER JOIN Chapters c ON rh.ChapterId = c.ChapterId
+                        INNER JOIN Users u ON rh.UserId = u.UserId
+                        WHERE u.Username = @username
+                    ),
+                    TopTags AS (
+                        SELECT TOP 5 nt.TagId
+                        FROM NovelTags nt
+                        INNER JOIN UserReadNovels urn ON nt.NovelId = urn.NovelId
+                        GROUP BY nt.TagId
+                        ORDER BY COUNT(*) DESC
+                    ),
+                    Recommended AS (
+                        SELECT DISTINCT n.*
+                        FROM Novels n
+                        INNER JOIN NovelTags nt ON n.NovelId = nt.NovelId
+                        INNER JOIN TopTags tt ON nt.TagId = tt.TagId
+                        WHERE n.NovelId NOT IN (SELECT NovelId FROM UserReadNovels)
+                    )
+                    SELECT * FROM Recommended
+                    ORDER BY NEWID()");
+
+                return sb.ToString();
+            }
 
             // Prepend stats CTE only when needed for ORDER BY
             if (needsStats)
@@ -117,6 +151,17 @@ namespace NovelProject.BrowserPage
                     COUNT(ReviewId) AS ReviewCount
                 FROM Reviews
                 GROUP BY NovelId
+                ) ");
+            }
+
+            if (needsViewCount)
+            {
+                sb.Append(@"WITH NovelViewCounts AS (
+                SELECT c.NovelId,
+                    COUNT(*) AS ViewCount
+                FROM ReadHistories rh
+                INNER JOIN Chapters c ON rh.ChapterId = c.ChapterId
+                GROUP BY c.NovelId
                 ) ");
             }
 
@@ -133,6 +178,9 @@ namespace NovelProject.BrowserPage
 
             if (needsStats)
                 sb.Append("LEFT JOIN NovelStats ns ON n.NovelId = ns.NovelId ");
+
+            if (needsViewCount)
+                sb.Append("LEFT JOIN NovelViewCounts nvc ON n.NovelId = nvc.NovelId ");
 
             List<string> whereClauses = new();
 
@@ -172,9 +220,9 @@ namespace NovelProject.BrowserPage
                 case "Newest":
                     sb.Append(" ORDER BY n.DatePosted DESC");
                     break;
-                case "Recommended":
-                    // I'll go back and implement this once we have the ReadingHistory implemented.
-                    throw new NotImplementedException("Recommended filter not implemented yet.");
+                case "View Count":
+                    sb.Append(" ORDER BY ISNULL(nvc.ViewCount, 0) DESC");
+                    break;
                 case "Random":
                     sb.Append(" ORDER BY NEWID()");
                     break;
@@ -218,6 +266,7 @@ namespace NovelProject.BrowserPage
             otherFilterBox.Items.Add("No Filter");
             otherFilterBox.Items.Add("Best Rated");
             otherFilterBox.Items.Add("Popular");
+            otherFilterBox.Items.Add("View Count");
             otherFilterBox.Items.Add("Newest");
             otherFilterBox.Items.Add("Recommended");
             otherFilterBox.Items.Add("Random");
