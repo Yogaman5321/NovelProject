@@ -67,10 +67,10 @@ namespace NovelProject.AuthorPage
             uxNovelList.View = View.Details;
             uxNovelList.FullRowSelect = true;
 
-            uxNovelList.Columns.Add("Title", 100);
-            uxNovelList.Columns.Add("Author", 50);
-            uxNovelList.Columns.Add("Description", 75);
-            uxNovelList.Columns.Add("Date Added", 50);
+            uxNovelList.Columns.Add("Title", 150);
+            uxNovelList.Columns.Add("Author", 100);
+            uxNovelList.Columns.Add("Description", 150);
+            uxNovelList.Columns.Add("Date Added", 100);
         }
 
         private void AddNovels()

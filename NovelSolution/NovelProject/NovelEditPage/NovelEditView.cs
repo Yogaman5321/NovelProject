@@ -27,12 +27,17 @@ namespace NovelProject.NovelEditPage
             InitializeComponent();
             SetupListView();
             SetupTagTooltips();
+            WireValidationEvents();
+            authorCheckBox.Checked = false;
+            authorTextBox.Enabled = false;
+            authorTextBox.Visible = false;
             _novel = new Novel()
             {
                 AuthorName = EnvironmentVars.username,
                 NovelName = "a2a9242b-8064-4f37-9d52-03d1b8710199_Test-Novel",
                 Description = "6c743292-2e78-42f9-acb9-0ebf11395f33"
             };
+            ValidateSaveButton();
             this.Load += (s, e) => handler(NovelEditState.CreateNovel, _novel, null, null, null, null);
         }
 
@@ -41,15 +46,17 @@ namespace NovelProject.NovelEditPage
             InitializeComponent();
             SetupListView();
             SetupTagTooltips();
+            WireValidationEvents();
             _novel = novel;
 
             uxTitleTextBox.Text = novel.NovelName;
             uxDescriptionBox.Text = novel.Description;
 
+            ValidateSaveButton();
             PopulateBoxes(novel.NovelId);
         }
 
-        
+
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navagate = navigate;
@@ -91,6 +98,22 @@ namespace NovelProject.NovelEditPage
                 default:
                     break;
             }
+        }
+
+        private void WireValidationEvents()
+        {
+            uxTitleTextBox.TextChanged += (s, e) => ValidateSaveButton();
+            uxDescriptionBox.TextChanged += (s, e) => ValidateSaveButton();
+            authorTextBox.TextChanged += (s, e) => ValidateSaveButton();
+        }
+
+        private void ValidateSaveButton()
+        {
+            bool titleFilled = !string.IsNullOrWhiteSpace(uxTitleTextBox.Text);
+            bool descriptionFilled = !string.IsNullOrWhiteSpace(uxDescriptionBox.Text);
+            bool authorValid = !authorCheckBox.Checked || !string.IsNullOrWhiteSpace(authorTextBox.Text);
+
+            uxSaveExitButton.Enabled = titleFilled && descriptionFilled && authorValid;
         }
 
         private void SetupTagTooltips()
@@ -231,6 +254,7 @@ namespace NovelProject.NovelEditPage
         {
             _novel.NovelName = uxTitleTextBox.Text;
             _novel.Description = uxDescriptionBox.Text;
+            _novel.AuthorName = authorCheckBox.Checked ? authorTextBox.Text : EnvironmentVars.username;
 
             handler(NovelEditState.UpdateNovel, _novel, null, null, uxTagsBox.Items, uxChapterList.Items);
 
@@ -373,6 +397,13 @@ namespace NovelProject.NovelEditPage
                 uxChapterList.Items.RemoveAt(index);
                 RenumberChapters();
             }
+        }
+
+        private void authorCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            authorTextBox.Enabled = authorCheckBox.Checked;
+            authorTextBox.Visible = authorCheckBox.Checked;
+            ValidateSaveButton();
         }
     }
 }

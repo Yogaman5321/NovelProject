@@ -45,6 +45,8 @@
             uxTagsToAddBox = new System.Windows.Forms.ListBox();
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
+            authorTextBox = new System.Windows.Forms.TextBox();
+            authorCheckBox = new System.Windows.Forms.CheckBox();
             SuspendLayout();
             // 
             // uxEditChapterButton
@@ -120,11 +122,11 @@
             // 
             // uxTitleTextBox
             // 
-            uxTitleTextBox.Font = new System.Drawing.Font("Segoe UI", 18F);
-            uxTitleTextBox.Location = new System.Drawing.Point(24, 99);
+            uxTitleTextBox.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            uxTitleTextBox.Location = new System.Drawing.Point(24, 53);
             uxTitleTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             uxTitleTextBox.Name = "uxTitleTextBox";
-            uxTitleTextBox.Size = new System.Drawing.Size(521, 47);
+            uxTitleTextBox.Size = new System.Drawing.Size(521, 38);
             uxTitleTextBox.TabIndex = 22;
             // 
             // uxSaveExitButton
@@ -142,7 +144,7 @@
             // 
             uxTitleLabel.AutoSize = true;
             uxTitleLabel.Font = new System.Drawing.Font("Segoe UI", 18F);
-            uxTitleLabel.Location = new System.Drawing.Point(24, 52);
+            uxTitleLabel.Location = new System.Drawing.Point(24, 6);
             uxTitleLabel.Name = "uxTitleLabel";
             uxTitleLabel.Size = new System.Drawing.Size(74, 41);
             uxTitleLabel.TabIndex = 25;
@@ -221,10 +223,33 @@
             label3.TabIndex = 32;
             label3.Text = "Current Tags:";
             // 
+            // authorTextBox
+            // 
+            authorTextBox.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            authorTextBox.Location = new System.Drawing.Point(164, 108);
+            authorTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            authorTextBox.Name = "authorTextBox";
+            authorTextBox.Size = new System.Drawing.Size(381, 38);
+            authorTextBox.TabIndex = 33;
+            // 
+            // authorCheckBox
+            // 
+            authorCheckBox.AutoSize = true;
+            authorCheckBox.Location = new System.Drawing.Point(24, 108);
+            authorCheckBox.Name = "authorCheckBox";
+            authorCheckBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            authorCheckBox.Size = new System.Drawing.Size(137, 24);
+            authorCheckBox.TabIndex = 34;
+            authorCheckBox.Text = "Not the Author?";
+            authorCheckBox.UseVisualStyleBackColor = true;
+            authorCheckBox.CheckedChanged += authorCheckBox_CheckedChanged;
+            // 
             // NovelEditView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(authorCheckBox);
+            Controls.Add(authorTextBox);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(uxTagsToAddBox);
@@ -267,5 +292,7 @@
         private System.Windows.Forms.ListBox uxTagsToAddBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox authorTextBox;
+        private System.Windows.Forms.CheckBox authorCheckBox;
     }
 }
