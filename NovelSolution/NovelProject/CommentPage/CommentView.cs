@@ -27,6 +27,11 @@ namespace NovelProject.CommentPage
             SetUpTable();
 
             this.Load += LoadComments;
+
+            if(!EnvironmentVars.IsLoggedIn)
+            {
+                uxAddCommentButton.Enabled = false;
+            }
         }
 
         public void SetCommentHandler(CommentHandler handler)

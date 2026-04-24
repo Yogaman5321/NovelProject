@@ -69,6 +69,9 @@ namespace NovelProject.ChapterPage
 
         private void UpdateReadHistory()
         {
+            if (!EnvironmentVars.IsLoggedIn)
+                return;
+
             string query = $@"
                 DECLARE @ChapterId INT;
                 SELECT @ChapterId = ChapterId
