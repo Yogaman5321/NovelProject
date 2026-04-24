@@ -141,7 +141,7 @@ namespace NovelProject.UserPage
                 var novel = tuple.Item1[i];
                 var rating = tuple.Item2[i];
                 var lastRead = tuple.Item3[i];
-                var item = new ListViewItem(rating + " / 10");
+                var item = new ListViewItem(rating == -1 ? "N/A" : $"{rating} / 10");
 
                 item.SubItems.Add(novel.NovelName);
                 item.SubItems.Add(novel.AuthorName);

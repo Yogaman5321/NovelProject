@@ -131,8 +131,8 @@ namespace NovelProject.UserPage
             foreach (var item in novels)
             {
                 string ratingQuery = $"SELECT Rating FROM Reviews WHERE NovelId = {item.NovelId} AND UserId = (SELECT UserId FROM Users WHERE Username = '{currentUsername}')";
-                decimal averageRating = DatabaseHelper.ExecuteScalar<decimal>(ratingQuery);
-                ratings.Add(averageRating > 0 ? averageRating : -1);
+                decimal? fetchedRating = DatabaseHelper.ExecuteScalar<decimal?>(ratingQuery);
+                ratings.Add(fetchedRating ?? -1);
 
                 string lastReadQuery = @"
                     SELECT MAX(r.LastReadDate)

@@ -46,7 +46,7 @@ namespace NovelProject
             logOutButton.Enabled = _accountMode;
 
             var homeView = new HomeView();
-            var homeController = new HomeController(homeView.DisplayState);
+            var homeController = new HomeController(homeView.DisplayState, homeView.DisplaySimilarNovelsState, homeView.DisplayNewestNovelsState);
             homeView.SetHomeHandler(homeController.HandleEvents);
             LoadView(homeView);
         }
@@ -75,7 +75,7 @@ namespace NovelProject
         private void homePageButton_Click(object sender, EventArgs e)
         {
             var view = new HomeView();
-            var controller = new HomeController(view.DisplayState);
+            var controller = new HomeController(view.DisplayState, view.DisplaySimilarNovelsState, view.DisplayNewestNovelsState);
             view.SetHomeHandler(controller.HandleEvents);
             LoadView(view);
         }

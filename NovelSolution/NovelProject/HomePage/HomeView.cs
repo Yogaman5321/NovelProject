@@ -1,5 +1,4 @@
-﻿using NovelProject.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NovelProject.ChapterPage;
+using NovelProject.Models;
 using NovelProject.Navigation;
+using NovelProject.NovelPage;
 
 namespace NovelProject.HomePage
 {
@@ -28,6 +29,9 @@ namespace NovelProject.HomePage
             UxLastReadListBox.MeasureItem += UxLastReadListBox_MeasureItem;
             UxLastReadListBox.DrawItem += UxLastReadListBox_DrawItem;
             UxLastReadListBox.DoubleClick += UxLastReadListBox_DoubleClick;
+
+            similarUsersPanel.SizeChanged += SimilarUsersPanel_SizeChanged;
+            newestAdditionsPanel.SizeChanged += NewestAdditionsPanel_SizeChanged;
 
             this.Load += LoadHistory;
         }
@@ -54,9 +58,35 @@ namespace NovelProject.HomePage
             }
         }
 
+        public void DisplaySimilarNovelsState(HomePageState s, List<Novel> novels)
+        {
+            switch (s)
+            {
+                case HomePageState.GotSimilarNovels:
+                    DisplayNovelsInPanel(similarUsersPanel, novels);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void DisplayNewestNovelsState(HomePageState s, List<Novel> novels)
+        {
+            switch (s)
+            {
+                case HomePageState.GotNewestNovels:
+                    DisplayNovelsInPanel(newestAdditionsPanel, novels);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void LoadHistory(object sender, EventArgs e)
         {
             handler(HomePageState.LoadRecentNovels);
+            handler(HomePageState.LoadSimilarNovels);
+            handler(HomePageState.LoadNewestNovels);
         }
 
         private void LoadReadHistory(List<HistoryInfo> history)
@@ -67,6 +97,56 @@ namespace NovelProject.HomePage
             {
                 UxLastReadListBox.Items.Add(
                     $"{info.NovelName} — Ch.{info.ChapterNumber}: {info.ChapterTitle}\nLast read on {info.LastReadDate}");
+            }
+        }
+
+        private void DisplayNovelsInPanel(FlowLayoutPanel panel, List<Novel> novels)
+        {
+            panel.Controls.Clear();
+
+            int cardWidth = panel.Width - SystemInformation.VerticalScrollBarWidth;
+
+            foreach (var novel in novels)
+            {
+                var card = new NovelDisplayCard();
+                card.Populate(novel);
+                card.SetNavigator(_navigate);
+                card.Width = cardWidth;
+
+                EventHandler navigateToNovel = (s, e) =>
+                {
+                    var view = new NovelView(novel);
+                    var controller = new NovelController(view.DisplayState);
+                    view.SetNovelHandler(controller.HandleEvents);
+                    _navigate?.Invoke(view);
+                };
+
+                card.DoubleClick += navigateToNovel;
+
+                foreach (Control child in card.Controls)
+                {
+                    child.DoubleClick += navigateToNovel;
+                }
+
+                panel.Controls.Add(card);
+            }
+        }
+
+        private void SimilarUsersPanel_SizeChanged(object sender, EventArgs e)
+        {
+            int cardWidth = similarUsersPanel.Width - SystemInformation.VerticalScrollBarWidth;
+            foreach (Control control in similarUsersPanel.Controls)
+            {
+                control.Width = cardWidth;
+            }
+        }
+
+        private void NewestAdditionsPanel_SizeChanged(object sender, EventArgs e)
+        {
+            int cardWidth = newestAdditionsPanel.Width - SystemInformation.VerticalScrollBarWidth;
+            foreach (Control control in newestAdditionsPanel.Controls)
+            {
+                control.Width = cardWidth;
             }
         }
 

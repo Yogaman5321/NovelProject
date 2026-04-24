@@ -11,6 +11,10 @@ namespace NovelProject.HomePage
         Default,
         LoadRecentNovels,
         GotHistory,
+        LoadSimilarNovels,
+        GotSimilarNovels,
+        LoadNewestNovels,
+        GotNewestNovels,
         GotError
     }    
 }

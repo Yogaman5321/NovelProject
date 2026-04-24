@@ -38,6 +38,7 @@ namespace NovelProject
 
     public delegate void HomeHandler(HomePageState s);
     public delegate void HomeObserver(HomePageState s, List<HistoryInfo> history);
+    public delegate void HomeNovelsObserver(HomePageState s, List<Novel> novels);
 
     public delegate void NovelEditHandler(NovelEditState s, Novel novel, Chapter chapter, string title, ObjectCollection tags, ListViewItemCollection chapters);
     public delegate void NovelEditObserver(NovelEditState s, Novel novel, Chapter chapter);
