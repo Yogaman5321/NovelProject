@@ -19,6 +19,8 @@ namespace NovelProject.NovelEditPage
         public NovelEditHandler handler;
         private Action<UserControl> _navagate;
         Novel _novel = null;
+        private bool _isNew = false;
+        private bool _saved = false;
         private readonly ToolTip _tagToolTip = new ToolTip();
         private int _lastHoveredTagIndex = -1;
 
@@ -37,8 +39,14 @@ namespace NovelProject.NovelEditPage
                 NovelName = "a2a9242b-8064-4f37-9d52-03d1b8710199_Test-Novel",
                 Description = "6c743292-2e78-42f9-acb9-0ebf11395f33"
             };
+            _isNew = true;
             ValidateSaveButton();
             this.Load += (s, e) => handler(NovelEditState.CreateNovel, _novel, null, null, null, null);
+            this.ParentChanged += (s, e) =>
+            {
+                if (_isNew && !_saved && Parent == null && _novel?.NovelId > 0)
+                    handler(NovelEditState.DeleteNovel, _novel, null, null, null, null);
+            };
         }
 
         public NovelEditView(Novel novel)
@@ -47,6 +55,9 @@ namespace NovelProject.NovelEditPage
             SetupListView();
             SetupTagTooltips();
             WireValidationEvents();
+            authorCheckBox.Checked = false;
+            authorTextBox.Enabled = false;
+            authorTextBox.Visible = false;
             _novel = novel;
 
             uxTitleTextBox.Text = novel.NovelName;
@@ -252,6 +263,7 @@ namespace NovelProject.NovelEditPage
 
         private void SaveExitButtonClick(object sender, EventArgs e)
         {
+            _saved = true;
             _novel.NovelName = uxTitleTextBox.Text;
             _novel.Description = uxDescriptionBox.Text;
             _novel.AuthorName = authorCheckBox.Checked ? authorTextBox.Text : EnvironmentVars.username;
