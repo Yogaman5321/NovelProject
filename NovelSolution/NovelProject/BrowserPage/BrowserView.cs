@@ -319,9 +319,6 @@ namespace NovelProject.BrowserPage
             parameters.Add(new SqlParameter("@offset", _currentPage * _pageSize));
             parameters.Add(new SqlParameter("@pageSize", _pageSize));
 
-            Debug.WriteLine(currentQuery);
-            foreach (var param in parameters)
-                Debug.WriteLine($"{param.ParameterName}: {param.Value}");
 
             handler(BrowserState.GetAllNovels, currentQuery, parameters);
 

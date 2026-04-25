@@ -51,7 +51,6 @@
             uxNovelsLabel.TabIndex = 1;
             uxNovelsLabel.Text = "Your Novels";
             uxNovelsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            uxNovelsLabel.Click += uxNovelsLabel_Click;
             // 
             // uxAddNewButton
             // 
