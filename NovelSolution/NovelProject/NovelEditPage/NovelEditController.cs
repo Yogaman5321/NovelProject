@@ -31,6 +31,9 @@ namespace NovelProject.NovelEditPage
                     var createdNovel = CreateNovel(novel);
                     observer(NovelEditState.NovelCreated, createdNovel, null);
                     break;
+                case NovelEditState.DeleteNovel:
+                    DeleteNovel(novel);
+                    break;
                 case NovelEditState.AddTag:
                     AddTag(title, "change me");
                     break;
@@ -175,6 +178,14 @@ namespace NovelProject.NovelEditPage
             };
 
             DatabaseHelper.ExecuteNonQuery(query, parameters);
+        }
+
+        private void DeleteNovel(Novel novel)
+        {
+            DatabaseHelper.ExecuteNonQuery(
+                "DELETE FROM Novels WHERE NovelId = @NovelId",
+                new SqlParameter("@NovelId", novel.NovelId)
+            );
         }
     }
 }

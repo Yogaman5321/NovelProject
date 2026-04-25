@@ -9,6 +9,7 @@ namespace NovelProject.NovelEditPage
     public enum NovelEditState
     {
         CreateNovel,
+        DeleteNovel,
         UpdateNovel,
         AddTag,
         SaveChapter,
