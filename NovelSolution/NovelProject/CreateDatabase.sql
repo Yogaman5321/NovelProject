@@ -119,30 +119,3 @@ BEGIN
 END
 GO
 
-
--- Creates INDEXes for performance optimization
-
-IF NOT EXISTS (
-    SELECT 1
-    FROM sys.indexes
-    WHERE name = 'IX_ReadHistories_UserId_ChapterId_LastReadDate'
-      AND object_id = OBJECT_ID('ReadHistories')
-)
-BEGIN
-    CREATE INDEX IX_ReadHistories_UserId_ChapterId_LastReadDate
-    ON ReadHistories(UserId, LastReadDate DESC)
-    INCLUDE (ChapterId);
-END
-
-IF NOT EXISTS (
-    SELECT 1
-    FROM sys.indexes
-    WHERE name = 'IX_Chapters_ChapterId'
-      AND object_id = OBJECT_ID('Chapters')
-)
-BEGIN
-    CREATE INDEX IX_Chapters_ChapterId
-    ON Chapters(ChapterId)
-    INCLUDE (NovelId, ChapterNumber, ChapterName);
-END
-

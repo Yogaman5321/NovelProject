@@ -210,8 +210,21 @@ namespace NovelProject.BrowserPage
             {
                 if (uxRadio1.Checked) // Title
                     whereClauses.Add("n.NovelName LIKE @searchText + '%'");
-                else if (uxRadio2.Checked) // Author
-                    whereClauses.Add("n.AuthorName LIKE @searchText + '%'");
+                else if (uxRadio2.Checked)
+                { // Author
+                    whereClauses.Add(@"
+                    (
+                        n.AuthorName LIKE @searchText + '%'
+                        OR
+                        SUBSTRING(n.AuthorName, 1, CHARINDEX(' ', n.AuthorName + ' ') - 1)
+                            LIKE @searchText + '%'
+                        OR
+                        SUBSTRING(n.AuthorName,
+                            CHARINDEX(' ', n.AuthorName + ' ') + 1,
+                            LEN(n.AuthorName)
+                        ) LIKE @searchText + '%'
+                    )");
+                }
 
                 parameters.Add(new SqlParameter("@searchText", searchText));
             }
