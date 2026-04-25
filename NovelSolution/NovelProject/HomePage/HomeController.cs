@@ -51,12 +51,30 @@ namespace NovelProject.HomePage
                 new SqlParameter("@Username", EnvironmentVars.username));
 
             string sql = @"
-                SELECT TOP 10 N.NovelId, N.NovelName, C.ChapterNumber, C.ChapterName, RH.LastReadDate
-                FROM ReadHistories RH
-                INNER JOIN Chapters C ON C.ChapterId = RH.ChapterId
-                INNER JOIN Novels   N ON N.NovelId   = C.NovelId
-                WHERE RH.UserId = @UserID
-                ORDER BY RH.LastReadDate DESC;";
+                    WITH RankedHistory AS (
+                        SELECT 
+                            N.NovelId,
+                            N.NovelName,
+                            C.ChapterNumber,
+                            C.ChapterName,
+                            RH.LastReadDate,
+                            ROW_NUMBER() OVER (
+                                PARTITION BY N.NovelId 
+                                ORDER BY RH.LastReadDate DESC
+                            ) AS rn
+                        FROM ReadHistories RH
+                        INNER JOIN Chapters C ON C.ChapterId = RH.ChapterId
+                        INNER JOIN Novels N ON N.NovelId = C.NovelId
+                        WHERE RH.UserId = @UserID
+                    ),
+                    LatestPerNovel AS (
+                        SELECT *
+                        FROM RankedHistory
+                        WHERE rn = 1
+                    )
+                    SELECT TOP 10 *
+                    FROM LatestPerNovel
+                    ORDER BY LastReadDate DESC;";
 
             using (var reader = DatabaseHelper.ExecuteReader(sql, new SqlParameter("@UserID", userID)))
             {

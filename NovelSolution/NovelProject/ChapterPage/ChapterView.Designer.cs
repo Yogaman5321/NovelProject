@@ -70,6 +70,7 @@
             // 
             uxTextBox.Location = new System.Drawing.Point(28, 56);
             uxTextBox.Name = "uxTextBox";
+            uxTextBox.ReadOnly = true;
             uxTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             uxTextBox.Size = new System.Drawing.Size(747, 372);
             uxTextBox.TabIndex = 3;
