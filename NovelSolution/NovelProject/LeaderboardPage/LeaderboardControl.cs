@@ -40,7 +40,7 @@ namespace NovelProject.LeaderboardPage
             ");
 
             data.TopChaptersRead = GetTopUsers(@"
-                SELECT TOP 100 u.Username, COUNT(*) AS Total
+                SELECT TOP 100 u.Username, COUNT(DISTINCT h.ChapterId) AS Total
                 FROM ReadHistories h
                 JOIN Users u ON u.UserId = h.UserId
                 GROUP BY u.Username
