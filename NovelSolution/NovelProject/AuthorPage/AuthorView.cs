@@ -142,5 +142,10 @@ namespace NovelProject.AuthorPage
                 }
             }
         }
+
+        private void uxNovelsLabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

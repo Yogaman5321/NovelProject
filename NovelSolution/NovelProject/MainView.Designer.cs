@@ -140,6 +140,7 @@
             // 
             // uxMainPanel
             // 
+            uxMainPanel.AutoSize = true;
             uxMainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             uxMainPanel.Location = new System.Drawing.Point(0, 26);
             uxMainPanel.Name = "uxMainPanel";

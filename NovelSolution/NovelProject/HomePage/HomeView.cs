@@ -211,5 +211,10 @@ namespace NovelProject.HomePage
 
             e.DrawFocusRectangle();
         }
+
+        private void UxLastReadTB_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -60,7 +60,6 @@ namespace NovelProject
         }
         
 
-
         public static T ExecuteScalar<T>(string query, params SqlParameter[] parameters)
         {
             using (var connection = GetConnection())

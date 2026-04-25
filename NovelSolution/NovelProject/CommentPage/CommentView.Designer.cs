@@ -34,11 +34,16 @@ namespace NovelProject.CommentPage
             uxNovelName = new System.Windows.Forms.Label();
             uxBackButton = new System.Windows.Forms.Button();
             uxCommentBox = new System.Windows.Forms.ListBox();
+            tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            tableLayoutPanel1.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // uxAddCommentButton
             // 
-            uxAddCommentButton.Location = new System.Drawing.Point(630, 421);
+            uxAddCommentButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            uxAddCommentButton.Location = new System.Drawing.Point(609, 3);
             uxAddCommentButton.Name = "uxAddCommentButton";
             uxAddCommentButton.Size = new System.Drawing.Size(119, 27);
             uxAddCommentButton.TabIndex = 2;
@@ -48,9 +53,10 @@ namespace NovelProject.CommentPage
             // 
             // uxNovelName
             // 
+            uxNovelName.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             uxNovelName.AutoSize = true;
             uxNovelName.Font = new System.Drawing.Font("Segoe UI", 14F);
-            uxNovelName.Location = new System.Drawing.Point(20, 19);
+            uxNovelName.Location = new System.Drawing.Point(23, 26);
             uxNovelName.Name = "uxNovelName";
             uxNovelName.Size = new System.Drawing.Size(225, 25);
             uxNovelName.TabIndex = 3;
@@ -58,7 +64,7 @@ namespace NovelProject.CommentPage
             // 
             // uxBackButton
             // 
-            uxBackButton.Location = new System.Drawing.Point(20, 421);
+            uxBackButton.Location = new System.Drawing.Point(3, 3);
             uxBackButton.Name = "uxBackButton";
             uxBackButton.Size = new System.Drawing.Size(80, 27);
             uxBackButton.TabIndex = 4;
@@ -68,24 +74,58 @@ namespace NovelProject.CommentPage
             // 
             // uxCommentBox
             // 
+            uxCommentBox.Dock = System.Windows.Forms.DockStyle.Fill;
             uxCommentBox.FormattingEnabled = true;
-            uxCommentBox.Location = new System.Drawing.Point(20, 47);
+            uxCommentBox.Location = new System.Drawing.Point(23, 54);
             uxCommentBox.Name = "uxCommentBox";
-            uxCommentBox.Size = new System.Drawing.Size(729, 364);
+            uxCommentBox.Size = new System.Drawing.Size(731, 366);
             uxCommentBox.TabIndex = 5;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 737F));
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            tableLayoutPanel1.Controls.Add(uxCommentBox, 1, 1);
+            tableLayoutPanel1.Controls.Add(uxNovelName, 1, 0);
+            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 1, 2);
+            tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 3;
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.1076231F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 87.89238F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 43F));
+            tableLayoutPanel1.Size = new System.Drawing.Size(777, 467);
+            tableLayoutPanel1.TabIndex = 6;
+            // 
+            // tableLayoutPanel2
+            // 
+            tableLayoutPanel2.ColumnCount = 2;
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tableLayoutPanel2.Controls.Add(uxAddCommentButton, 1, 0);
+            tableLayoutPanel2.Controls.Add(uxBackButton, 0, 0);
+            tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            tableLayoutPanel2.Location = new System.Drawing.Point(23, 426);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 1;
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tableLayoutPanel2.Size = new System.Drawing.Size(731, 38);
+            tableLayoutPanel2.TabIndex = 6;
             // 
             // CommentView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            Controls.Add(uxCommentBox);
-            Controls.Add(uxBackButton);
-            Controls.Add(uxNovelName);
-            Controls.Add(uxAddCommentButton);
+            Controls.Add(tableLayoutPanel1);
             Name = "CommentView";
             Size = new System.Drawing.Size(777, 467);
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
+            tableLayoutPanel2.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -93,5 +133,7 @@ namespace NovelProject.CommentPage
         private System.Windows.Forms.Label uxNovelName;
         private System.Windows.Forms.Button uxBackButton;
         private System.Windows.Forms.ListBox uxCommentBox;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
     }
 }

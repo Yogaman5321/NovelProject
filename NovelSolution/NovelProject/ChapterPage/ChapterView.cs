@@ -137,5 +137,6 @@ namespace NovelProject.ChapterPage
             view.SetNavigator(_navigate);
             _navigate?.Invoke(view);
         }
+
     }
 }

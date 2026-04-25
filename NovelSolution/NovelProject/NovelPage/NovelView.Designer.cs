@@ -34,26 +34,34 @@
             uxReadButton = new System.Windows.Forms.Button();
             uxChapterList = new System.Windows.Forms.ListView();
             reviewsPanel = new System.Windows.Forms.Panel();
+            tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            tableLayoutPanel1.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
+            tableLayoutPanel3.SuspendLayout();
             SuspendLayout();
             // 
             // uxTitleLabel
             // 
+            uxTitleLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             uxTitleLabel.AutoSize = true;
             uxTitleLabel.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            uxTitleLabel.Location = new System.Drawing.Point(23, 18);
+            uxTitleLabel.Location = new System.Drawing.Point(3, 0);
             uxTitleLabel.Name = "uxTitleLabel";
-            uxTitleLabel.Size = new System.Drawing.Size(234, 54);
+            uxTitleLabel.Size = new System.Drawing.Size(189, 45);
             uxTitleLabel.TabIndex = 0;
             uxTitleLabel.Text = "uxTitleLabel";
             // 
             // uxAuthorLink
             // 
+            uxAuthorLink.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             uxAuthorLink.AutoSize = true;
             uxAuthorLink.Font = new System.Drawing.Font("Segoe UI", 18F);
             uxAuthorLink.LinkColor = System.Drawing.Color.Black;
-            uxAuthorLink.Location = new System.Drawing.Point(23, 72);
+            uxAuthorLink.Location = new System.Drawing.Point(3, 45);
             uxAuthorLink.Name = "uxAuthorLink";
-            uxAuthorLink.Size = new System.Drawing.Size(109, 41);
+            uxAuthorLink.Size = new System.Drawing.Size(87, 32);
             uxAuthorLink.TabIndex = 6;
             uxAuthorLink.TabStop = true;
             uxAuthorLink.Text = "Author";
@@ -62,20 +70,19 @@
             // 
             // uxDescriptionBox
             // 
-            uxDescriptionBox.Location = new System.Drawing.Point(484, 173);
-            uxDescriptionBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            uxDescriptionBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            uxDescriptionBox.Location = new System.Drawing.Point(3, 133);
             uxDescriptionBox.Name = "uxDescriptionBox";
             uxDescriptionBox.ReadOnly = true;
-            uxDescriptionBox.Size = new System.Drawing.Size(206, 253);
+            uxDescriptionBox.Size = new System.Drawing.Size(275, 248);
             uxDescriptionBox.TabIndex = 7;
             uxDescriptionBox.Text = "";
             // 
             // uxReadButton
             // 
-            uxReadButton.Location = new System.Drawing.Point(555, 443);
-            uxReadButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            uxReadButton.Location = new System.Drawing.Point(3, 387);
             uxReadButton.Name = "uxReadButton";
-            uxReadButton.Size = new System.Drawing.Size(86, 31);
+            uxReadButton.Size = new System.Drawing.Size(75, 23);
             uxReadButton.TabIndex = 8;
             uxReadButton.Text = "Read ->";
             uxReadButton.UseVisualStyleBackColor = true;
@@ -83,35 +90,88 @@
             // 
             // uxChapterList
             // 
-            uxChapterList.Location = new System.Drawing.Point(23, 119);
-            uxChapterList.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            uxChapterList.Dock = System.Windows.Forms.DockStyle.Fill;
+            uxChapterList.Location = new System.Drawing.Point(3, 80);
             uxChapterList.Name = "uxChapterList";
-            uxChapterList.Size = new System.Drawing.Size(443, 443);
+            uxChapterList.Size = new System.Drawing.Size(321, 391);
             uxChapterList.TabIndex = 9;
             uxChapterList.UseCompatibleStateImageBehavior = false;
             // 
             // reviewsPanel
             // 
-            reviewsPanel.Location = new System.Drawing.Point(720, 3);
+            reviewsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            reviewsPanel.Location = new System.Drawing.Point(661, 2);
+            reviewsPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             reviewsPanel.Name = "reviewsPanel";
-            reviewsPanel.Size = new System.Drawing.Size(356, 597);
+            reviewsPanel.Size = new System.Drawing.Size(267, 521);
             reviewsPanel.TabIndex = 10;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 5;
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.310189F));
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 81.3796158F));
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 287F));
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 273F));
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.310189F));
+            tableLayoutPanel1.Controls.Add(reviewsPanel, 3, 0);
+            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 1, 0);
+            tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 2, 0);
+            tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 1;
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tableLayoutPanel1.Size = new System.Drawing.Size(970, 525);
+            tableLayoutPanel1.TabIndex = 11;
+            // 
+            // tableLayoutPanel2
+            // 
+            tableLayoutPanel2.ColumnCount = 1;
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tableLayoutPanel2.Controls.Add(uxTitleLabel, 0, 0);
+            tableLayoutPanel2.Controls.Add(uxChapterList, 0, 2);
+            tableLayoutPanel2.Controls.Add(uxAuthorLink, 0, 1);
+            tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            tableLayoutPanel2.Location = new System.Drawing.Point(41, 3);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 4;
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90F));
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            tableLayoutPanel2.Size = new System.Drawing.Size(327, 519);
+            tableLayoutPanel2.TabIndex = 0;
+            // 
+            // tableLayoutPanel3
+            // 
+            tableLayoutPanel3.ColumnCount = 1;
+            tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tableLayoutPanel3.Controls.Add(uxReadButton, 0, 2);
+            tableLayoutPanel3.Controls.Add(uxDescriptionBox, 0, 1);
+            tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            tableLayoutPanel3.Location = new System.Drawing.Point(374, 3);
+            tableLayoutPanel3.Name = "tableLayoutPanel3";
+            tableLayoutPanel3.RowCount = 4;
+            tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.8541679F));
+            tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 66.1458359F));
+            tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 114F));
+            tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            tableLayoutPanel3.Size = new System.Drawing.Size(281, 519);
+            tableLayoutPanel3.TabIndex = 11;
             // 
             // NovelView
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            Controls.Add(reviewsPanel);
-            Controls.Add(uxChapterList);
-            Controls.Add(uxReadButton);
-            Controls.Add(uxDescriptionBox);
-            Controls.Add(uxAuthorLink);
-            Controls.Add(uxTitleLabel);
-            Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            Controls.Add(tableLayoutPanel1);
             Name = "NovelView";
-            Size = new System.Drawing.Size(1076, 600);
+            Size = new System.Drawing.Size(970, 525);
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel2.ResumeLayout(false);
+            tableLayoutPanel2.PerformLayout();
+            tableLayoutPanel3.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -122,5 +182,8 @@
         private System.Windows.Forms.Button uxReadButton;
         private System.Windows.Forms.ListView uxChapterList;
         private System.Windows.Forms.Panel reviewsPanel;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
     }
 }
