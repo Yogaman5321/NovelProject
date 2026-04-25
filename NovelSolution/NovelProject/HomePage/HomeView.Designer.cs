@@ -58,7 +58,6 @@
             UxLastReadTB.Size = new System.Drawing.Size(168, 15);
             UxLastReadTB.TabIndex = 1;
             UxLastReadTB.Text = "Pick up where you last left off?";
-            UxLastReadTB.Click += UxLastReadTB_Click;
             // 
             // UxLastReadListBox
             // 

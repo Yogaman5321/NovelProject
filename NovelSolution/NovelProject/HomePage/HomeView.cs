@@ -39,6 +39,22 @@ namespace NovelProject.HomePage
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;
+
+            foreach (Control control in similarUsersPanel.Controls)
+            {
+                if (control is NovelDisplayCard card)
+                {
+                    card.SetNavigator(_navigate);
+                }
+            }
+
+            foreach (Control control in newestAdditionsPanel.Controls)
+            {
+                if (control is NovelDisplayCard card)
+                {
+                    card.SetNavigator(_navigate);
+                }
+            }
         }
 
         public void SetHomeHandler(HomeHandler handler)
@@ -212,9 +228,5 @@ namespace NovelProject.HomePage
             e.DrawFocusRectangle();
         }
 
-        private void UxLastReadTB_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

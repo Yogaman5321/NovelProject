@@ -77,6 +77,7 @@ namespace NovelProject
             var view = new HomeView();
             var controller = new HomeController(view.DisplayState, view.DisplaySimilarNovelsState, view.DisplayNewestNovelsState);
             view.SetHomeHandler(controller.HandleEvents);
+
             LoadView(view);
         }
 
