@@ -24,7 +24,6 @@ namespace NovelProject.AuthorPage
         public AuthorView()
         {
             InitializeComponent();
-            DatabaseHelper.CleanNovels();
             _author = EnvironmentVars.username;
             SetupListView();
             this.Load += LoadNovels;

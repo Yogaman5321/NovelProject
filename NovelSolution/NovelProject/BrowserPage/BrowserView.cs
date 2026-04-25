@@ -30,7 +30,6 @@ namespace NovelProject.BrowserPage
         public BrowserView(string username)
         {
             InitializeComponent();
-            DatabaseHelper.CleanNovels();
 
             uxRadio1.Checked = true;
             _currentUsername = username;
