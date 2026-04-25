@@ -36,8 +36,8 @@ namespace NovelProject
             authorDashboardButton.Visible = _accountMode;
             authorDashboardButton.Enabled = _accountMode;
 
-            userProfileButton.Visible = _accountMode;
-            userProfileButton.Enabled = _accountMode;
+            leaderboardButton.Visible = _accountMode;
+            leaderboardButton.Enabled = _accountMode;
 
             logInButton.Visible = !_accountMode;
             logInButton.Enabled = !_accountMode;
@@ -106,5 +106,12 @@ namespace NovelProject
             LoadView(view);
         }
 
+        private void leaderboardButton_Click(object sender, EventArgs e)
+        {
+            var view = new LeaderboardPage.LeaderboardView();
+            var controller = new LeaderboardPage.LeaderboardController(view.DisplayState);
+            view.SetHandler(controller.HandleEvents);
+            LoadView(view);
+        }
     }
 }

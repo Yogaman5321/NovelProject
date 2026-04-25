@@ -1,14 +1,16 @@
 ﻿using Microsoft.Data.SqlClient;
-using NovelProject.LoginPage;
-using NovelProject.BrowserPage;
 using NovelProject.AuthorPage;
+using NovelProject.BrowserPage;
 using NovelProject.ChapterPage;
+using NovelProject.CommentPage;
 using NovelProject.HomePage;
+using NovelProject.LeaderboardPage;
+using NovelProject.LoginPage;
+using NovelProject.Models;
 using NovelProject.NovelEditPage;
 using NovelProject.NovelPage;
+using NovelProject.ReviewControl;
 using NovelProject.UserPage;
-using NovelProject.Models;
-using NovelProject.CommentPage;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,9 +18,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using NovelProject.ReviewControl;
-using static System.Windows.Forms.ListView;
 using static System.Windows.Forms.ListBox;
+using static System.Windows.Forms.ListView;
 
 
 namespace NovelProject
@@ -54,6 +55,9 @@ namespace NovelProject
 
     public delegate void ReviewObserver(ReviewState s, Review r);
     public delegate void ReviewHandler(ReviewState s, string content, decimal rating, Novel novel, int reviewId);
+
+    public delegate void LeaderboardHandler(LeaderboardState s);
+    public delegate void LeaderboardObserver(LeaderboardState s, LeaderboardData data);
 
     internal static class Program
     {

@@ -33,11 +33,12 @@
             homePageButton = new System.Windows.Forms.ToolStripButton();
             browseNovelsButton = new System.Windows.Forms.ToolStripButton();
             authorDashboardButton = new System.Windows.Forms.ToolStripButton();
-            userProfileButton = new System.Windows.Forms.ToolStripButton();
+            leaderboardButton = new System.Windows.Forms.ToolStripButton();
             usernameLabel = new System.Windows.Forms.ToolStripLabel();
             logOutButton = new System.Windows.Forms.ToolStripButton();
             logInButton = new System.Windows.Forms.ToolStripButton();
             uxMainPanel = new System.Windows.Forms.Panel();
+            toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             toolStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -45,10 +46,10 @@
             // 
             toolStrip1.BackColor = System.Drawing.SystemColors.ActiveBorder;
             toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { homePageButton, browseNovelsButton, authorDashboardButton, userProfileButton, usernameLabel, logOutButton, logInButton });
+            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { homePageButton, browseNovelsButton, authorDashboardButton, toolStripButton1, leaderboardButton, usernameLabel, logOutButton, logInButton });
             toolStrip1.Location = new System.Drawing.Point(0, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new System.Drawing.Size(906, 26);
+            toolStrip1.Size = new System.Drawing.Size(1036, 26);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -85,16 +86,16 @@
             authorDashboardButton.Text = "Author Dashboard";
             authorDashboardButton.Click += authorDashboardButton_Click;
             // 
-            // userProfileButton
+            // leaderboardButton
             // 
-            userProfileButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            userProfileButton.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            userProfileButton.Image = (System.Drawing.Image)resources.GetObject("userProfileButton.Image");
-            userProfileButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            userProfileButton.Name = "userProfileButton";
-            userProfileButton.Size = new System.Drawing.Size(89, 23);
-            userProfileButton.Text = "View Profile";
-            userProfileButton.Click += userProfileButton_Click;
+            leaderboardButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            leaderboardButton.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            leaderboardButton.Image = (System.Drawing.Image)resources.GetObject("leaderboardButton.Image");
+            leaderboardButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            leaderboardButton.Name = "leaderboardButton";
+            leaderboardButton.Size = new System.Drawing.Size(90, 23);
+            leaderboardButton.Text = "Leaderboard";
+            leaderboardButton.Click += leaderboardButton_Click;
             // 
             // usernameLabel
             // 
@@ -126,13 +127,23 @@
             logInButton.Size = new System.Drawing.Size(52, 23);
             logInButton.Text = "Log In";
             // 
-            // authorDashboardButton
+            // uxMainPanel
             // 
             uxMainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             uxMainPanel.Location = new System.Drawing.Point(0, 26);
             uxMainPanel.Name = "uxMainPanel";
-            uxMainPanel.Size = new System.Drawing.Size(906, 424);
+            uxMainPanel.Size = new System.Drawing.Size(1036, 574);
             uxMainPanel.TabIndex = 1;
+            // 
+            // toolStripButton1
+            // 
+            toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            toolStripButton1.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            toolStripButton1.Image = (System.Drawing.Image)resources.GetObject("toolStripButton1.Image");
+            toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new System.Drawing.Size(89, 23);
+            toolStripButton1.Text = "View Profile";
             // 
             // MainView
             // 
@@ -155,11 +166,12 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton homePageButton;
         private System.Windows.Forms.ToolStripButton browseNovelsButton;
-        private System.Windows.Forms.ToolStripButton userProfileButton;
+        private System.Windows.Forms.ToolStripButton leaderboardButton;
         private System.Windows.Forms.ToolStripLabel usernameLabel;
         private System.Windows.Forms.ToolStripButton logInButton;
         private System.Windows.Forms.ToolStripButton logOutButton;
         private System.Windows.Forms.ToolStripButton authorDashboardButton;
         private System.Windows.Forms.Panel uxMainPanel;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
     }
 }
