@@ -57,14 +57,24 @@ namespace NovelProject.ChapterPage
                 string basePath = AppContext.BaseDirectory;
                 string query = $"SELECT ChapterId FROM Chapters WHERE NovelId = {NovelId} AND ChapterNumber = {CurrentChapter}";
                 int chapterId = DatabaseHelper.ExecuteScalar<int>(query);
-                string path = Path.Combine(basePath, "Novels", $"{chapterId}.txt");
-                text = File.ReadAllText(path);
+
+
+                string textPath = Path.Combine(basePath, "Novels", $"{chapterId}.txt");
+                string pdfPath = Path.Combine(basePath, "Novels", $"{chapterId}.pdf");
+                if (File.Exists(pdfPath)) {
+                    observer(ChapterState.GotChapterPDF, pdfPath, CurrentChapter);
+                } else
+                {
+                    text = File.ReadAllText(textPath);
+                    observer(ChapterState.GotChapterText, text, CurrentChapter);
+                }
+
             }
             catch
             {
                 text = "No more chapters.";
             }
-            observer(ChapterState.GotChapter, text, CurrentChapter);
+
         }
 
         private void UpdateReadHistory()

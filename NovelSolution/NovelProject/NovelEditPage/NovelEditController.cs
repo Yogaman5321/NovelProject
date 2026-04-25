@@ -81,8 +81,22 @@ namespace NovelProject.NovelEditPage
             int chapterId = DatabaseHelper.ExecuteScalar<int>(query);
 
             string basePath = AppContext.BaseDirectory;
-            string newPath = Path.Combine(basePath, "Novels", $"{chapterId}.txt");
-            string oldPath = Path.Combine(basePath, "Novels", $"{novelID}_{chapternumber}.txt");
+            string novelsFolder = Path.Combine(basePath, "Novels");
+
+            string txtPath = Path.Combine(novelsFolder, $"{novelID}_{chapternumber}.txt");
+            string pdfPath = Path.Combine(novelsFolder, $"{novelID}_{chapternumber}.pdf");
+
+            string oldPath = null;
+
+            if (File.Exists(txtPath))
+                oldPath = txtPath;
+            else if (File.Exists(pdfPath))
+                oldPath = pdfPath;
+
+            string extension = Path.GetExtension(oldPath);
+
+            string newPath = Path.Combine(novelsFolder, $"{chapterId}{extension}");
+
             File.Move(oldPath, newPath, true);
 
             return new Chapter

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,10 +31,28 @@ namespace NovelProject.ChapterPage
             _novel = novel;
             _initialChapter = chapter;
             _currentChapter = chapter;
+
+            uxPdfViewer.Visible = false;
+
             this.Load += LoadChapter;
+            this.Load += ChapterView_Load;
         }
 
-        
+        private async void ChapterView_Load(object sender, EventArgs e)
+        {
+            await uxPdfViewer.EnsureCoreWebView2Async();
+        }
+
+        private void LoadPdf(string path)
+        {
+            string fullPath = Path.GetFullPath(path);
+
+            // Convert to proper file URI
+            var uri = new Uri(fullPath);
+
+            uxPdfViewer.Source = uri;
+        }
+
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;
@@ -53,9 +72,21 @@ namespace NovelProject.ChapterPage
         {
             switch (s)
             {
-                case ChapterState.GotChapter:
+                case ChapterState.GotChapterText:
+                    uxPdfViewer.Visible = false;
+                    uxTextBox.Visible = true;
                     _currentChapter = currentChapter;
                     uxTextBox.Text = text;
+                    uxChapterLabel.Text = $"Chapter {currentChapter}";
+                    uxBackButton.Enabled = currentChapter > 1;
+                    uxForwardButton.Enabled = currentChapter < _maxChapters;
+                    handler(ChapterState.UpdateReadHistory, 0);
+                    break;
+                case ChapterState.GotChapterPDF:
+                    uxPdfViewer.Visible = true;
+                    uxTextBox.Visible = false;
+                    _currentChapter = currentChapter;
+                    LoadPdf(text);
                     uxChapterLabel.Text = $"Chapter {currentChapter}";
                     uxBackButton.Enabled = currentChapter > 1;
                     uxForwardButton.Enabled = currentChapter < _maxChapters;

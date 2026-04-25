@@ -32,8 +32,8 @@ namespace NovelProject.NovelEditPage
 
         private void BrowseButtonClick(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "Text Files (*.txt)|*.txt";
-            openFileDialog1.Title = "Select a text file";
+            openFileDialog1.Filter = "Supported Files (*.txt;*.pdf)|*.txt;*.pdf";
+            openFileDialog1.Title = "Select a text or PDF file";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 uxFileTextBox.Text = openFileDialog1.FileName;
@@ -67,7 +67,15 @@ namespace NovelProject.NovelEditPage
 
             string sourcePath = uxFileTextBox.Text;
 
-            string destPath = Path.Combine(novelsFolder, _novelID + "_" + _chapterNum + ".txt");
+            string extension = Path.GetExtension(sourcePath).ToLower();
+
+            if (extension != ".txt" && extension != ".pdf")
+            {
+                MessageBox.Show("Only .txt and .pdf files are allowed.");
+                return;
+            }
+
+            string destPath = Path.Combine(novelsFolder, _novelID + "_" + _chapterNum + extension);
 
             File.Copy(sourcePath, destPath, true);
 

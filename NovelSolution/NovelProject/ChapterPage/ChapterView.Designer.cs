@@ -34,11 +34,13 @@
             uxTextBox = new System.Windows.Forms.RichTextBox();
             uxChapterLabel = new System.Windows.Forms.Label();
             uxViewCommentsButton = new System.Windows.Forms.Button();
+            uxPdfViewer = new Microsoft.Web.WebView2.WinForms.WebView2();
+            ((System.ComponentModel.ISupportInitialize)uxPdfViewer).BeginInit();
             SuspendLayout();
             // 
             // uxBackButton
             // 
-            uxBackButton.Location = new System.Drawing.Point(619, 17);
+            uxBackButton.Location = new System.Drawing.Point(832, 19);
             uxBackButton.Name = "uxBackButton";
             uxBackButton.Size = new System.Drawing.Size(75, 23);
             uxBackButton.TabIndex = 0;
@@ -48,7 +50,7 @@
             // 
             // uxForwardButton
             // 
-            uxForwardButton.Location = new System.Drawing.Point(700, 17);
+            uxForwardButton.Location = new System.Drawing.Point(913, 19);
             uxForwardButton.Name = "uxForwardButton";
             uxForwardButton.Size = new System.Drawing.Size(75, 23);
             uxForwardButton.TabIndex = 1;
@@ -72,7 +74,7 @@
             uxTextBox.Name = "uxTextBox";
             uxTextBox.ReadOnly = true;
             uxTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            uxTextBox.Size = new System.Drawing.Size(747, 372);
+            uxTextBox.Size = new System.Drawing.Size(960, 471);
             uxTextBox.TabIndex = 3;
             uxTextBox.Text = "";
             // 
@@ -88,7 +90,7 @@
             // 
             // uxViewCommentsButton
             // 
-            uxViewCommentsButton.Location = new System.Drawing.Point(658, 434);
+            uxViewCommentsButton.Location = new System.Drawing.Point(871, 533);
             uxViewCommentsButton.Name = "uxViewCommentsButton";
             uxViewCommentsButton.Size = new System.Drawing.Size(117, 23);
             uxViewCommentsButton.TabIndex = 5;
@@ -96,10 +98,22 @@
             uxViewCommentsButton.UseVisualStyleBackColor = true;
             uxViewCommentsButton.Click += ViewCommentsButtonClick;
             // 
+            // uxPdfViewer
+            // 
+            uxPdfViewer.AllowExternalDrop = true;
+            uxPdfViewer.CreationProperties = null;
+            uxPdfViewer.DefaultBackgroundColor = System.Drawing.Color.White;
+            uxPdfViewer.Location = new System.Drawing.Point(28, 56);
+            uxPdfViewer.Name = "uxPdfViewer";
+            uxPdfViewer.Size = new System.Drawing.Size(960, 471);
+            uxPdfViewer.TabIndex = 6;
+            uxPdfViewer.ZoomFactor = 1D;
+            // 
             // ChapterView
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(uxPdfViewer);
             Controls.Add(uxViewCommentsButton);
             Controls.Add(uxChapterLabel);
             Controls.Add(uxTextBox);
@@ -107,7 +121,8 @@
             Controls.Add(uxForwardButton);
             Controls.Add(uxBackButton);
             Name = "ChapterView";
-            Size = new System.Drawing.Size(814, 473);
+            Size = new System.Drawing.Size(1024, 612);
+            ((System.ComponentModel.ISupportInitialize)uxPdfViewer).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -120,5 +135,6 @@
         private System.Windows.Forms.RichTextBox uxTextBox;
         private System.Windows.Forms.Label uxChapterLabel;
         private System.Windows.Forms.Button uxViewCommentsButton;
+        private Microsoft.Web.WebView2.WinForms.WebView2 uxPdfViewer;
     }
 }

@@ -98,19 +98,19 @@ namespace NovelProject
             LoadView(view);
         }
 
-        private void userProfileButton_Click(object sender, EventArgs e)
-        {
-            var view = new UserView(EnvironmentVars.username);
-            var controller = new UserController(view.DisplayState);
-            view.SetUserHandler(controller.HandleEvents);
-            LoadView(view);
-        }
-
         private void leaderboardButton_Click(object sender, EventArgs e)
         {
             var view = new LeaderboardPage.LeaderboardView();
             var controller = new LeaderboardPage.LeaderboardController(view.DisplayState);
             view.SetHandler(controller.HandleEvents);
+            LoadView(view);
+        }
+
+        private void userProfileButton_Click(object sender, EventArgs e)
+        {
+            var view = new UserView(EnvironmentVars.username);
+            var controller = new UserController(view.DisplayState);
+            view.SetUserHandler(controller.HandleEvents);
             LoadView(view);
         }
     }

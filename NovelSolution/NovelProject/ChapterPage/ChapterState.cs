@@ -12,7 +12,8 @@ namespace NovelProject.ChapterPage
         ChangeChapter,
         UpdateReadHistory,
 
-        GotChapter,
+        GotChapterText,
+        GotChapterPDF,
         GotError
     }
 }
