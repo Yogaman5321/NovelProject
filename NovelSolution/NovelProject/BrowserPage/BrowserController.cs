@@ -26,7 +26,7 @@ namespace NovelProject.BrowserPage
             switch (state)
             {
                 case BrowserState.GetAllNovels:
-                    var novels = GetAllNovels(fullQuery);
+                    var novels = GetAllNovels(fullQuery, parameters.ToArray());
                     if(novels != null)
                     {
                         observer(BrowserState.GotNovels, novels);
@@ -53,12 +53,12 @@ namespace NovelProject.BrowserPage
             }
         }
 
-        public List<Novel> GetAllNovels(string fullQuery)
+        public List<Novel> GetAllNovels(string fullQuery, SqlParameter[] parameters)
         {            
             try
             {
                 var novels = new List<Novel>();
-                using (var reader = DatabaseHelper.ExecuteReader(fullQuery))
+                using (var reader = DatabaseHelper.ExecuteReader(fullQuery, parameters.ToArray()))
                 {
                     while (reader.Read())
                     {

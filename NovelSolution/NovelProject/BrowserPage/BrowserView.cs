@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using NovelProject.NovelPage;
+using System.Diagnostics;
 
 namespace NovelProject.BrowserPage
 {
@@ -19,6 +20,12 @@ namespace NovelProject.BrowserPage
     {
         public BrowserHandler handler;
         private string _currentUsername;
+
+        private int _pageSize = 10;
+        private int _currentPage = 0;
+        private bool _isLoading = false;
+        string currentQuery = "";
+        List<SqlParameter> currentParameters;
 
         public BrowserView(string username)
         {
@@ -30,6 +37,10 @@ namespace NovelProject.BrowserPage
             uxSearchButton.Click += SearchButtonClick;
             resultsPanel.Padding = Padding.Empty;
             resultsPanel.SizeChanged += ResultsPanel_SizeChanged;
+            resultsPanel.Scroll += ResultsPanel_Scroll;
+            resultsPanel.MouseWheel += ResultsPanel_MouseWheel;
+            resultsPanel.ControlAdded += (s, e) => CheckLoadMore();
+            resultsPanel.Resize += (s, e) => CheckLoadMore();
 
             GetTagBox();
             GetOtherFiltersBox();
@@ -53,7 +64,10 @@ namespace NovelProject.BrowserPage
 
         private void DisplayResults(List<Novel> novels)
         {
-            resultsPanel.Controls.Clear();
+            resultsPanel.SuspendLayout();
+
+            if (_currentPage == 0)
+                resultsPanel.Controls.Clear();
 
             int cardWidth = resultsPanel.Width - SystemInformation.VerticalScrollBarWidth;
 
@@ -82,6 +96,8 @@ namespace NovelProject.BrowserPage
 
                 resultsPanel.Controls.Add(card);
             }
+
+            resultsPanel.ResumeLayout();
         }
 
         private void ResultsPanel_SizeChanged(object sender, EventArgs e)
@@ -95,6 +111,11 @@ namespace NovelProject.BrowserPage
 
         private void SearchButtonClick(object sender, EventArgs e)
         {
+            _currentPage = 0;
+
+            resultsPanel.AutoScrollPosition = new Point(0, 0);
+            resultsPanel.VerticalScroll.Value = 0;
+
             string query = BuildSearchQuery(out var parameters);
             handler(BrowserState.GetFilteredNovels, query, parameters);
         }
@@ -209,34 +230,91 @@ namespace NovelProject.BrowserPage
                 sb.Append(string.Join(" AND ", whereClauses));
             }
 
+            bool hasOrderBy = false;
             switch (sortOption)
             {
                 case "Best Rated":
                     sb.Append(" ORDER BY ISNULL(ns.AvgRating, 0) DESC");
+                    hasOrderBy = true;
                     break;
+
                 case "Popular":
                     sb.Append(" ORDER BY ISNULL(ns.ReviewCount, 0) DESC");
+                    hasOrderBy = true;
                     break;
+
                 case "Newest":
                     sb.Append(" ORDER BY n.DatePosted DESC");
+                    hasOrderBy = true;
                     break;
+
                 case "View Count":
                     sb.Append(" ORDER BY ISNULL(nvc.ViewCount, 0) DESC");
+                    hasOrderBy = true;
                     break;
+
                 case "Random":
                     sb.Append(" ORDER BY NEWID()");
-                    break;
-                default:
+                    hasOrderBy = true;
                     break;
             }
+
+            if (!hasOrderBy)
+            {
+                sb.Append(" ORDER BY n.DatePosted DESC ");
+            }
+
+            sb.Append(" OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY;");
+
+            currentQuery = sb.ToString();
+            currentParameters = parameters;
+
+            currentParameters.Add(new SqlParameter("@offset", _currentPage * _pageSize));
+            currentParameters.Add(new SqlParameter("@pageSize", _pageSize));
 
             return sb.ToString();
         }
 
         private void GetInitialNovels(object sender, EventArgs e)
         {
-            string query = "SELECT * FROM Novels";
-            handler(BrowserState.GetAllNovels, query, null);
+            _currentPage = 0;
+            currentQuery = @"
+                SELECT *
+                FROM Novels
+                ORDER BY DatePosted DESC
+                OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY;";
+            currentParameters = new List<SqlParameter>();
+            currentParameters.Add(new SqlParameter("@offset", _currentPage * _pageSize));
+            currentParameters.Add(new SqlParameter("@pageSize", _pageSize));
+
+            LoadNextPage();
+        }
+
+        private void LoadNextPage()
+        {
+            if (_isLoading) return;
+            _isLoading = true;
+
+            var parameters = new List<SqlParameter>();
+
+            // copy base params (WITHOUT modifying original)
+            foreach (var p in currentParameters)
+            {
+                if (p.ParameterName != "@offset" && p.ParameterName != "@pageSize")
+                    parameters.Add(new SqlParameter(p.ParameterName, p.Value));
+            }
+
+            parameters.Add(new SqlParameter("@offset", _currentPage * _pageSize));
+            parameters.Add(new SqlParameter("@pageSize", _pageSize));
+
+            Debug.WriteLine(currentQuery);
+            foreach (var param in parameters)
+                Debug.WriteLine($"{param.ParameterName}: {param.Value}");
+
+            handler(BrowserState.GetAllNovels, currentQuery, parameters);
+
+            _currentPage++;
+            _isLoading = false;
         }
 
         private void GetTagBox()
@@ -271,6 +349,32 @@ namespace NovelProject.BrowserPage
             otherFilterBox.Items.Add("Recommended");
             otherFilterBox.Items.Add("Random");
             otherFilterBox.SelectedIndex = 0;
+        }
+
+        private void ResultsPanel_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (resultsPanel.VerticalScroll.Value + resultsPanel.Height >= resultsPanel.VerticalScroll.Maximum - 100)
+            {
+                LoadNextPage();
+            }
+        }
+
+        private void CheckLoadMore()
+        {
+            if (_isLoading) return;
+
+            var visibleBottom = resultsPanel.DisplayRectangle.Bottom;
+            var currentBottom = resultsPanel.AutoScrollPosition.Y * -1 + resultsPanel.Height;
+
+            if (currentBottom >= visibleBottom - 200)
+            {
+                LoadNextPage();
+            }
+        }
+
+        private void ResultsPanel_MouseWheel(object sender, MouseEventArgs e)
+        {
+            CheckLoadMore();
         }
 
         private Action<UserControl> _navigate;
