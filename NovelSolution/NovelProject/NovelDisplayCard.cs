@@ -19,7 +19,8 @@ namespace NovelProject
     {
         private static readonly Color DefaultBackground = SystemColors.Control;
         private static readonly Color HoverBackground = Color.FromArgb(220, 235, 252);
-
+        private Novel _novel;
+        private Action<UserControl> _navigate;
         public NovelDisplayCard()
         {
             InitializeComponent();
@@ -30,7 +31,7 @@ namespace NovelProject
             AttachHoverHandlers(this);
         }
 
-        Novel _novel;
+        
         public void Populate(Novel novel)
         {
             _novel = novel;
@@ -124,7 +125,6 @@ namespace NovelProject
             }
         }
 
-        private Action<UserControl> _navigate;
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;

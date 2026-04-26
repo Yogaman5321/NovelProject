@@ -8,9 +8,9 @@ namespace NovelProject.LeaderboardPage
 {
     public class LeaderboardController
     {
-        public Action<LeaderboardState, LeaderboardData> observer;
+        public LeaderboardObserver observer;
 
-        public LeaderboardController(Action<LeaderboardState, LeaderboardData> observer)
+        public LeaderboardController(LeaderboardObserver observer)
         {
             this.observer = observer;
         }

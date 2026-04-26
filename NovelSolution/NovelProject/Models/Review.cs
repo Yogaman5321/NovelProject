@@ -17,7 +17,6 @@ namespace NovelProject.Models
 
         public string ReviewContent { get; set; }
 
-        // Maybe change to int if we only want to do that
         public decimal Rating { get; set; }
 
         public DateTime ReviewPostedDate { get; set; }

@@ -22,7 +22,7 @@ namespace NovelProject.NovelPage
     public partial class NovelView : UserControl, INavigatable
     {
         public NovelPageHandler handler;
-
+        private Action<UserControl> _navigate;
         public Novel _novel;
 
         public NovelView(Novel novel)
@@ -44,7 +44,7 @@ namespace NovelProject.NovelPage
             }
         }
 
-        private Action<UserControl> _navigate;
+        
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;

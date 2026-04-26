@@ -18,7 +18,7 @@ namespace NovelProject.NovelEditPage
     {
         public NovelEditHandler handler;
         private Action<UserControl> _navagate;
-        Novel _novel = null;
+        public Novel _novel = null;
         private bool _isNew = false;
         private bool _saved = false;
         private readonly ToolTip _tagToolTip = new ToolTip();

@@ -18,6 +18,7 @@ namespace NovelProject.UserPage
     {
         public UserHandler handler;
         private string _currentUsername;
+        private Action<UserControl> _navigate;
 
         public UserView(string username)
         {
@@ -39,7 +40,7 @@ namespace NovelProject.UserPage
             this.Load += LoadUser;
         }
 
-        private Action<UserControl> _navigate;
+        
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;

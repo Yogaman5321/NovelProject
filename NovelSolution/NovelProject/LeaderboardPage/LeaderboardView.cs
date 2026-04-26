@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace NovelProject.LeaderboardPage
 {
-    public partial class LeaderboardView : UserControl, INavigatable
+    public partial class LeaderboardView : UserControl
     {
-        public Action<LeaderboardState> handler;
+        public LeaderboardHandler handler;
 
         public LeaderboardView()
         {
@@ -22,13 +22,7 @@ namespace NovelProject.LeaderboardPage
             this.Load += LoadLeaderboard;
         }
 
-        private Action<UserControl> _navigate;
-        public void SetNavigator(Action<UserControl> navigate)
-        {
-            _navigate = navigate;
-        }
-
-        public void SetHandler(Action<LeaderboardState> handler)
+        public void SetHandler(LeaderboardHandler handler)
         {
             this.handler = handler;
         }

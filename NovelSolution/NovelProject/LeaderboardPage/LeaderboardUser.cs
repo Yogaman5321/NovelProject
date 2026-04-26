@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace NovelProject.LeaderboardPage
 {
-
-    public enum LeaderboardState
+    public class LeaderboardUser
     {
-        LoadLeaderboard,
-        GotLeaderboard,
-        GotError
+        public string Username { get; set; }
+        public int Value { get; set; }
     }
 }
