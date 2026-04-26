@@ -14,11 +14,10 @@ using System.Windows.Forms;
 
 namespace NovelProject.UserPage
 {
-    public partial class UserView : UserControl, INavigatable
+    public partial class UserView : UserControl
     {
         public UserHandler handler;
         private string _currentUsername;
-        private Action<UserControl> _navigate;
 
         public UserView(string username)
         {
@@ -38,12 +37,6 @@ namespace NovelProject.UserPage
 
             SetupListViews();
             this.Load += LoadUser;
-        }
-
-        
-        public void SetNavigator(Action<UserControl> navigate)
-        {
-            _navigate = navigate;
         }
 
         public void SetUserHandler(UserHandler handler)
