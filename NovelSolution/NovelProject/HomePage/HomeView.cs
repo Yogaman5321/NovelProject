@@ -80,30 +80,6 @@ namespace NovelProject.HomePage
             }
         }
 
-        public void DisplaySimilarNovelsState(HomePageState s, List<Novel> novels)
-        {
-            switch (s)
-            {
-                case HomePageState.GotSimilarNovels:
-                    DisplayNovelsInPanel(similarUsersPanel, novels);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        public void DisplayNewestNovelsState(HomePageState s, List<Novel> novels)
-        {
-            switch (s)
-            {
-                case HomePageState.GotNewestNovels:
-                    DisplayNovelsInPanel(newestAdditionsPanel, novels);
-                    break;
-                default:
-                    break;
-            }
-        }
-
         private void LoadHistory(object sender, EventArgs e)
         {
             handler(HomePageState.LoadRecentNovels);

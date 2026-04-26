@@ -65,14 +65,14 @@
             UxLastReadListBox.FormattingEnabled = true;
             UxLastReadListBox.Location = new System.Drawing.Point(3, 81);
             UxLastReadListBox.Name = "UxLastReadListBox";
-            UxLastReadListBox.Size = new System.Drawing.Size(389, 664);
+            UxLastReadListBox.Size = new System.Drawing.Size(390, 664);
             UxLastReadListBox.TabIndex = 2;
             // 
             // label1
             // 
             label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(398, 38);
+            label1.Location = new System.Drawing.Point(399, 38);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(158, 20);
             label1.TabIndex = 4;
@@ -81,7 +81,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(398, 58);
+            label2.Location = new System.Drawing.Point(399, 58);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(131, 20);
             label2.TabIndex = 5;
@@ -90,7 +90,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(793, 58);
+            label3.Location = new System.Drawing.Point(795, 58);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(127, 20);
             label3.TabIndex = 6;
@@ -101,9 +101,9 @@
             similarUsersPanel.AutoScroll = true;
             similarUsersPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             similarUsersPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            similarUsersPanel.Location = new System.Drawing.Point(398, 81);
+            similarUsersPanel.Location = new System.Drawing.Point(399, 81);
             similarUsersPanel.Name = "similarUsersPanel";
-            similarUsersPanel.Size = new System.Drawing.Size(389, 676);
+            similarUsersPanel.Size = new System.Drawing.Size(390, 676);
             similarUsersPanel.TabIndex = 7;
             similarUsersPanel.WrapContents = false;
             // 
@@ -112,7 +112,7 @@
             newestAdditionsPanel.AutoScroll = true;
             newestAdditionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             newestAdditionsPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            newestAdditionsPanel.Location = new System.Drawing.Point(793, 81);
+            newestAdditionsPanel.Location = new System.Drawing.Point(795, 81);
             newestAdditionsPanel.Name = "newestAdditionsPanel";
             newestAdditionsPanel.Size = new System.Drawing.Size(390, 676);
             newestAdditionsPanel.TabIndex = 8;
@@ -141,7 +141,7 @@
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new System.Drawing.Size(1186, 760);
+            tableLayoutPanel1.Size = new System.Drawing.Size(1188, 760);
             tableLayoutPanel1.TabIndex = 9;
             // 
             // HomeView
@@ -151,7 +151,7 @@
             AutoSize = true;
             Controls.Add(tableLayoutPanel1);
             Name = "HomeView";
-            Size = new System.Drawing.Size(1186, 760);
+            Size = new System.Drawing.Size(1188, 760);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
