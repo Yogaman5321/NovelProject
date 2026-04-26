@@ -62,12 +62,18 @@ namespace NovelProject.HomePage
             this.handler = handler;
         }
 
-        public void DisplayState(HomePageState s, List<HistoryInfo> history)
+        public void DisplayState(HomePageState s, List<HistoryInfo> history, List<Novel> novels)
         {
             switch (s)
             {
                 case HomePageState.GotHistory:
                     LoadReadHistory(history);
+                    break;
+                case HomePageState.GotSimilarNovels:
+                    DisplayNovelsInPanel(similarUsersPanel, novels);
+                    break;
+                case HomePageState.GotNewestNovels:
+                    DisplayNovelsInPanel(newestAdditionsPanel, novels);
                     break;
                 default:
                     break;

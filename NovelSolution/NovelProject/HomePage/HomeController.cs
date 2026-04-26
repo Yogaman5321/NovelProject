@@ -11,14 +11,11 @@ namespace NovelProject.HomePage
     public class HomeController
     {
         public HomeObserver observer;
-        public HomeNovelsObserver novelsObserver;
-        public HomeNovelsObserver newestNovelsObserver;
 
-        public HomeController(HomeObserver observer, HomeNovelsObserver novelsObserver, HomeNovelsObserver newestNovelsObserver)
+        public HomeController(HomeObserver observer)
         {
             this.observer = observer;
-            this.novelsObserver = novelsObserver;
-            this.newestNovelsObserver = newestNovelsObserver;
+
         }
 
         public void HandleEvents(HomePageState state)
@@ -27,15 +24,15 @@ namespace NovelProject.HomePage
             {
                 case HomePageState.LoadRecentNovels:
                     var history = LoadReadHistory();
-                    observer(HomePageState.GotHistory, history);
+                    observer(HomePageState.GotHistory, history, null);
                     break;
                 case HomePageState.LoadSimilarNovels:
                     var similarNovels = LoadSimilarNovels();
-                    novelsObserver(HomePageState.GotSimilarNovels, similarNovels);
+                    observer(HomePageState.GotSimilarNovels, null, similarNovels);
                     break;
                 case HomePageState.LoadNewestNovels:
                     var newestNovels = LoadNewestNovels();
-                    newestNovelsObserver(HomePageState.GotNewestNovels, newestNovels);
+                    observer(HomePageState.GotNewestNovels, null, newestNovels);
                     break;
                 default:
                     break;
