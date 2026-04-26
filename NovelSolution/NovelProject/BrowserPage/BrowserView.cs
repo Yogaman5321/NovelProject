@@ -20,12 +20,12 @@ namespace NovelProject.BrowserPage
     {
         public BrowserHandler handler;
         private string _currentUsername;
-
         private int _pageSize = 10;
         private int _currentPage = 0;
         private bool _isLoading = false;
-        string currentQuery = "";
-        List<SqlParameter> currentParameters;
+        private string currentQuery = "";
+        private List<SqlParameter> currentParameters;
+        private Action<UserControl> _navigate;
 
         public BrowserView(string username)
         {
@@ -386,7 +386,7 @@ namespace NovelProject.BrowserPage
             CheckLoadMore();
         }
 
-        private Action<UserControl> _navigate;
+        
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;

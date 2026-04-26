@@ -34,9 +34,6 @@ namespace NovelProject.NovelEditPage
                 case NovelEditState.DeleteNovel:
                     DeleteNovel(novel);
                     break;
-                case NovelEditState.AddTag:
-                    AddTag(title, "change me");
-                    break;
                 case NovelEditState.UpdateNovel:
                     UpdateNovel(novel, tags, chapters);
                     break;
@@ -160,24 +157,6 @@ namespace NovelProject.NovelEditPage
             }
 
             DatabaseHelper.ExecuteNonQuery("Delete FROM Chapters WHERE ChapterNumber > 10000");
-        }
-
-        public void AddTag(string name, string description)
-        {
-            string query = @"
-                IF NOT EXISTS (SELECT 1 FROM Tags WHERE TagName = @name)
-                BEGIN
-                    INSERT INTO Tags (TagName, TagDescription)
-                    VALUES (@name, @description)
-                END";
-
-            var parameters = new SqlParameter[]
-            {
-                new SqlParameter("@name", name),
-                new SqlParameter("@description", description),
-            };
-
-            DatabaseHelper.ExecuteNonQuery(query, parameters);
         }
 
         private void DeleteNovel(Novel novel)

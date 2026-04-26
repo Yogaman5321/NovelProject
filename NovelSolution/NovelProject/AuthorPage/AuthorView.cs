@@ -20,6 +20,7 @@ namespace NovelProject.AuthorPage
         public AuthorHandler handler;
         private string _author;
         private List<Novel> _novels;
+        private Action<UserControl> _navigate;
 
         public AuthorView()
         {
@@ -29,7 +30,7 @@ namespace NovelProject.AuthorPage
             this.Load += LoadNovels;
         }
 
-        private Action<UserControl> _navigate;
+        
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;

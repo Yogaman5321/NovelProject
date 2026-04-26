@@ -11,7 +11,6 @@ namespace NovelProject.NovelEditPage
         CreateNovel,
         DeleteNovel,
         UpdateNovel,
-        AddTag,
         SaveChapter,
         EditChapter,
 

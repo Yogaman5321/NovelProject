@@ -18,6 +18,7 @@ namespace NovelProject.CommentPage
         public CommentHandler handler;
 
         private int _chapterId;
+        private Action<UserControl> _navigate;
 
         public CommentView(int chapterId)
         {
@@ -121,7 +122,7 @@ namespace NovelProject.CommentPage
             handler(CommentState.AddComment, _chapterId, result);
         }
 
-        private Action<UserControl> _navigate;
+        
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;
