@@ -45,6 +45,9 @@ namespace NovelProject
             logOutButton.Visible = _accountMode;
             logOutButton.Enabled = _accountMode;
 
+            toolStripButton1.Visible = _accountMode;
+            toolStripButton1.Enabled = _accountMode;
+
             var homeView = new HomeView();
             var homeController = new HomeController(homeView.DisplayState);
             homeView.SetHomeHandler(homeController.HandleEvents);
