@@ -30,7 +30,7 @@ namespace NovelProject
             switch (s)
             {
                 case LoginState.LoginAsGuest:
-                    this.Invoke(new Action (() =>
+                    this.Invoke(new Action(() =>
                     {
                         EnvironmentVars.username = "Guest";
                         LoginSucceeded?.Invoke("Guest", false);
@@ -80,14 +80,12 @@ namespace NovelProject
         private void guestLoginButton_Click(object sender, EventArgs e)
         {
             handler(LoginState.LoginAsGuest, "", "");
-        }   
-       
+        }
+
 
         public void SetLoginHandler(LoginHandler handler)
         {
             this.handler = handler;
         }
-
-        
     }
 }

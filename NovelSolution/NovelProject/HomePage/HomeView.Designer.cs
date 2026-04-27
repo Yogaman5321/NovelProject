@@ -110,6 +110,7 @@
             // newestAdditionsPanel
             // 
             newestAdditionsPanel.AutoScroll = true;
+            newestAdditionsPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             newestAdditionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             newestAdditionsPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             newestAdditionsPanel.Location = new System.Drawing.Point(795, 81);
