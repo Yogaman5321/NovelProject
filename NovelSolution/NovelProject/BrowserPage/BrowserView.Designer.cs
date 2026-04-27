@@ -97,6 +97,7 @@
             // resultsPanel
             // 
             resultsPanel.AutoScroll = true;
+            resultsPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             resultsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             resultsPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             resultsPanel.Location = new System.Drawing.Point(41, 105);
@@ -105,6 +106,7 @@
             resultsPanel.Size = new System.Drawing.Size(744, 596);
             resultsPanel.TabIndex = 5;
             resultsPanel.WrapContents = false;
+            resultsPanel.Paint += resultsPanel_Paint;
             // 
             // uxSearchButton
             // 

@@ -386,7 +386,7 @@ namespace NovelProject.BrowserPage
             CheckLoadMore();
         }
 
-        
+
         public void SetNavigator(Action<UserControl> navigate)
         {
             _navigate = navigate;
@@ -403,6 +403,11 @@ namespace NovelProject.BrowserPage
         public void SetHandler(BrowserHandler handler)
         {
             this.handler = handler;
+        }
+
+        private void resultsPanel_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
