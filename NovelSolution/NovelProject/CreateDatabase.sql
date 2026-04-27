@@ -100,6 +100,7 @@ BEGIN
         UserId INT NOT NULL,
         ChapterId INT NOT NULL,
         LastReadDate DATETIME NOT NULL DEFAULT(SYSDATETIMEOFFSET()),
+        PRIMARY KEY (UserId, ChapterId),
         FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE,
         FOREIGN KEY (ChapterId) REFERENCES Chapters(ChapterId) ON DELETE CASCADE
     );
