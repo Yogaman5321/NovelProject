@@ -117,5 +117,10 @@ namespace NovelProject
             view.SetUserHandler(controller.HandleEvents);
             LoadView(view);
         }
+
+        private void uxMainPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

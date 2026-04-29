@@ -141,12 +141,13 @@
             // uxMainPanel
             // 
             uxMainPanel.AutoSize = true;
-            uxMainPanel.BackColor = System.Drawing.Color.LightSteelBlue;
+            uxMainPanel.BackColor = System.Drawing.Color.Gainsboro;
             uxMainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             uxMainPanel.Location = new System.Drawing.Point(0, 26);
             uxMainPanel.Name = "uxMainPanel";
             uxMainPanel.Size = new System.Drawing.Size(1036, 574);
             uxMainPanel.TabIndex = 1;
+            uxMainPanel.Paint += uxMainPanel_Paint;
             // 
             // MainView
             // 
