@@ -49,7 +49,7 @@
             toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { homePageButton, browseNovelsButton, authorDashboardButton, toolStripButton1, leaderboardButton, usernameLabel, logOutButton, logInButton });
             toolStrip1.Location = new System.Drawing.Point(0, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new System.Drawing.Size(1184, 30);
+            toolStrip1.Size = new System.Drawing.Size(1036, 26);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -60,7 +60,7 @@
             homePageButton.Image = (System.Drawing.Image)resources.GetObject("homePageButton.Image");
             homePageButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             homePageButton.Name = "homePageButton";
-            homePageButton.Size = new System.Drawing.Size(61, 27);
+            homePageButton.Size = new System.Drawing.Size(50, 23);
             homePageButton.Text = "Home";
             homePageButton.Click += homePageButton_Click;
             // 
@@ -71,7 +71,7 @@
             browseNovelsButton.Image = (System.Drawing.Image)resources.GetObject("browseNovelsButton.Image");
             browseNovelsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             browseNovelsButton.Name = "browseNovelsButton";
-            browseNovelsButton.Size = new System.Drawing.Size(126, 27);
+            browseNovelsButton.Size = new System.Drawing.Size(105, 23);
             browseNovelsButton.Text = "Browse Novels";
             browseNovelsButton.Click += browseNovelsButton_Click;
             // 
@@ -82,7 +82,7 @@
             authorDashboardButton.Image = (System.Drawing.Image)resources.GetObject("authorDashboardButton.Image");
             authorDashboardButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             authorDashboardButton.Name = "authorDashboardButton";
-            authorDashboardButton.Size = new System.Drawing.Size(155, 27);
+            authorDashboardButton.Size = new System.Drawing.Size(127, 23);
             authorDashboardButton.Text = "Author Dashboard";
             authorDashboardButton.Click += authorDashboardButton_Click;
             // 
@@ -93,7 +93,7 @@
             toolStripButton1.Image = (System.Drawing.Image)resources.GetObject("toolStripButton1.Image");
             toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             toolStripButton1.Name = "toolStripButton1";
-            toolStripButton1.Size = new System.Drawing.Size(105, 27);
+            toolStripButton1.Size = new System.Drawing.Size(89, 23);
             toolStripButton1.Text = "View Profile";
             toolStripButton1.Click += userProfileButton_Click;
             // 
@@ -104,7 +104,7 @@
             leaderboardButton.Image = (System.Drawing.Image)resources.GetObject("leaderboardButton.Image");
             leaderboardButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             leaderboardButton.Name = "leaderboardButton";
-            leaderboardButton.Size = new System.Drawing.Size(110, 27);
+            leaderboardButton.Size = new System.Drawing.Size(90, 23);
             leaderboardButton.Text = "Leaderboard";
             leaderboardButton.Click += leaderboardButton_Click;
             // 
@@ -113,7 +113,7 @@
             usernameLabel.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             usernameLabel.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, 0);
             usernameLabel.Name = "usernameLabel";
-            usernameLabel.Size = new System.Drawing.Size(165, 27);
+            usernameLabel.Size = new System.Drawing.Size(140, 23);
             usernameLabel.Text = "Username Goes Here";
             // 
             // logOutButton
@@ -124,7 +124,7 @@
             logOutButton.Image = (System.Drawing.Image)resources.GetObject("logOutButton.Image");
             logOutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             logOutButton.Name = "logOutButton";
-            logOutButton.Size = new System.Drawing.Size(76, 27);
+            logOutButton.Size = new System.Drawing.Size(64, 23);
             logOutButton.Text = "Log Out";
             // 
             // logInButton
@@ -135,7 +135,7 @@
             logInButton.Image = (System.Drawing.Image)resources.GetObject("logInButton.Image");
             logInButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             logInButton.Name = "logInButton";
-            logInButton.Size = new System.Drawing.Size(62, 27);
+            logInButton.Size = new System.Drawing.Size(52, 23);
             logInButton.Text = "Log In";
             // 
             // uxMainPanel
@@ -143,19 +143,19 @@
             uxMainPanel.AutoSize = true;
             uxMainPanel.BackColor = System.Drawing.Color.LightSteelBlue;
             uxMainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            uxMainPanel.Location = new System.Drawing.Point(0, 30);
-            uxMainPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            uxMainPanel.Location = new System.Drawing.Point(0, 26);
             uxMainPanel.Name = "uxMainPanel";
-            uxMainPanel.Size = new System.Drawing.Size(1184, 770);
+            uxMainPanel.Size = new System.Drawing.Size(1036, 574);
             uxMainPanel.TabIndex = 1;
             // 
             // MainView
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1184, 800);
+            ClientSize = new System.Drawing.Size(1036, 600);
             Controls.Add(uxMainPanel);
             Controls.Add(toolStrip1);
+            Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             Name = "MainView";
             Text = "MainView";
             toolStrip1.ResumeLayout(false);
